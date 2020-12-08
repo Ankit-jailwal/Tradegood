@@ -32,40 +32,45 @@ class PopularProducts extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: getProportionateScreenWidth(20)),
-        Container(
-          color: Colors.deepOrange.withOpacity(0.4),
-          child: IgnorePointer(
-              child: GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                children: img.map((item) => Card(
-                  color: Colors.transparent,
-                  elevation: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: AssetImage(item),
-                            fit: BoxFit.cover
-                        )
-                    ),
-                    child: Transform.translate(
-                      offset: Offset(50, -50),
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 65, vertical: 63),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white
+        SizedBox(height: getProportionateScreenWidth(10)),
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFfff7e8),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IgnorePointer(
+                child: GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  children: img.map((item) => Padding(
+                    padding: EdgeInsets.only(top:10,left: 7,right: 7,bottom: 5),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 2,right: 2,top: 4, bottom: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Color(0xFFffefaf),
+                      ),
+                      child: Card(
+                        color: Colors.transparent,
+                        elevation: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              image: DecorationImage(
+                                  image: AssetImage(item),
+                                  fit: BoxFit.cover
+                              )
+                          ),
                         ),
-                        child: Icon(Icons.bookmark_border, size: 15,),
                       ),
                     ),
-                  ),
-                )).toList(),
-              )
+                  )).toList(),
+                )
+            ),
           ),
         )
       ],

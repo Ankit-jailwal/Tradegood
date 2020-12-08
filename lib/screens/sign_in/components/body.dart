@@ -16,17 +16,17 @@ class Body extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: ExactAssetImage(
-                  "assets/images/bgsignin.png",
+                  "assets/images2/Login_forgotpswd_TG.png",
                 ),
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth,
               ),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.zero,
               child: Image.asset(
-                "assets/images/bgsignin.png",
+                "assets/images2/Login_forgotpswd_TG.png",
                 color: null,
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth,
                 width: 411.0,
                 height: 731.0,
                 colorBlendMode: BlendMode.dstATop,

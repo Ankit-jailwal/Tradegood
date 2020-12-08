@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:shop_app/screens/My_orders/my_order.dart';
 import 'components/body.dart';
+import 'package:shop_app/screens/My_profile/my_profile.dart';
 
 class HomeScreen extends StatelessWidget {
   static String routeName = "/home";
@@ -82,11 +83,19 @@ class HomeScreen extends StatelessWidget {
                     "assets/images2/3cc61b6529c0b380ec7b41b0ed5db8a3e9d8cf75.png",
                   ),
                 ),
-                title: Text(
-                  'My Account',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
+                title: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => my_profile()),
+                    );
+                  },
+                  child: Text(
+                    'My Account',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 onTap: () {
