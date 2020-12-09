@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/components/product_card.dart';
-import 'package:shop_app/models/Product.dart';
-
 import '../../../size_config.dart';
-import 'section_title.dart';
+
 final List<String> img = [
   'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
   'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
@@ -49,23 +46,34 @@ class PopularProducts extends StatelessWidget {
                   children: img.map((item) => Padding(
                     padding: EdgeInsets.only(top:10,left: 7,right: 7,bottom: 5),
                     child: Container(
-                      padding: EdgeInsets.only(left: 2,right: 2,top: 4, bottom: 4),
+                      padding: EdgeInsets.only(left: 5,right: 5,top: 8, bottom: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         color: Color(0xFFffefaf),
                       ),
-                      child: Card(
-                        color: Colors.transparent,
-                        elevation: 0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              image: DecorationImage(
-                                  image: AssetImage(item),
-                                  fit: BoxFit.cover
-                              )
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 110,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                image: DecorationImage(
+                                    image: AssetImage(item),
+                                    fit: BoxFit.cover
+                                )
+                            ),
                           ),
-                        ),
+                          SizedBox(height: 5,),
+                          Container(
+                            height: 35,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              color: Colors.white
+                            ),
+                            child: Center(child: Text("Category 1",style: TextStyle(color: Colors.black),textAlign: TextAlign.center,)),
+                          )
+                        ],
                       ),
                     ),
                   )).toList(),
