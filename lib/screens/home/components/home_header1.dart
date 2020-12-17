@@ -21,10 +21,15 @@ class HomeHeader1 extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(
-            Icons.menu,
-            size: SizeConfig.screenWidth*0.09,
-            color: Colors.white,
+          GestureDetector(
+            onTap: (){
+              Scaffold.of(context).openDrawer();
+            },
+            child: Icon(
+              Icons.menu,
+              size: SizeConfig.screenWidth*0.09,
+              color: Colors.white,
+            ),
           ),
           GestureDetector(
               onTap: (){

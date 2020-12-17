@@ -2,17 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'package:shop_app/API/Auth/Category.dart';
 
-final List<String> img = [
-  'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
-  'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
-  'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
-  'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
-  'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
-  'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
-  'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
-  'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
-  'assets/images2/ef66e7a156bb12046450fe31c964d9878ae491f6.png',
-];
 class PopularProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
