@@ -84,36 +84,35 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(10)),
           GestureDetector(
             onTap: () async{
-              Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => HomeScreen()
-                         )
-                     );
-           //  if (_formKey.currentState.validate()) {
-           //    _formKey.currentState.save();
-           //    final email=emailcontroller.text;
-           //    final password=passwordcontroller.text;
-           //    final _token = await AuthenticationService()
-           //        .login(email, password);
-           //    final token_body = jsonDecode(_token);
-           //    if(token_body["token"] != null) {
-           //      //storage.write(key: "jwt", value: jwt);
-           //      Navigator.push(
-           //          context,
-           //          MaterialPageRoute(
-           //              builder: (context) => HomeScreen()
-           //          )
-           //      );
-           //    } else {
-           //      if(token_body["errors"]!=null)
-           //      addError(error: token_body["errors"]);
-           //      else
-           //        addError(error: token_body["message"]);
-           //    }
-            // print(_token);
-             // if all are valid then go to success screen
-             // };
+              //Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //               builder: (context) => HomeScreen()
+              //           )
+              //       );
+             if (_formKey.currentState.validate()) {
+               _formKey.currentState.save();
+               final email=emailcontroller.text;
+               final password=passwordcontroller.text;
+               final _token = await AuthenticationService()
+                   .login(email, password);
+               final token_body = jsonDecode(_token);
+               if(token_body["token"] != null) {
+                 storage.write(key: "jwt", value: token_body["token"]);
+                 Navigator.push(
+                     context,
+                     MaterialPageRoute(
+                         builder: (context) => HomeScreen()
+                     )
+                 );
+               } else {
+                 if(token_body["errors"]!=null)
+                 addError(error: token_body["errors"]);
+                 else
+                   addError(error: token_body["message"]);
+               }
+           print(_token);
+            }
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
