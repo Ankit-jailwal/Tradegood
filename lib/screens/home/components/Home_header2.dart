@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'icon_btn_with_counter.dart';
 import 'search_field.dart';
+import 'package:shop_app/screens/home/home_screen.dart';
+import 'package:shop_app/screens/home/components/popular_product.dart';
 
 class HomeHeader2 extends StatefulWidget {
   const HomeHeader2({
@@ -46,6 +48,16 @@ class _HomeHeader2State extends State<HomeHeader2> {
                     setState(() {
                       _value = value;
                     });
+                    if(_value==1)
+                      {
+                        Navigator.push(context,MaterialPageRoute(builder: (context) =>
+                            HomeScreen("Brands","/brand/getBrand",true)),);
+                      }
+                    else if(_value==2)
+                      {
+                        Navigator.push(context,MaterialPageRoute(builder: (context) =>
+                            HomeScreen("Products","/category/getCategory",false)),);
+                      }
                   }),
             ),
           ),

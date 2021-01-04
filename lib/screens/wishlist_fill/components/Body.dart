@@ -2,19 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/size_config.dart';
 
-class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  bool check(int index, int size) {
-    if (index == size - 1)
-      return true;
-    else
-      return false;
-  }
-
+class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -86,7 +74,7 @@ class _BodyState extends State<Body> {
         ),
         Expanded(
             child: ListView.builder(
-                itemCount: 5, //list view declaration
+                itemCount: 3, //list view declaration
                 padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
                 itemBuilder: (BuildContext context, int index) {
                   return Column(
@@ -208,7 +196,7 @@ class _BodyState extends State<Body> {
                                                 text: ' FREE',
                                                 style: TextStyle(
                                                     color:
-                                                        Colors.lightGreenAccent.shade700,
+                                                        Colors.lightGreenAccent,
                                                     fontSize: 12),
                                               )
                                             ]),
@@ -253,67 +241,23 @@ class _BodyState extends State<Body> {
                       SizedBox(
                         height: SizeConfig.screenHeight * 0.015,
                       ),
-                      check(index, 5)
-                          ? Column(
-                            children: [
-                              Divider(color: Colors.grey,thickness: 0.5,),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5,right: 5),
-                                child: Row(
-                                  children: [
-                                    Text("Price Details",style: TextStyle(color: Colors.black.withOpacity(0.7),fontSize: 14,fontWeight: FontWeight.w800),),
-                                  ],
-                                ),
-                              ),
-                              Divider(color: Colors.grey,thickness: 0.5,),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5,left: 5),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Price(3 item)",style: TextStyle(color: Colors.black),),
-                                        Text("₹11,500",style: TextStyle(color: Colors.black)),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Discount",style: TextStyle(color: Colors.black),),
-                                        Text("-₹1000",style: TextStyle(color: Colors.lightGreenAccent.shade700)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Divider(color: Colors.grey.withOpacity(0.6),thickness: 0.5,),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5,right: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Total amount",style: TextStyle(color: Colors.black),),
-                                    Text("₹10,500",style: TextStyle(color: Colors.black)),
-                                  ],
-                                ),
-                              ),
-                              Divider(color: Colors.grey,thickness: 0.5,),
-                            ],
-                          )
-                          : Container()
                     ],
                   );
-                })),
+                }
+
+                )),
         Container(
-          decoration: BoxDecoration(color: Colors.white, boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.4),
-                blurRadius: 5,
-                offset: Offset(0, -3))
-          ]),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [BoxShadow(
+             color: Colors.grey.withOpacity(0.4),
+             blurRadius: 5,
+             offset: Offset(0,-3)
+            )
+            ]
+          ),
           child: Padding(
-            padding: EdgeInsets.only(left: 10, right: 10, bottom: 15, top: 10),
+            padding: EdgeInsets.only(left: 10,right: 10,bottom: 15,top:10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,

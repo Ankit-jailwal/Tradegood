@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/Cart.dart';
 import 'package:shop_app/screens/home/components/search_field.dart';
 import 'package:shop_app/size_config.dart';
-import 'components/body.dart';
+import 'package:shop_app/screens/My_cart/components/Body.dart';
 
-class order_screen extends StatelessWidget {
-  String category;
-  order_screen(this.category);
+class whishlist_full_screen extends StatelessWidget {
   static String routeName = "/cart";
   @override
   Widget build(BuildContext context) {
@@ -22,7 +19,10 @@ class order_screen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        title:SearchField(),
+        title:Text("My cart",
+          style: TextStyle(
+            color: Colors.white,
+          ),),
         actions: [
           Image.asset(
             "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
@@ -41,7 +41,7 @@ class order_screen extends StatelessWidget {
         ],
         backgroundColor: Colors.blue,
       ),
-      body: Body(category),
+      body: Body(),
     );
   }
 }

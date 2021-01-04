@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:quick_feedback/quick_feedback.dart';
+import 'package:shop_app/screens/previous_order/previous_order.dart';
 import 'package:shop_app/size_config.dart';
 import 'package:shop_app/screens/My_orders/my_order.dart';
 import 'components/body.dart';
 import 'package:shop_app/screens/My_profile/my_profile.dart';
+import 'package:shop_app/screens/wishlist_fill/wishlist_fill.dart';
 
 class HomeScreen extends StatelessWidget {
+String type;
+String url;
+bool flag;
+HomeScreen(this.type,this.url,this.flag);
   static String routeName = "/home";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Body(),
+      body: Body(type,url,flag),
       drawer: Container(
         width: SizeConfig.screenWidth * 0.7,
         child: Drawer(
@@ -140,6 +147,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => whishlist_full_screen()));
                 },
               ),
               ListTile(
@@ -266,7 +274,26 @@ class HomeScreen extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                },
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return QuickFeedback(
+                        title: 'Leave a feedback', // Title of dialog
+                        showTextBox: true, // default false
+                        textBoxHint:
+                        'Share your feedback', // Feedback text field hint text default: Tell us more
+                        submitText: 'SUBMIT', // submit button text default: SUBMIT
+                        onSubmitCallback: (feedback) {
+                          print('$feedback'); // map { rating: 2, feedback: 'some feedback' }
+                          Navigator.of(context).pop();
+                        },
+                        askLaterText: 'ASK LATER',
+                        onAskLaterCallback: () {
+                          print('Do something on ask later click');
+                        },
+                      );
+                    },
+                  );},
               ),
               ListTile(
                 leading: Container(
@@ -303,7 +330,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                onTap: () {
+                onTap: (){
                   Navigator.pop(context);
                 },
               ),

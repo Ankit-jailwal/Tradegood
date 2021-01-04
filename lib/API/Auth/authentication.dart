@@ -11,7 +11,7 @@ import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/theme.dart';
 
 
-const Map Server = {"host": "http://54.160.174.40", "port": "8050"};
+const Map Server = {"host": "http://3.95.65.92", "port": "8050"};
 String getServerURI() => Server["host"] + ':' + Server["port"];
 
 final storage = FlutterSecureStorage();
@@ -118,7 +118,7 @@ void auth_trail() async{
   // server token check
   else {
     if (check == 200 || check == 300) {
-      _page_state=HomeScreen();
+      //_page_state=HomeScreen();
     } else
       _page_state=SignInScreen();
   }

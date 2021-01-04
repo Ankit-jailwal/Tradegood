@@ -31,6 +31,8 @@ dependencies:
   flutter_svg: ^0.18.0 # help us to use SVG in our app
   provider: ^4.3.1 # for State management
   carousel_slider: ^2.3.1
+  quick_feedback:
+  bloc: ^6.1.1
 
 dev_dependencies:
   flutter_test:

@@ -10,6 +10,10 @@ import 'popular_product.dart';
 import 'special_offers.dart';
 
 class Body extends StatelessWidget {
+  String type;
+  String url;
+  bool flag;
+  Body(this.type,this.url,this.flag);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,7 +40,7 @@ class Body extends StatelessWidget {
             DiscountBanner(),
             SpecialOffers(),
             SizedBox(height: getProportionateScreenWidth(18)),
-            PopularProducts(),
+            PopularProducts(type,url,flag),
             SizedBox(height: getProportionateScreenWidth(18)),
           ],
         ),

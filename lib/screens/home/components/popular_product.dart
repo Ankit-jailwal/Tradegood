@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'package:shop_app/API/Auth/Category.dart';
+import 'package:shop_app/screens/order_list_screen/order_screen.dart';
+import 'package:shop_app/constants.dart';
 
 class PopularProducts extends StatelessWidget {
+   String type;
+   String url;
+   bool flag=true;
+  PopularProducts(this.type,this.url,this.flag);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: get_category(),
+      future: get_category(url),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
@@ -15,7 +21,7 @@ class PopularProducts extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(20)),
                 child: Text(
-                  "Shop by ",
+                  "Shop by $type",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -32,57 +38,69 @@ class PopularProducts extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(10),
-                    child: IgnorePointer(
-                        child: GridView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data['categoryList'].length,
-                            gridDelegate:
-                            new SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                            ),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                    top: 10, left: 7, right: 7, bottom: 5),
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                      left: 5, right: 5, top: 8, bottom: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Color(0xFFffefaf),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        height: 105,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(15),
-                                            image: DecorationImage(
-                                                image: NetworkImage("https://upload.wikimedia.org/wikipedia/commons/c/cf/Tumbler_of_cola_with_ice.jpg"),
-                                                fit: BoxFit.cover
-                                            )
-                                        ),
-                                      ),
-                                      SizedBox(height: 5,),
-                                      Container(
-                                        height: 35,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: Colors.white
-                                        ),
-                                        child: Center(child: Text(
-                                          snapshot.data['categoryList']
-                                          [index]['name'], style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700),
-                                          textAlign: TextAlign.center,)),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                    child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: flag?snapshot.data['brandList'].length:snapshot.data['categoryList'].length,
+                        gridDelegate:
+                        new SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: (){
+                              print("adasdas");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => order_screen(snapshot.data['categoryList'][index]['name'])),
                               );
-                            })),
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: 10, left: 7, right: 7, bottom: 5),
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    left: 5, right: 5, top: 8, bottom: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Color(0xFFffefaf),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 114,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(15),
+                                          image: DecorationImage(
+                                              image: NetworkImage(flag?snapshot.data['categoryList']
+                                              [index]['categoryImage']??"https://748073e22e8db794416a-cc51ef6b37841580002827d4d94d19b6.ssl.cf3.rackcdn.com/not-found.png":snapshot.data['categoryList']
+                                              [index]['categoryImage']??"https://748073e22e8db794416a-cc51ef6b37841580002827d4d94d19b6.ssl.cf3.rackcdn.com/not-found.png"),
+                                              fit: BoxFit.cover
+                                          )
+                                      ),
+                                    ),
+                                    SizedBox(height: 5,),
+                                    Container(
+                                      height: 35,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: Colors.white
+                                      ),
+                                      child: Center(child: Text(
+                                        flag?snapshot.data['categoryList']
+                                        [index]['name']:snapshot.data['categoryList']
+                                        [index]['name'], style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700),
+                                        textAlign: TextAlign.center,)),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
                   ),
                 ),
               )
