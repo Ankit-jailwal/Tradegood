@@ -20,7 +20,8 @@ class DiscountBanner extends StatelessWidget {
     return FutureBuilder(
       future: getOffer(),
       builder: (context, snapshot) {
-        if(snapshot.hasData) {
+        {
+        if(snapshot.hasData)
           return Builder(
             builder: (context) {
               return Column(
@@ -33,7 +34,7 @@ class DiscountBanner extends StatelessWidget {
                       autoPlay: true,
                       autoPlayInterval: Duration(seconds: 3),
                     ),
-                    items: snapshot.data["offerImages"].map((item) =>
+                    items: snapshot.data['offerImages'].map<Widget>((item) =>
                         Container(
                           child: Center(
                               child: Image.network(item, fit: BoxFit.cover,

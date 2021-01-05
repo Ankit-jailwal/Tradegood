@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
           Container(
             width: SizeConfig.screenWidth*0.5,
             child: Image.asset(
-              "assets/images2/tgood.png"
+              "assets/images2/tgood_black.png"
             ),
           ),
           SizedBox(height: SizeConfig.screenHeight*0.08,),

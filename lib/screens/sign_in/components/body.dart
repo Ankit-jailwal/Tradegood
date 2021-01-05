@@ -43,7 +43,7 @@ class Body extends StatelessWidget {
                   Container(
                     //color: Colors.black,
                       width: SizeConfig.screenWidth*0.6,
-                      child: Image.asset("assets/logo/tgood.png")),
+                      child: Image.asset("assets/images2/tgood_black.png")),
                   SizedBox(height: SizeConfig.screenHeight * 0.02),
                   Text(
                     '''Sign In''',

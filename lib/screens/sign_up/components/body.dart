@@ -20,7 +20,7 @@ class Body extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: ExactAssetImage(
-              "assets/images2/Login_forgotpswd_TG.png",
+              "assets/images2/tgood_signup.png",
             ),
             fit: BoxFit.fitWidth,
           ),
@@ -28,7 +28,7 @@ class Body extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.zero,
           child: Image.asset(
-            "assets/images2/Login_forgotpswd_TG.png",
+            "assets/images2/tgood_signup.png",
             color: null,
             fit: BoxFit.fitWidth,
             width: 414.0,

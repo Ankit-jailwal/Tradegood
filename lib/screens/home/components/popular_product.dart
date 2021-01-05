@@ -108,8 +108,10 @@ class PopularProducts extends StatelessWidget {
           );
         }
 
-        return Container(
-          child: Center(child: CircularProgressIndicator()),
+        return Center(
+          child: Container(
+            child: CircularProgressIndicator(),
+          ),
         );
       },
     );

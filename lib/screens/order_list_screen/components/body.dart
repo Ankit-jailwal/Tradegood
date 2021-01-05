@@ -3,23 +3,25 @@ import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'package:shop_app/API/getProduct.dart';
 import 'package:shop_app/screens/order_list_screen/order_screen.dart';
+import 'package:shop_app/API/addToCart.dart';
+import 'package:shop_app/API/addToWishlist.dart';
 
 class Body extends StatefulWidget {
   String category;
   var catData;
-  Body(this.category,this.catData);
+  Body(this.category, this.catData);
   @override
-  _BodyState createState() => _BodyState(category,catData);
+  _BodyState createState() => _BodyState(category, catData);
 }
 
 class _BodyState extends State<Body> {
   String category;
   var catData;
-  _BodyState(this.category,this.catData);
+  _BodyState(this.category, this.catData);
   int _counter = 0;
   int value = 0;
-  bool wishCheck=true;
-
+  bool wishCheck = true;
+  bool addCheck = false;
   bool _countFlag = false;
 
   void _increment() {
@@ -93,13 +95,16 @@ class _BodyState extends State<Body> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: catData['categoryList'].length,
-                    itemBuilder: (BuildContext context, int index) => GestureDetector(
-                      onTap:(){
+                    itemBuilder: (BuildContext context, int index) =>
+                        GestureDetector(
+                      onTap: () {
                         print("pressed item$index");
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => order_screen(catData['categoryList']
-                          [index]['name'], catData)),
+                          MaterialPageRoute(
+                              builder: (context) => order_screen(
+                                  catData['categoryList'][index]['name'],
+                                  catData)),
                         );
                       },
                       child: Container(
@@ -107,8 +112,7 @@ class _BodyState extends State<Body> {
                             child: Padding(
                                 padding: EdgeInsets.only(left: 8, right: 15),
                                 child: Text(
-                                  catData['categoryList']
-                                  [index]['name'],
+                                  catData['categoryList'][index]['name'],
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 17,
@@ -143,7 +147,6 @@ class _BodyState extends State<Body> {
                                       ]),
                                   child: Column(
                                     children: [
-
                                       Column(
                                         children: [
                                           Row(
@@ -151,26 +154,31 @@ class _BodyState extends State<Body> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(top: 15,
-                                                    left: 25),
+                                                padding: const EdgeInsets.only(
+                                                    top: 15, left: 25),
                                                 child: Container(
                                                   height:
                                                       SizeConfig.screenHeight *
                                                           0.22,
-                                                  width:SizeConfig.screenHeight *
-                                                      0.22,
+                                                  width:
+                                                      SizeConfig.screenHeight *
+                                                          0.22,
                                                   child: ClipRRect(
-                                                      borderRadius: BorderRadius.circular(2),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2),
                                                     child: Image.network(
-                                                        snapshot.data['products'][index]['productPicture'],
-                                                    fit: BoxFit.cover,
+                                                      snapshot.data['products']
+                                                              [index]
+                                                          ['productPicture'],
+                                                      fit: BoxFit.cover,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                               Padding(
                                                 padding: EdgeInsets.only(
-                                                    right:10, bottom: 10),
+                                                    right: 10, bottom: 10),
                                                 child: Row(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -216,7 +224,11 @@ class _BodyState extends State<Body> {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                snapshot.data['products'][index]['mrp'].toString(),
+                                                                snapshot.data[
+                                                                        'products']
+                                                                        [index]
+                                                                        ['mrp']
+                                                                    .toString(),
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
@@ -248,7 +260,11 @@ class _BodyState extends State<Body> {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                snapshot.data['products'][index]['ptr'].toString(),
+                                                                snapshot.data[
+                                                                        'products']
+                                                                        [index]
+                                                                        ['ptr']
+                                                                    .toString(),
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
@@ -283,12 +299,31 @@ class _BodyState extends State<Body> {
                                                       SizedBox(
                                                         width: 10,
                                                       ),
-                                                      Container(
-                                                        height: 25,
-                                                        child: Image.asset(
-                                                          "assets/images2/f99614dc8ffdca073f67f7261c6a80fbbe774e29.png",
-                                                        ),
-                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            if (wishCheck ==
+                                                                true) {
+                                                              addToWishlist(
+                                                                  snapshot
+                                                                      .data['products'][index]['_id']);
+                                                              wishCheck = false;
+                                                            }
+                                                            else {
+                                                              wishCheck = true;
+                                                            }
+                                                          });
+                                                        },
+                                                        child: wishCheck
+                                                            ? Image.asset(
+                                                                "assets/images2/f99614dc8ffdca073f67f7261c6a80fbbe774e29.png",
+                                                                height: 25,
+                                                              )
+                                                            : Image.asset(
+                                                                "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
+                                                                height: 25,
+                                                              ),
+                                                      )
                                                     ]),
                                               ),
                                             ],
@@ -364,7 +399,11 @@ class _BodyState extends State<Body> {
                                                                       .screenWidth *
                                                                   0.02),
                                                           Text(
-                                                            snapshot.data['products'][index]['availableStock'].toString(),
+                                                            snapshot.data[
+                                                                    'products']
+                                                                    [index][
+                                                                    'availableStock']
+                                                                .toString(),
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.black,
@@ -520,26 +559,81 @@ class _BodyState extends State<Body> {
                                                                 ),
                                                               ],
                                                             ),
-                                                            Container(
-                                                              height: 20,
-                                                              child:
-                                                                  Image.asset(
-                                                                "assets/images2/4e2f4fae4dd36d9fe6ceccb20d21cad9b32dddf9.png",
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  if (addCheck == true) {
+                                                                    addCheck =
+                                                                    false;
+                                                                    addToCart(snapshot.data[
+                                                                    'products']
+                                                                    [index]['_id'],snapshot.data[
+                                                                    'products']
+                                                                    [index]['quantity'],snapshot.data[
+                                                                    'products']
+                                                                    [index]['ptr']);
+                                                                    print("SUCCESS");
+                                                                  }
+                                                                  else
+                                                                    addCheck =
+                                                                        true;
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                height: 20,
+                                                                child:
+                                                                    Image.asset(
+                                                                  "assets/images2/4e2f4fae4dd36d9fe6ceccb20d21cad9b32dddf9.png",
+                                                                ),
                                                               ),
                                                             )
                                                           ],
                                                         ),
                                                       ),
-                                                      Text(
-                                                        "Min. Order ${snapshot.data['products'][index]['quantity']}",
-                                                        style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontFamily: "Roberto",
-                                                        ),
-                                                      ),
+                                                      addCheck
+                                                          ? Padding(
+                                                            padding: const EdgeInsets.all(4.0),
+                                                            child: Row(
+                                                                children: [
+                                                                  Image.asset(
+                                                                    "assets/images2/9cc73194de6fa0e85d13ba8fe84e31a844ad6341.png",
+                                                                    height: 12,
+                                                                  ),
+                                                                  SizedBox(width: 4,),
+                                                                  Text(
+                                                                    "Added",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .green,
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontFamily:
+                                                                          "Roberto",
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                          )
+                                                          : Padding(
+                                                            padding: const EdgeInsets.all(4.0),
+                                                            child: Text(
+                                                                "Min. Order ${snapshot.data['products'][index]['quantity']}",
+                                                                style: TextStyle(
+                                                                  color:
+                                                                      Colors.red,
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontFamily:
+                                                                      "Roberto",
+                                                                ),
+                                                              ),
+                                                          ),
                                                     ],
                                                   ),
                                                 ),

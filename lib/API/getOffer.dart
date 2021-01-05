@@ -5,7 +5,7 @@ import 'package:shop_app/API/Auth/authentication.dart';
 
 
 Future getOffer() async{
-  final String url = server + "/api/offer/getUserOffer";
+  final String url = server + "/api/offer/getUserCarouselOffer";
   String res= await storage.read(key: 'jwt');
   print(res);
   String token= "Bearer "+res;

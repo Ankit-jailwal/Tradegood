@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../../size_config.dart';
+import 'package:shop_app/API/getStaticOffer.dart';
 import 'section_title.dart';
 
 class SpecialOffers extends StatelessWidget {
@@ -10,31 +10,43 @@ class SpecialOffers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: getProportionateScreenWidth(3)),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              SizedBox(width:getProportionateScreenWidth(4.0), ),
-              SpecialOfferCard(
-                image: "assets/images2/0d827966a31c53693c760401ca123ae238bf82471.png",
-                //category: "Smartphone",
-                press: () {},
-              ),
-              SizedBox(width:getProportionateScreenWidth(7.0), ),
-              SpecialOfferCard(
-                image: "assets/images2/0d827966a31c53693c760401ca123ae238bf82472.png",
-                //category: "Fashion",
-                press: () {},
-              ),
-              SizedBox(width: getProportionateScreenWidth(20)),
-            ],
-          ),
-        ),
-      ],
-    );
+    return FutureBuilder(
+        future: getStaticOffer(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: <Widget>[
+                Container(
+                  height: getProportionateScreenWidth(140),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: snapshot.data['offerImages'].length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        Row(
+                          children: [
+                            SizedBox(width: 10,),
+                            GestureDetector(
+                                onTap: () {},
+                                child: SizedBox(
+                                  width: getProportionateScreenWidth(180),
+                                  height: getProportionateScreenWidth(140),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(5),
+                                      child: Image.network(
+                                        snapshot.data['offerImages'][index],
+                                        fit: BoxFit.fill,
+                                      )),
+                                )),
+                          ],
+                        ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return Container();
+        });
   }
 }
 
@@ -64,9 +76,7 @@ class SpecialOfferCard extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               Container(
-                decoration: BoxDecoration(
-
-                ),
+                decoration: BoxDecoration(),
               ),
             ],
           ),
