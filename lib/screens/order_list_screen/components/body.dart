@@ -2,19 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'package:shop_app/API/getProduct.dart';
+import 'package:shop_app/screens/order_list_screen/order_screen.dart';
 
 class Body extends StatefulWidget {
   String category;
-  Body(this.category);
+  var catData;
+  Body(this.category,this.catData);
   @override
-  _BodyState createState() => _BodyState(category);
+  _BodyState createState() => _BodyState(category,catData);
 }
 
 class _BodyState extends State<Body> {
   String category;
-  _BodyState(this.category);
+  var catData;
+  _BodyState(this.category,this.catData);
   int _counter = 0;
   int value = 0;
+  bool wishCheck=true;
 
   bool _countFlag = false;
 
@@ -82,24 +86,36 @@ class _BodyState extends State<Body> {
                 ),
                 Container(
                   height: 40,
+                  width: SizeConfig.screenWidth,
                   decoration: BoxDecoration(
                       color: Colors.orangeAccent.withOpacity(0.3)),
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    itemBuilder: (BuildContext context, int index) => Container(
-                      child: Center(
-                          child: Padding(
-                              padding: EdgeInsets.only(left: 8, right: 15),
-                              child: Text(
-                                'Category 1',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "Roberto"),
-                              ))),
+                    itemCount: catData['categoryList'].length,
+                    itemBuilder: (BuildContext context, int index) => GestureDetector(
+                      onTap:(){
+                        print("pressed item$index");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => order_screen(catData['categoryList']
+                          [index]['name'], catData)),
+                        );
+                      },
+                      child: Container(
+                        child: Center(
+                            child: Padding(
+                                padding: EdgeInsets.only(left: 8, right: 15),
+                                child: Text(
+                                  catData['categoryList']
+                                  [index]['name'],
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Roberto"),
+                                ))),
+                      ),
                     ),
                   ),
                 ),
@@ -127,29 +143,7 @@ class _BodyState extends State<Body> {
                                       ]),
                                   child: Column(
                                     children: [
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.only(top: 10, right: 10),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                "Abc Distributor's Name",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontFamily: "Roberto",
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(
-                                                Icons.edit,
-                                                size: 18,
-                                              ),
-                                            ]),
-                                      ),
+
                                       Column(
                                         children: [
                                           Row(
@@ -157,7 +151,7 @@ class _BodyState extends State<Body> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(
+                                                padding: const EdgeInsets.only(top: 15,
                                                     left: 25),
                                                 child: Container(
                                                   height:
@@ -168,7 +162,7 @@ class _BodyState extends State<Body> {
                                                   child: ClipRRect(
                                                       borderRadius: BorderRadius.circular(2),
                                                     child: Image.network(
-                                                        snapshot.data['products'][index]['productPictures'][0]['img'],
+                                                        snapshot.data['products'][index]['productPicture'],
                                                     fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -222,7 +216,7 @@ class _BodyState extends State<Body> {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                snapshot.data['products'][index]['price'].toString(),
+                                                                snapshot.data['products'][index]['mrp'].toString(),
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
@@ -254,12 +248,7 @@ class _BodyState extends State<Body> {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                (Discount(snapshot.data['products']
-                                                                            [
-                                                                            index]
-                                                                        [
-                                                                        'price']))
-                                                                    .toString(),
+                                                                snapshot.data['products'][index]['ptr'].toString(),
                                                                 style:
                                                                     TextStyle(
                                                                   color: Colors
@@ -375,7 +364,7 @@ class _BodyState extends State<Body> {
                                                                       .screenWidth *
                                                                   0.02),
                                                           Text(
-                                                            snapshot.data['products'][index]['quantity'].toString(),
+                                                            snapshot.data['products'][index]['availableStock'].toString(),
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.black,
@@ -542,7 +531,7 @@ class _BodyState extends State<Body> {
                                                         ),
                                                       ),
                                                       Text(
-                                                        "Min. Order 10kg",
+                                                        "Min. Order ${snapshot.data['products'][index]['quantity']}",
                                                         style: TextStyle(
                                                           color: Colors.red,
                                                           fontSize: 10,
@@ -563,7 +552,7 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                               ),
-                              Padding(
+                              /*Padding(
                                 padding: EdgeInsets.only(top: 5, bottom: 5),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -583,7 +572,7 @@ class _BodyState extends State<Body> {
                                     ),
                                   ],
                                 ),
-                              )
+                              )*/
                             ],
                           );
                         })),

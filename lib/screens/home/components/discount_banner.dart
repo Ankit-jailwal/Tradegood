@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../../size_config.dart';
+import 'package:shop_app/API/getOffer.dart';
 
 final List<String> imgList = [
  "assets/images2/e40383e8af2df51c47006873ee61afab5b197fff.png",
@@ -16,28 +17,37 @@ class DiscountBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        //final double height = MediaQuery.of(context).size.height;
-        return Column(
-          children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                height: SizeConfig.screenWidth*0.38,
-                viewportFraction: 1.0,
-                enlargeCenterPage: false,
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
-              ),
-              items: imgList.map((item) => Container(
-                child: Center(
-                    child: Image.asset(item, fit: BoxFit.cover, height:SizeConfig.screenWidth*0.38,)
-                ),
-              )).toList(),
-            ),
-          ],
-        );
-      },
+    return FutureBuilder(
+      future: getOffer(),
+      builder: (context, snapshot) {
+        if(snapshot.hasData) {
+          return Builder(
+            builder: (context) {
+              return Column(
+                children: [
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      height: SizeConfig.screenWidth * 0.38,
+                      viewportFraction: 1.0,
+                      enlargeCenterPage: false,
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 3),
+                    ),
+                    items: snapshot.data["offerImages"].map((item) =>
+                        Container(
+                          child: Center(
+                              child: Image.network(item, fit: BoxFit.cover,
+                                height: SizeConfig.screenWidth * 0.38,)
+                          ),
+                        )).toList(),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        return Container();
+      }
     );
   }
 }

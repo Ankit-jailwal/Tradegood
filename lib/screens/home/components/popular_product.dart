@@ -7,14 +7,14 @@ import 'package:shop_app/constants.dart';
 class PopularProducts extends StatelessWidget {
    String type;
    String url;
-   bool flag=true;
+   bool flag=false;
   PopularProducts(this.type,this.url,this.flag);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: get_category(url),
+      future: get_category(url) ,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData){
           return Column(
             children: [
               Padding(
@@ -49,10 +49,10 @@ class PopularProducts extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: (){
-                              print("adasdas");
+                             // print("adasdas");
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => order_screen(snapshot.data['categoryList'][index]['name'])),
+                                MaterialPageRoute(builder: (context) => order_screen(snapshot.data['categoryList'][index]['name'],snapshot.data)),
                               );
                             },
                             child: Padding(
@@ -107,6 +107,7 @@ class PopularProducts extends StatelessWidget {
             ],
           );
         }
+
         return Container(
           child: Center(child: CircularProgressIndicator()),
         );

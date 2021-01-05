@@ -6,7 +6,8 @@ import 'components/body.dart';
 
 class order_screen extends StatelessWidget {
   String category;
-  order_screen(this.category);
+  var catData;
+  order_screen(this.category,this.catData);
   static String routeName = "/cart";
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class order_screen extends StatelessWidget {
         ],
         backgroundColor: Colors.blue,
       ),
-      body: Body(category),
+      body: Body(category,catData),
     );
   }
 }

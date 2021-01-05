@@ -25,7 +25,7 @@ class Previous_page extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        title: Text("Wishlist",
+        title: Text("My Orders",
           style: TextStyle(
             color: Colors.white,
           ),),

@@ -84,12 +84,12 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(10)),
           GestureDetector(
             onTap: () async {
-              // Navigator.push(
-              //            context,
-              //            MaterialPageRoute(
-              //                builder: (context) => HomeScreen()
-              //            )
-              //        );
+              //Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //               builder: (context) => HomeScreen("Categories","/category/getCategory",false)
+              //           )
+              //       );
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 final email=emailcontroller.text;

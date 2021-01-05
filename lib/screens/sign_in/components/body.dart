@@ -40,29 +40,11 @@ class Body extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: SizeConfig.screenHeight * 0.15),
-              Container(
-                width: 160.0,
-                height: 90.0,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: ExactAssetImage(
-                      "assets/images/logo.png",
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.zero,
-                  child: Image.asset(
-                    "assets/images/logo.png",
-                    fit: BoxFit.cover,
-                    width: 160.0,
-                    height: 90.0,
-                    colorBlendMode: BlendMode.dstATop,
-                  ),
-                ),
-              ),
-                  SizedBox(height: SizeConfig.screenHeight * 0.01),
+                  Container(
+                    //color: Colors.black,
+                      width: SizeConfig.screenWidth*0.6,
+                      child: Image.asset("assets/logo/tgood.png")),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
                   Text(
                     '''Sign In''',
                     overflow: TextOverflow.visible,

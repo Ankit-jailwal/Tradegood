@@ -6,6 +6,8 @@ import 'package:shop_app/screens/My_orders/my_order.dart';
 import 'components/body.dart';
 import 'package:shop_app/screens/My_profile/my_profile.dart';
 import 'package:shop_app/screens/wishlist_fill/wishlist_fill.dart';
+import 'package:shop_app/screens/contact_us/contactUs.dart';
+import 'package:shop_app/screens/aboutUs/aboutUs.dart';
 
 class HomeScreen extends StatelessWidget {
 String type;
@@ -238,6 +240,7 @@ HomeScreen(this.type,this.url,this.flag);
                 ),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => contactUs()));
                 },
               ),
               ListTile(
@@ -256,6 +259,7 @@ HomeScreen(this.type,this.url,this.flag);
                 ),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => aboutUs()));
                 },
               ),
               ListTile(

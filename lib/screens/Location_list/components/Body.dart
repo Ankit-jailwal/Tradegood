@@ -2,7 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/size_config.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  bool locCheck=false;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -12,7 +18,6 @@ class Body extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.all(5),
             child: Container(
-              height: SizeConfig.screenHeight * 0.17,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 color: Colors.blueAccent.withOpacity(0.2),
@@ -20,10 +25,10 @@ class Body extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(9),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
                     children: [
                       Align(
                           alignment: Alignment.topLeft,
@@ -67,23 +72,36 @@ class Body extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: SizeConfig.screenHeight*0.01,),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Container(
-                        height: 30,
-                        width: SizeConfig.screenWidth*0.2,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text("Select",
-                          style: TextStyle(
-                            color: Colors.white,
+                   // SizedBox(height: SizeConfig.screenHeight*0.01,),
+                    FlatButton(
+                      hoverColor: Colors.transparent,
+                      onPressed: (){
+                        setState(() {
+                          if(locCheck==true)
+                            locCheck=false;
+                          else
+                            locCheck=true;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          locCheck?Image.asset("assets/images2/9cc73194de6fa0e85d13ba8fe84e31a844ad6341.png",height: 25,):Container(),
+                          Container(
+                            height: 30,
+                            width:locCheck?SizeConfig.screenWidth*0.25: SizeConfig.screenWidth*0.2,
+                            decoration: BoxDecoration(
+                              color: locCheck?Colors.green:Colors.blue,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text("Select",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                              ),
+                            ),
                           ),
-                          ),
-                        ),
+                        ],
                       ),
                     )
                 ]
@@ -94,3 +112,4 @@ class Body extends StatelessWidget {
         });
   }
 }
+//

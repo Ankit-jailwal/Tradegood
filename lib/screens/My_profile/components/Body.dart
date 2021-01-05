@@ -88,6 +88,29 @@ class Body extends StatelessWidget {
               ), //Obscure logic
             ),
           ),
+          Align(
+            alignment: FractionalOffset.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Container(
+                width: 90,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.blue,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Image.asset("assets/images2/df7c67b66f4bb8b85e02ef7cd0fd57fb237b519a.png",height: 25,),
+                      Text("Edit",style: TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.w800),),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
