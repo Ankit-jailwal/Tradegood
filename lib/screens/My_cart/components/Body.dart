@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/size_config.dart';
-import 'package:shop_app/API/getCart.dart';
-import 'package:shop_app/API/getProductById.dart';
+import 'package:tradegood/size_config.dart';
+import 'package:tradegood/API/getCart.dart';
+import 'package:tradegood/API/getProductById.dart';
 
 class Body extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/svg.dart';
+import 'package:tradegood/svg.dart';
 
 class locationfield extends StatelessWidget {
   @override

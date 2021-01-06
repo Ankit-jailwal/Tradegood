@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/screens/Location_list/location_list.dart';
-import 'package:shop_app/screens/home/components/Choose_your_route.dart';
-import 'package:shop_app/screens/home/components/Home_header2.dart';
-import 'package:shop_app/screens/home/components/home_header1.dart';
+import 'package:tradegood/screens/Location_list/location_list.dart';
+import 'package:tradegood/screens/home/components/Choose_your_route.dart';
+import 'package:tradegood/screens/home/components/Home_header2.dart';
+import 'package:tradegood/screens/home/components/home_header1.dart';
 import '../../../size_config.dart';
 import 'categories.dart';
 import 'discount_banner.dart';

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'icon_btn_with_counter.dart';
 import 'search_field.dart';
-import 'package:shop_app/screens/home/home_screen.dart';
-import 'package:shop_app/screens/home/components/popular_product.dart';
+import 'package:tradegood/screens/home/home_screen.dart';
+import 'package:tradegood/screens/home/components/popular_product.dart';
 
 class HomeHeader2 extends StatefulWidget {
   const HomeHeader2({

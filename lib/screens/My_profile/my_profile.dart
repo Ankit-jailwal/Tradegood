@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/screens/My_profile/components/Body.dart';
-import 'package:shop_app/size_config.dart';
+import 'package:tradegood/screens/My_profile/components/Body.dart';
+import 'package:tradegood/size_config.dart';
 
 class my_profile extends StatelessWidget {
   @override

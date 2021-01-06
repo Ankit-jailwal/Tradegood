@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/components/custom_surfix_icon.dart';
-import 'package:shop_app/components/default_button.dart';
-import 'package:shop_app/components/form_error.dart';
-import 'package:shop_app/components/no_account_text.dart';
-import 'package:shop_app/screens/login_success/login_success_screen.dart';
-import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
-import 'package:shop_app/size_config.dart';
-import 'package:shop_app/svg.dart';
+import 'package:tradegood/components/custom_surfix_icon.dart';
+import 'package:tradegood/components/default_button.dart';
+import 'package:tradegood/components/form_error.dart';
+import 'package:tradegood/components/no_account_text.dart';
+import 'package:tradegood/screens/login_success/login_success_screen.dart';
+import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
+import 'package:tradegood/size_config.dart';
+import 'package:tradegood/svg.dart';
 
 import '../../../constants.dart';
 

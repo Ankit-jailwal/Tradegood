@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../../size_config.dart';
-import 'package:shop_app/API/getOffer.dart';
+import 'package:tradegood/API/getOffer.dart';
 
 final List<String> imgList = [
  "assets/images2/e40383e8af2df51c47006873ee61afab5b197fff.png",

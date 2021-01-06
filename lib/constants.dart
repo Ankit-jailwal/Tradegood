@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/size_config.dart';
+import 'package:tradegood/size_config.dart';
 
 const kPrimaryColor = Color(0xFF025ACF);
 const kPrimaryLightColor = Color(0xFFFFECDF);

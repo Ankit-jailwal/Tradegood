@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../size_config.dart';
-import 'package:shop_app/API/getProduct.dart';
-import 'package:shop_app/screens/order_list_screen/order_screen.dart';
-import 'package:shop_app/API/addToCart.dart';
-import 'package:shop_app/API/addToWishlist.dart';
+import 'package:tradegood/API/getProduct.dart';
+import 'package:tradegood/screens/order_list_screen/order_screen.dart';
+import 'package:tradegood/API/addToCart.dart';
+import 'package:tradegood/API/addToWishlist.dart';
 
 class Body extends StatefulWidget {
   String category;

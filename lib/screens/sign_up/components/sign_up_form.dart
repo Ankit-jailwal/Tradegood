@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shop_app/components/custom_surfix_icon.dart';
-import 'package:shop_app/components/default_button.dart';
-import 'package:shop_app/components/form_error.dart';
-import 'package:shop_app/API/Auth/authentication.dart';
-import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
-import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
+import 'package:tradegood/components/custom_surfix_icon.dart';
+import 'package:tradegood/components/default_button.dart';
+import 'package:tradegood/components/form_error.dart';
+import 'package:tradegood/API/authentication.dart';
+import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 import '../../../svg.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/size_config.dart';
-import 'package:shop_app/screens/Location_list/components/Body.dart';
+import 'package:tradegood/size_config.dart';
+import 'package:tradegood/screens/Location_list/components/Body.dart';
 
 class location_list extends StatelessWidget {
   @override

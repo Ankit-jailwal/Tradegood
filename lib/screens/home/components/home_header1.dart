@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/screens/Location_list/location_list.dart';
-import 'package:shop_app/screens/My_cart/my_cart.dart';
-import 'package:shop_app/screens/Wishlist/wishlist.dart';
-import 'package:shop_app/screens/home/components/Location.dart';
-import 'package:shop_app/screens/order_list_screen/order_screen.dart';
+import 'package:tradegood/screens/Location_list/location_list.dart';
+import 'package:tradegood/screens/My_cart/my_cart.dart';
+import 'package:tradegood/screens/Wishlist/wishlist.dart';
+import 'package:tradegood/screens/home/components/Location.dart';
+import 'package:tradegood/screens/order_list_screen/order_screen.dart';
 import '../../../size_config.dart';
 import 'icon_btn_with_counter.dart';
 import 'search_field.dart';

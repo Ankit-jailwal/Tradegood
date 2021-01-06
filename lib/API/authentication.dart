@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity/connectivity.dart';
-import 'package:shop_app/screens/home/home_screen.dart';
-import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
-import 'package:shop_app/theme.dart';
+import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
+import 'package:tradegood/theme.dart';
 
 
 const Map Server = {"host": "http://3.95.65.92", "port": "8050"};

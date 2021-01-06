@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/screens/home/components/search_field.dart';
-import 'package:shop_app/size_config.dart';
-import 'package:shop_app/screens/My_cart/components/Body.dart';
+import 'package:tradegood/screens/home/components/search_field.dart';
+import 'package:tradegood/size_config.dart';
+import 'package:tradegood/screens/My_cart/components/Body.dart';
 
 class cart_screen extends StatelessWidget {
   static String routeName = "/cart";

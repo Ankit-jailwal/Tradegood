@@ -4,8 +4,8 @@ import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/l
 
 
 
-Future getOffer() async{
-  final String url = server + "/api/offer/getUserCarouselOffer";
+Future getUserInfo() async{
+  final String url = server + "/api/wishlist/getWishlist";
   String res= await storage.read(key: 'jwt');
   print(res);
   String token= "Bearer "+res;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
-import 'package:shop_app/screens/order_list_screen/order_screen.dart';
+import 'package:tradegood/screens/order_list_screen/order_screen.dart';
 
 enum DrawerEvents { rec_fill,rec_emp,prev_emp,prev_fill}
 
