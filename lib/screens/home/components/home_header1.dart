@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/screens/Location_list/location_list.dart';
-import 'package:tradegood/screens/My_cart/my_cart.dart';
-import 'package:tradegood/screens/Wishlist/wishlist.dart';
+import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/screens/My_cart/CartFilled/my_cart.dart';
+import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/screens/Wishlist/Wishlist_empty/wishlist.dart';
 import 'package:tradegood/screens/home/components/Location.dart';
 import 'package:tradegood/screens/order_list_screen/order_screen.dart';
 import '../../../size_config.dart';
-import 'icon_btn_with_counter.dart';
 import 'search_field.dart';
 
 class HomeHeader1 extends StatelessWidget {

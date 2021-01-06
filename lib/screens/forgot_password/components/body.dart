@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/components/custom_surfix_icon.dart';
-import 'package:tradegood/components/default_button.dart';
 import 'package:tradegood/components/form_error.dart';
-import 'package:tradegood/components/no_account_text.dart';
-import 'package:tradegood/screens/login_success/login_success_screen.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/svg.dart';
@@ -22,7 +19,7 @@ class Body extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: ExactAssetImage(
-                  "assets/images/bgsignin.png",
+                  "assets/images2/Login_forgotpswd_TG.png",
                 ),
                 fit: BoxFit.cover,
               ),
@@ -30,7 +27,7 @@ class Body extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.zero,
               child: Image.asset(
-                "assets/images/bgsignin.png",
+                "assets/images2/Login_forgotpswd_TG.png",
                 color: null,
                 fit: BoxFit.cover,
                 width: 411.0,
@@ -47,28 +44,9 @@ class Body extends StatelessWidget {
                 children: [
                   SizedBox(height: SizeConfig.screenHeight * 0.18),
                   Container(
-                    width: 160.0,
-                    height: 90.0,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: ExactAssetImage(
-                          "assets/images/logo.png",
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.zero,
-                      child: Image.asset(
-                        "assets/images/logo.png",
-                        fit: BoxFit.cover,
-                        width: 160.0,
-                        height: 90.0,
-                        colorBlendMode: BlendMode.dstATop,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: SizeConfig.screenHeight * 0.01),
+                      width: SizeConfig.screenWidth*0.6,
+                      child: Image.asset("assets/images2/tgood_black.png")),
+                  SizedBox(height: SizeConfig.screenHeight * 0.02),
                   Text(
                     '''Reset Password''',
                     overflow: TextOverflow.visible,
@@ -230,28 +208,28 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
             ),
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.03),
-          Row(
-            mainAxisAlignment:  MainAxisAlignment.center,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context, SignInScreen.routeName);
-                  },
-                  child: Icon(Icons.arrow_back,
+          GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(context, SignInScreen.routeName);
+            },
+            child: Row(
+              mainAxisAlignment:  MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.arrow_back,
                   color: Colors.indigoAccent,
                   size: 30,),
-                ),
-                Text("Go back to Sign in page",
-                  style: TextStyle(
-                    height: 1.171875,
-                    fontSize: 16.0,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(255, 73, 73, 73),
-                    /* letterSpacing: 0.0, */
-                  ),
-                )
-              ]
+                  Text("Go back to Sign in page",
+                    style: TextStyle(
+                      height: 1.171875,
+                      fontSize: 16.0,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromARGB(255, 73, 73, 73),
+                      /* letterSpacing: 0.0, */
+                    ),
+                  )
+                ]
+            ),
           )
         ],
       ),

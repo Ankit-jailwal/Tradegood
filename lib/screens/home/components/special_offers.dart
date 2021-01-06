@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'package:tradegood/API/getStaticOffer.dart';
-import 'section_title.dart';
 
 class SpecialOffers extends StatelessWidget {
   const SpecialOffers({

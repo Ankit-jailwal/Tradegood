@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tradegood/models/Cart.dart';
 import 'package:tradegood/screens/home/components/search_field.dart';
 import 'package:tradegood/size_config.dart';
 import 'components/body.dart';

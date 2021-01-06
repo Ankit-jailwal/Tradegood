@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/components/account_exist.dart';
-import 'package:tradegood/components/socal_card.dart';
 import 'package:tradegood/constants.dart';
 import 'package:tradegood/size_config.dart';
 

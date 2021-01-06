@@ -1,14 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:tradegood/components/custom_surfix_icon.dart';
 import 'package:tradegood/components/form_error.dart';
 import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/API/authentication.dart';
 import 'package:tradegood/screens/forgot_password/forgot_password_screen.dart';
 import 'package:tradegood/screens/home/home_screen.dart';
-import 'package:tradegood/screens/login_success/login_success_screen.dart';
-
-import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
@@ -82,14 +78,8 @@ class _SignFormState extends State<SignForm> {
           ),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(10)),
-          GestureDetector(
-            onTap: () async {
-              //Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (context) => HomeScreen("Categories","/category/getCategory",false)
-              //           )
-              //       );
+          FlatButton(
+            onPressed: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 final email=emailcontroller.text;

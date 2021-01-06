@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/API/getCategory.dart';
 import 'package:tradegood/screens/order_list_screen/order_screen.dart';
-import 'package:tradegood/constants.dart';
 
 class PopularProducts extends StatelessWidget {
    String type;

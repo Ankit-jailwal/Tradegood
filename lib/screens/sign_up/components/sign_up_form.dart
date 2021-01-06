@@ -1,14 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:tradegood/components/custom_surfix_icon.dart';
-import 'package:tradegood/components/default_button.dart';
 import 'package:tradegood/components/form_error.dart';
 import 'package:tradegood/API/authentication.dart';
-import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
-import '../../../svg.dart';
 
 void displayDialog(context, title, text) => showDialog(
   context: context,
@@ -90,8 +86,8 @@ class _SignUpFormState extends State<SignUpForm> {
             ],
           ),
 
-          GestureDetector(
-            onTap: () async {
+          FlatButton(
+            onPressed: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 final fullname = fullnamecontroller.text;

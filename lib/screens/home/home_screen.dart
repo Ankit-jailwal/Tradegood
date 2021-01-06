@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:quick_feedback/quick_feedback.dart';
-import 'package:tradegood/screens/previous_order/previous_order.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/screens/My_orders/my_order.dart';
 import 'components/body.dart';
 import 'package:tradegood/screens/My_profile/my_profile.dart';
-import 'package:tradegood/screens/wishlist_fill/wishlist_fill.dart';
+import 'package:tradegood/screens/Wishlist/wishlist_fill/wishlist_fill.dart';
 import 'package:tradegood/screens/contact_us/contactUs.dart';
 import 'package:tradegood/screens/aboutUs/aboutUs.dart';
 
