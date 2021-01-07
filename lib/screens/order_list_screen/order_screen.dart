@@ -3,11 +3,18 @@ import 'package:tradegood/screens/home/components/search_field.dart';
 import 'package:tradegood/size_config.dart';
 import 'components/body.dart';
 
-class order_screen extends StatelessWidget {
-  String category;
+class order_screen extends StatefulWidget {
+  String productUrl;
   var catData;
-  order_screen(this.category,this.catData);
+  bool flag;
+  order_screen(this.productUrl,this.catData,this.flag);
   static String routeName = "/cart";
+
+  @override
+  _order_screenState createState() => _order_screenState();
+}
+
+class _order_screenState extends State<order_screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +48,7 @@ class order_screen extends StatelessWidget {
         ],
         backgroundColor: Colors.blue,
       ),
-      body: Body(category,catData),
+      body: Body(widget.productUrl,widget.catData,widget.flag),
     );
   }
 }

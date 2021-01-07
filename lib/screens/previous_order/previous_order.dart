@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tradegood/constants.dart';
 import 'package:tradegood/screens/previous_order/components/Body.dart';
-import 'package:flutter/material.dart';
-import 'package:quick_feedback/quick_feedback.dart';
 import 'package:tradegood/size_config.dart';
-import 'package:tradegood/screens/My_orders/my_order.dart';
-import 'package:tradegood/screens/My_profile/my_profile.dart';
 
 
 class Previous_page extends StatelessWidget {

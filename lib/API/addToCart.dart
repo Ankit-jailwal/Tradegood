@@ -5,7 +5,7 @@ import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/l
 
 
 Future addToCart(String product,int quantity,int price) async{
-  final String url = server + "/api/user/cart/addToCart";
+  final String url = server + "/api/cart/addItemsToCart";
   String res= await storage.read(key: 'jwt');
   print(res);
   Map data = {"cartItems":{"product": product, "quantity": quantity, "price":price}};

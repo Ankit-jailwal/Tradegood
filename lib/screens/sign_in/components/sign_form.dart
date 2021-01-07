@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tradegood/components/custom_surfix_icon.dart';
 import 'package:tradegood/components/form_error.dart';
-import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/API/authentication.dart';
+import 'package:tradegood/API/authentication.dart';
 import 'package:tradegood/screens/forgot_password/forgot_password_screen.dart';
 import 'package:tradegood/screens/home/home_screen.dart';
 import '../../../constants.dart';
@@ -89,6 +89,7 @@ class _SignFormState extends State<SignForm> {
                 final token_body = jsonDecode(_token);
                 if(token_body["token"] != null) {
                   storage.write(key: "jwt", value: token_body["token"]);
+                  storage.write(key: "userInfo", value: token_body['user']['name']);
                   Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
+import 'package:tradegood/screens/home/home_screen.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -31,20 +32,25 @@ class Body extends StatelessWidget {
             ),
           ),
           SizedBox(height: SizeConfig.screenHeight*0.04,),
-          Container(
-            height: SizeConfig.screenHeight*0.06,
-            width: SizeConfig.screenWidth*0.4,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: Text("Start Shopping",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontFamily: "Roberto",
-                  fontWeight: FontWeight.w400
+          FlatButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            child: Container(
+              height: SizeConfig.screenHeight*0.06,
+              width: SizeConfig.screenWidth*0.4,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Text("Start Shopping",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontFamily: "Roberto",
+                    fontWeight: FontWeight.w400
+                  ),
                 ),
               ),
             ),

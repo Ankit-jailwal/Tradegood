@@ -1,32 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
-import 'package:tradegood/API/getWishlist.dart';
 import 'package:tradegood/API/getProductById.dart';
+import 'package:tradegood/API/removeItemWishlist.dart';
 
 class Body extends StatefulWidget {
+  var wishData;
+  Body(this.wishData);
   @override
-  _BodyState createState() => _BodyState();
+  _BodyState createState() => _BodyState(wishData);
 }
 
 class _BodyState extends State<Body> {
+  var wishData;
+  _BodyState(this.wishData);
   bool wishCheck=true;
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getWishlist(),
-      builder: (context, snapshot) {
-        if(snapshot.hasData)
-        {
           return Column(
             children: [
               Expanded(
                   child: ListView.builder(
-                      itemCount: snapshot.data['wishlist']['wishlistItems'].length, //list view declaration
+                      itemCount: wishData['wishlist']['wishlistItems'].length, //list view declaration
                       padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
                       itemBuilder: (BuildContext context, int index) {
                         return FutureBuilder(
-                          future: getProductByID(snapshot.data['wishlist']['wishlistItems'][index]['product']),
+                          future: getProductByID(wishData['wishlist']['wishlistItems'][index]['product']),
                           builder: (context, data) {
                             if(data.hasData){
                               return Column(
@@ -153,9 +152,14 @@ class _BodyState extends State<Body> {
                                                       onTap: () {
                                                         setState(() {
                                                           if (wishCheck == true)
-                                                            wishCheck = false;
+                                                          {
+                                                          wishCheck = false;
+                                                          }
                                                           else
-                                                            wishCheck = true;
+                                                          {
+                                                            removeItemWishlist(data.data['product'][0]['_id']);
+                                                          wishCheck = true;
+                                                          }
                                                         });
                                                       },
                                                       child: Padding(
@@ -164,14 +168,13 @@ class _BodyState extends State<Body> {
                                                             left: 15),
                                                         child: wishCheck ? Image
                                                             .asset(
-                                                          "assets/images2/f99614dc8ffdca073f67f7261c6a80fbbe774e29.png",
+                                                          "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
                                                           height: 25,) : Image
                                                             .asset(
-                                                          "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
+                                                          "assets/images2/f99614dc8ffdca073f67f7261c6a80fbbe774e29.png",
                                                           height: 25,),
                                                       ),
                                                     )
-
                                                   ],
                                                 ),
                                               ],
@@ -266,13 +269,5 @@ class _BodyState extends State<Body> {
 
             ],
           );
-        }
-        return Center(
-          child: Container(
-              child: CircularProgressIndicator(),
-          ),
-        );
-      }
-    );
   }
 }

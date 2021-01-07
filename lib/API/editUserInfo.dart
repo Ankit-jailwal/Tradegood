@@ -4,15 +4,18 @@ import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/l
 
 
 
-Future getProduct(String productUrl) async{
-  final String url = server + "/api/product$productUrl";
-  print(url);
+Future editUserInfo(String name,String ph) async{
+  final String url = server + "/api/updateUserInfo";
   String res= await storage.read(key: 'jwt');
+  print("name:$name");
+Map data={"name":name,"phoneNumber":ph};
   print(res);
+  print(data);
   String token= "Bearer "+res;
   print("token $token");
-  final response = await Http.get(url,
-    headers: {"Content-Type": "application/json","Authorization":"$token"},
+  final response = await Http.post(url,
+    headers: {"Authorization":"$token"},
+    body:data
   );
   print(response.body);
   final body=response.body;

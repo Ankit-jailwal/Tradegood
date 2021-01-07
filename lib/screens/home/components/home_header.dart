@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/screens/Location_list/location_list.dart';
-import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/screens/My_cart/CartFilled/my_cart.dart';
-import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/screens/Wishlist/Wishlist_empty/wishlist.dart';
+import 'package:tradegood/screens/My_cart/CartFilled/my_cart.dart';
 import 'package:tradegood/screens/home/components/Location.dart';
-import 'package:tradegood/screens/order_list_screen/order_screen.dart';
 import '../../../size_config.dart';
-import 'search_field.dart';
+import 'package:tradegood/screens/Wishlist/wishlist_fill/wishlist_fill.dart';
 
 class HomeHeader1 extends StatelessWidget {
   const HomeHeader1({
@@ -41,7 +39,7 @@ class HomeHeader1 extends StatelessWidget {
             onTap: (){
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => wishlist()));
+                  MaterialPageRoute(builder: (context) => wishListScreen()));
             },
             child: Image.asset(
               "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",

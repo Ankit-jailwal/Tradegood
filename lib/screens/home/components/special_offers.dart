@@ -15,6 +15,7 @@ class SpecialOffers extends StatelessWidget {
           if (snapshot.hasData) {
             return Column(
               children: <Widget>[
+                SizedBox(height: 3,),
                 Container(
                   height: getProportionateScreenWidth(140),
                   child: ListView.builder(
@@ -24,7 +25,7 @@ class SpecialOffers extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) =>
                         Row(
                           children: [
-                            SizedBox(width: 10,),
+                            SizedBox(width: 4,),
                             GestureDetector(
                                 onTap: () {},
                                 child: SizedBox(

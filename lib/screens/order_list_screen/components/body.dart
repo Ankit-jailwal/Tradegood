@@ -6,23 +6,37 @@ import 'package:tradegood/screens/order_list_screen/order_screen.dart';
 import 'package:tradegood/API/addToCart.dart';
 import 'package:tradegood/API/addToWishlist.dart';
 
+class ItemData{
+  String Name;
+  int Counter;
+  bool ShouldVisible;
+  ItemData({
+    this.Name,
+    this.Counter,
+    this.ShouldVisible
+  });
+}
+
 class Body extends StatefulWidget {
-  String category;
+  String productUrl;
   var catData;
-  Body(this.category, this.catData);
+  bool flag;
+  Body(this.productUrl, this.catData,this.flag);
   @override
-  _BodyState createState() => _BodyState(category, catData);
+  _BodyState createState() => _BodyState(productUrl, catData,flag);
 }
 
 class _BodyState extends State<Body> {
-  String category;
+  String productUrl;
   var catData;
-  _BodyState(this.category, this.catData);
+  bool flag;
+  _BodyState(this.productUrl, this.catData,this.flag);
   int _counter = 0;
   int value = 0;
   bool wishCheck = true;
   bool addCheck = false;
   bool _countFlag = false;
+
 
   void _increment() {
     if (_counter >= 0)
@@ -69,9 +83,15 @@ class _BodyState extends State<Body> {
     final double fillStop = (100 - fillPercent) / 100;
     final List<double> stops = [0.0, fillStop, fillStop, 1.0];
     return FutureBuilder(
-        future: getProduct(category),
+        future: getProduct(productUrl),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData){
+            List.generate(
+              flag?catData['brandList'].length:catData['categoryList'].length,
+                  (i) =>
+                  _counter=0
+                 ,
+            );
             return Column(
               children: <Widget>[
                 Container(
@@ -94,7 +114,7 @@ class _BodyState extends State<Body> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: catData['categoryList'].length,
+                    itemCount: flag?catData['brandList'].length:catData['categoryList'].length,
                     itemBuilder: (BuildContext context, int index) =>
                         GestureDetector(
                       onTap: () {
@@ -104,7 +124,7 @@ class _BodyState extends State<Body> {
                           MaterialPageRoute(
                               builder: (context) => order_screen(
                                   catData['categoryList'][index]['name'],
-                                  catData)),
+                                  catData,flag)),
                         );
                       },
                       child: Container(
@@ -112,7 +132,7 @@ class _BodyState extends State<Body> {
                             child: Padding(
                                 padding: EdgeInsets.only(left: 8, right: 15),
                                 child: Text(
-                                  catData['categoryList'][index]['name'],
+                                  flag?catData['brandList'][index]['name']:catData['categoryList'][index]['name'],
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 17,
@@ -296,33 +316,34 @@ class _BodyState extends State<Body> {
                                                           ),
                                                         ),
                                                       ]),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            if (wishCheck ==
-                                                                true) {
-                                                              addToWishlist(
-                                                                  snapshot
-                                                                      .data['products'][index]['_id']);
-                                                              wishCheck = false;
-                                                            }
-                                                            else {
-                                                              wishCheck = true;
-                                                            }
-                                                          });
-                                                        },
-                                                        child: wishCheck
-                                                            ? Image.asset(
-                                                                "assets/images2/f99614dc8ffdca073f67f7261c6a80fbbe774e29.png",
-                                                                height: 25,
-                                                              )
-                                                            : Image.asset(
-                                                                "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
-                                                                height: 25,
-                                                              ),
+
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(right: 15),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              if (wishCheck ==
+                                                                  true) {
+                                                                addToWishlist(
+                                                                    snapshot
+                                                                        .data['products'][index]['_id']);
+                                                                wishCheck = false;
+                                                              }
+                                                              else {
+                                                                wishCheck = true;
+                                                              }
+                                                            });
+                                                          },
+                                                          child: wishCheck
+                                                              ? Image.asset(
+                                                                  "assets/images2/f99614dc8ffdca073f67f7261c6a80fbbe774e29.png",
+                                                                  height: 25,
+                                                                )
+                                                              : Image.asset(
+                                                                  "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
+                                                                  height: 25,
+                                                                ),
+                                                        ),
                                                       )
                                                     ]),
                                               ),
@@ -342,7 +363,9 @@ class _BodyState extends State<Body> {
                                                         color: Colors.black)),
                                                 TextSpan(
                                                     text:
-                                                        ' Current Schemes offered by the distributor',
+                                                    snapshot.data[
+                                                    'products']
+                                                    [index]['offer'] ,
                                                     style: TextStyle(
                                                         color: Colors.red)),
                                               ],
@@ -417,6 +440,7 @@ class _BodyState extends State<Body> {
                                                           ),
                                                         ],
                                                       ),
+                                                      SizedBox(height: 5,),
                                                       Row(
                                                         children: <Widget>[
                                                           Text(
@@ -562,7 +586,7 @@ class _BodyState extends State<Body> {
                                                             GestureDetector(
                                                               onTap: () {
                                                                 setState(() {
-                                                                  if (addCheck == true) {
+                                                                  if (addCheck == true){
                                                                     addCheck =
                                                                     false;
                                                                     addToCart(snapshot.data[

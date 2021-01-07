@@ -1,10 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:tradegood/screens/home/components/search_field.dart';
+import 'package:tradegood/API/getWishlist.dart';
+import 'package:tradegood/screens/Wishlist/Wishlist_empty/wishlist.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/screens/Wishlist/wishlist_fill/components/Body.dart';
 
-class whishlist_full_screen extends StatelessWidget {
+class wishListScreen extends StatefulWidget {
   static String routeName = "/cart";
+
+  @override
+  _wishListScreenState createState() => _wishListScreenState();
+}
+
+class _wishListScreenState extends State<wishListScreen> {
+  bool wishCheck = true;
+  bool checkWishList(var data){
+    bool flag;
+    if(data.length==0)
+    {
+      flag= false;
+    }
+    else if(data['wishlist']['wishlistItems'].length!=0)
+      {
+       flag= true;
+      }
+    else
+      flag=false;
+    return flag;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,17 +41,21 @@ class whishlist_full_screen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        title:Text("Wishlist  ",
+        title: Text(
+          "Wishlist  ",
           style: TextStyle(
             color: Colors.white,
-          ),),
+          ),
+        ),
         actions: [
           Image.asset(
             "assets/images2/f12e59ae8e5ecc4e4fa1ed606e384e238ff3c013.png",
             width: 33,
             height: 33,
           ),
-          SizedBox(width: SizeConfig.screenWidth * 0.02,),
+          SizedBox(
+            width: SizeConfig.screenWidth * 0.02,
+          ),
           Padding(
             padding: EdgeInsets.only(right: SizeConfig.screenWidth * 0.02),
             child: Image.asset(
@@ -41,7 +67,15 @@ class whishlist_full_screen extends StatelessWidget {
         ],
         backgroundColor: Colors.blue,
       ),
-      body: Body(),
+      body: FutureBuilder(
+          future: getWishlist(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return checkWishList(snapshot.data)? Body(snapshot.data): wishlist();
+            }
+            return Center(child: Container(child: CircularProgressIndicator()));
+          }
+            ),
     );
   }
 }
