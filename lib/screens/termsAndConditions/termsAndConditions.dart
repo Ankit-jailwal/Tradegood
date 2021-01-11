@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tradegood/screens/previous_order/components/Body.dart';
+import 'package:tradegood/screens/termsAndConditions/components/Body.dart';
 import 'package:tradegood/size_config.dart';
+import 'package:tradegood/screens/My_cart/CartFilled/my_cart.dart';
 
-
-class Previous_page extends StatelessWidget {
-  static String routeName = "/home";
+class termsAndConditions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Body(),
       appBar: AppBar(
         leading: GestureDetector(
           onTap: (){
@@ -20,7 +18,7 @@ class Previous_page extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        title: Text("My Orders",
+        title: Text("Terms And Conditions",
           style: TextStyle(
             color: Colors.white,
           ),),
@@ -30,16 +28,24 @@ class Previous_page extends StatelessWidget {
             height: 33,
           ),
           SizedBox(width: SizeConfig.screenWidth*0.02,),
-          Padding(
-            padding: EdgeInsets.only(right:SizeConfig.screenWidth*0.02),
-            child: Image.asset("assets/images2/4e2f4fae4dd36d9fe6ceccb20d21cad9b32dddf9.png",
-              width: 33,
-              height: 33,
+          GestureDetector(
+            onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => cart_screen()));
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right:SizeConfig.screenWidth*0.02),
+              child: Image.asset("assets/images2/4e2f4fae4dd36d9fe6ceccb20d21cad9b32dddf9.png",
+                width: 33,
+                height: 33,
+              ),
             ),
           ),
         ],
         backgroundColor: Colors.blue,
       ),
+      body: Body(),
     );
   }
 }

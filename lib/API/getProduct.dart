@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as Http;
-import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/API/authentication.dart';
+import 'package:tradegood/API/authentication.dart';
 
 
 
 Future getProduct(String productUrl) async{
   final String url = server + "/api/product$productUrl";
-  print(url);
   String res= await storage.read(key: 'jwt');
-  print(res);
   String token= "Bearer "+res;
   print("token $token");
   final response = await Http.get(url,

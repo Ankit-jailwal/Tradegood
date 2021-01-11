@@ -1,20 +1,22 @@
 import 'dart:convert';
 import 'package:http/http.dart' as Http;
-import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/API/authentication.dart';
+import 'package:tradegood/API/authentication.dart';
+import 'getProductById.dart';
 
 
 
 Future getCart() async{
   final String url = server + "/api/cart/getCartItems";
   String res= await storage.read(key: 'jwt');
-  print(res);
   String token= "Bearer "+res;
   print("token $token");
+  int cartSum=0;
+  var productData;
   final response = await Http.get(url,
     headers: {"Content-Type": "application/json","Authorization":"$token"},
   );
-  print(response.body);
   final body=response.body;
   final category=jsonDecode(body);
+
   return category;
 }

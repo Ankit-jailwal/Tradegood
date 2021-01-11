@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:tradegood/API/authentication.dart';
 import 'package:tradegood/API/getUserInfo.dart';
 import 'package:tradegood/API/editUserInfo.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:toast/toast.dart';
+import 'package:tradegood/API/updateProfilePicture.dart';
 
 class Body extends StatefulWidget{
   File _image;
@@ -24,14 +27,25 @@ class _BodyState extends State<Body> {
       }
     });
   }
-  final nameController = TextEditingController();
-  final phoneController = TextEditingController();
+  String name1="";
+  String ph1="";
+  var nameController = TextEditingController(text: "");
+  var phoneController = TextEditingController(text: "");
+  Future<void> getController(String name,String ph) {
+      name1=name;
+      ph1=ph;
+      nameController=TextEditingController(text: name1);
+      phoneController=TextEditingController(text: ph1);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: getUserInfo(),
       builder: (context, snapshot) {
         if(snapshot.hasData) {
+          getController(snapshot.data['user']['name'],snapshot.data["user"]['phoneNumber'].toString());
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -135,8 +149,10 @@ class _BodyState extends State<Body> {
                       final editiedPhone=phoneController.text;
                       print(editiedPhone);
                       print(editedName);
-                      editUserInfo(editedName,editiedPhone
-                      );
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      updateProfilePicture(widget._image);
+                      editUserInfo(editedName,editiedPhone);
+                      Toast.show("User information successfully saved", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
@@ -154,7 +170,7 @@ class _BodyState extends State<Body> {
                               Image.asset(
                                 "assets/images2/df7c67b66f4bb8b85e02ef7cd0fd57fb237b519a.png",
                                 height: 25,),
-                              Text("Edit", style: TextStyle(fontSize: 18,
+                              Text("Save", style: TextStyle(fontSize: 18,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w800),),
                             ],

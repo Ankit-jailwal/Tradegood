@@ -1,0 +1,19 @@
+import 'dart:convert';
+import 'package:http/http.dart' as Http;
+import 'package:tradegood/API/authentication.dart';
+
+
+
+Future selectRoute(String id) async{
+  final String url = server + "/api/updateUserRoute";
+  String res= await storage.read(key: 'jwt');
+  Map data={"route":id};
+  String token= "Bearer "+res;
+  final response = await Http.post(url,
+      headers: {"Content-Type": "application/json","Authorization":"$token"},
+      body:jsonEncode(data)
+  );
+  final body=response.body;
+  final category=jsonDecode(body);
+  return category;
+}

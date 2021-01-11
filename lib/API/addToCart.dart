@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as Http;
-import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/API/authentication.dart';
+import 'package:tradegood/API/authentication.dart';
 
 
 
-Future addToCart(String product,int quantity,int price) async{
+Future addToCart(String product,int quantity) async{
   final String url = server + "/api/cart/addItemsToCart";
   String res= await storage.read(key: 'jwt');
-  print(res);
-  Map data = {"cartItems":{"product": product, "quantity": quantity, "price":price}};
+  Map data = {"cartItems":{"product": product, "quantity": quantity}};
   String token= "Bearer "+res;
   print("token $token");
   final response = await Http.post(url,
@@ -16,7 +15,6 @@ Future addToCart(String product,int quantity,int price) async{
     body: jsonEncode(data)
   );
   print(response.body);
-  print(response.statusCode);
   final body=response.body;
   final category=jsonDecode(body);
   return category;

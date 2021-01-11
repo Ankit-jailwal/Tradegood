@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/API/getCart.dart';
 import 'package:tradegood/API/getProductById.dart';
+import 'package:tradegood/API/removeItemCart.dart';
+import 'package:tradegood/API/placeOrder.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -10,7 +12,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  double cartSum=0;
+
   bool check(int index, int size) {
     if (index == size - 1)
       return true;
@@ -23,7 +25,7 @@ class _BodyState extends State<Body> {
     return FutureBuilder(
       future: getCart(),
       builder: (context, snapshot) {
-        if(snapshot.hasData) {
+        if(snapshot.hasData){
           return Column(
             children: [
               Container(
@@ -47,13 +49,13 @@ class _BodyState extends State<Body> {
                             text: TextSpan(
                                 text: 'Deliver to ',
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 15),
+                                    color: Colors.black, fontSize: 16),
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: "User's Name",
+                                    text: "Shivani",
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 15,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w800),
                                   )
                                 ]),
@@ -62,13 +64,13 @@ class _BodyState extends State<Body> {
                             "xyz address of the retailer's shop",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
                       Container(
-                        height: (SizeConfig.screenHeight * 0.075) / 2,
+                        height: SizeConfig.screenHeight * 0.045,
                         width: SizeConfig.screenWidth * 0.25,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -80,7 +82,7 @@ class _BodyState extends State<Body> {
                             "Change",
                             style: TextStyle(
                                 color: Colors.lightBlue,
-                                fontSize: 14,
+                                fontSize: 15,
                                 fontWeight: FontWeight.w700),
                           ),
                         ),
@@ -100,7 +102,6 @@ class _BodyState extends State<Body> {
                         return FutureBuilder(
                           future: getProductByID(snapshot.data['cart']['cartItems'][index]['product']),
                           builder: (context, cartItem) {
-
                             if(cartItem.hasData) {
                               return Column(
                                 children: [
@@ -134,13 +135,16 @@ class _BodyState extends State<Body> {
                                                   crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      cartItem.data['product'][0]['name'],
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 14,
-                                                          fontWeight: FontWeight
-                                                              .w500),
+                                                    Container(
+                                                      width:SizeConfig.screenWidth * 0.7,
+                                                      child: Text(
+                                                        cartItem.data['product'][0]['name'],
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight
+                                                                .w600),
+                                                      ),
                                                     ),
                                                     SizedBox(
                                                       height:
@@ -154,9 +158,9 @@ class _BodyState extends State<Body> {
                                                           style: TextStyle(
                                                               color: Colors
                                                                   .black,
-                                                              fontSize: 12,
+                                                              fontSize: 18,
                                                               fontWeight: FontWeight
-                                                                  .w500),
+                                                                  .w600),
                                                         ),
                                                         SizedBox(
                                                           width: 10,
@@ -164,7 +168,7 @@ class _BodyState extends State<Body> {
                                                         Container(
                                                           height: SizeConfig
                                                               .screenHeight *
-                                                              0.03,
+                                                              0.045,
                                                           width:
                                                           SizeConfig
                                                               .screenWidth *
@@ -184,11 +188,11 @@ class _BodyState extends State<Body> {
                                                                 .center,
                                                             children: [
                                                               Text(
-                                                                "Qty: 10",
+                                                                "Qty: ${snapshot.data['cart']['cartItems'][index]['quantity']}",
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black54,
-                                                                    fontSize: 11,
+                                                                    fontSize: 14,
                                                                     fontWeight:
                                                                     FontWeight
                                                                         .w700),
@@ -197,7 +201,7 @@ class _BodyState extends State<Body> {
                                                                 Icons.edit,
                                                                 color: Colors
                                                                     .black,
-                                                                size: 11,
+                                                                size: 12,
                                                               )
                                                             ],
                                                           ),
@@ -213,7 +217,7 @@ class _BodyState extends State<Body> {
                                                     child: ClipRRect(
                                                       borderRadius: BorderRadius.circular(5),
                                                       child: Image.network(
-                                                          cartItem.data['product'][0]['productPicture']),
+                                                          cartItem.data['product'][0]['productPicture'],fit: BoxFit.fill,),
                                                     )),
                                               ],
                                             ),
@@ -229,7 +233,7 @@ class _BodyState extends State<Body> {
                                                         'Delivery by 26 SEP, Monday |',
                                                         style: TextStyle(
                                                             color: Colors.black,
-                                                            fontSize: 12),
+                                                            fontSize: 14),
                                                         children: <TextSpan>[
                                                           TextSpan(
                                                             text: ' FREE',
@@ -238,44 +242,51 @@ class _BodyState extends State<Body> {
                                                                 Colors
                                                                     .lightGreenAccent
                                                                     .shade700,
-                                                                fontSize: 12),
+                                                                fontSize: 14),
                                                           )
                                                         ]),
                                                   ),
-                                                  Container(
-                                                    height: SizeConfig
-                                                        .screenHeight *
-                                                        0.03,
-                                                    width: SizeConfig
-                                                        .screenWidth *
-                                                        0.18,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      border:
-                                                      Border.all(
-                                                          color: Colors.grey),
-                                                      borderRadius:
-                                                      BorderRadius.circular(3),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.delete,
-                                                          color: Colors.black54,
-                                                          size: 11,
-                                                        ),
-                                                        Text(
-                                                          "Remove",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black54,
-                                                              fontSize: 11,
-                                                              fontWeight: FontWeight
-                                                                  .w700),
-                                                        ),
-                                                      ],
+                                                  FlatButton(
+                                                    onPressed: (){
+                                                      setState(() {
+                                                        removeItemCart(cartItem.data['product'][0]['_id']);
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      height: SizeConfig
+                                                          .screenHeight *
+                                                          0.045,
+                                                      width: SizeConfig
+                                                          .screenWidth *
+                                                          0.18,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        border:
+                                                        Border.all(
+                                                            color: Colors.grey),
+                                                        borderRadius:
+                                                        BorderRadius.circular(4),
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.delete,
+                                                            color: Colors.black54,
+                                                            size: 12,
+                                                          ),
+                                                          Text(
+                                                            "Remove",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black54,
+                                                                fontSize: 12,
+                                                                fontWeight: FontWeight
+                                                                    .w600),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   )
                                                 ],
@@ -297,14 +308,14 @@ class _BodyState extends State<Body> {
                                         color: Colors.grey, thickness: 0.5,),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 5, right: 5),
+                                            left: 10, right: 5),
                                         child: Row(
                                           children: [
                                             Text(
                                               "Price Details", style: TextStyle(
                                                 color: Colors.black.withOpacity(
                                                     0.7),
-                                                fontSize: 14,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w800),),
                                           ],
                                         ),
@@ -313,7 +324,7 @@ class _BodyState extends State<Body> {
                                         color: Colors.grey, thickness: 0.5,),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            right: 5, left: 5),
+                                            right: 5, left: 10),
                                         child: Column(
                                           children: [
                                             Row(
@@ -324,11 +335,11 @@ class _BodyState extends State<Body> {
                                                   style: TextStyle(
                                                       color: Colors.black),),
                                                 Text(
-                                                    "₹11,500", style: TextStyle(
+                                                    "138", style: TextStyle(
                                                     color: Colors.black)),
                                               ],
                                             ),
-                                            Row(
+                                            /*Row(
                                               mainAxisAlignment: MainAxisAlignment
                                                   .spaceBetween,
                                               children: [
@@ -340,7 +351,7 @@ class _BodyState extends State<Body> {
                                                         .lightGreenAccent
                                                         .shade700)),
                                               ],
-                                            ),
+                                            ),*/
                                           ],
                                         ),
                                       ),
@@ -349,7 +360,7 @@ class _BodyState extends State<Body> {
                                         thickness: 0.5,),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 5, right: 5),
+                                            left: 10, right: 5),
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment
                                               .spaceBetween,
@@ -388,39 +399,32 @@ class _BodyState extends State<Body> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Column(
-                        children: [
-                          Text(
-                            "₹10,500",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            "View price details",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.lightGreen,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: SizeConfig.screenHeight * 0.045,
-                        width: SizeConfig.screenWidth * 0.25,
-                        decoration: BoxDecoration(
-                          color: Colors.deepOrangeAccent,
-                          borderRadius: BorderRadius.circular(3),
+                      Text(
+                        "₹10,500",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
                         ),
-                        child: Center(
-                          child: Text(
-                            "Place order",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w800),
+                      ),
+                      FlatButton(
+                        onPressed: (){
+                          placeOrderItem(snapshot.data['cart']['cartItems']);
+                        },
+                        child: Container(
+                          height: SizeConfig.screenHeight * 0.045,
+                          width: SizeConfig.screenWidth * 0.25,
+                          decoration: BoxDecoration(
+                            color: Colors.deepOrangeAccent,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Place order",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w800),
+                            ),
                           ),
                         ),
                       )

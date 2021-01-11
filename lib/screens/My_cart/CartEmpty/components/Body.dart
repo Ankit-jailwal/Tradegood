@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
 
 
-class Body extends StatefulWidget {
+class cartEmptyBody extends StatefulWidget {
   @override
-  _BodyState createState() => _BodyState();
+  _cartEmptyBodyState createState() => _cartEmptyBodyState();
 }
 
-class _BodyState extends State<Body> {
+class _cartEmptyBodyState extends State<cartEmptyBody> {
   double cartSum=0;
   bool check(int index, int size) {
     if (index == size - 1)
@@ -21,19 +21,54 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset("assets/images2/f6d6236f772c42f3d2ae5710ea233686e50dfc37.png",height: SizeConfig.screenHeight*0.5,),
-          SizedBox(height: 20,),
-          Text("No items in your cart",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-          Text("Let's get you started",style: TextStyle(fontSize: 10),),
-          SizedBox(height: 15,),
-          Container(height: 35,width: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.blue,
+          Container(
+            width: SizeConfig.screenWidth*0.75,
+            child: Image.asset(
+                "assets/images2/f6d6236f772c42f3d2ae5710ea233686e50dfc37.png"
             ),
-            child: Center(child: Text("Start Shopping",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w800,color: Colors.white),)),
-          )
+          ),
+          SizedBox(height: SizeConfig.screenHeight*0.02,),
+          Text("No items in your Cart",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontFamily: "Roberto",
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Text("Let's get you started",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontFamily: "Roberto",
+            ),
+          ),
+          SizedBox(height: SizeConfig.screenHeight*0.04,),
+          FlatButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            child: Container(
+              height: SizeConfig.screenHeight*0.06,
+              width: SizeConfig.screenWidth*0.4,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Text("Start Shopping",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontFamily: "Roberto",
+                      fontWeight: FontWeight.w400
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

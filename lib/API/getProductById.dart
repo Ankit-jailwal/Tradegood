@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as Http;
-import 'file:///C:/Users/jailw/Downloads/Tradegood-frontend/Tradegood-frontend/lib/API/authentication.dart';
+import 'package:tradegood/API/authentication.dart';
 
 
 

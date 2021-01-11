@@ -36,6 +36,14 @@ class _SignFormState extends State<SignForm> {
       });
   }
 
+  bool _isHidden = true;
+  bool rememberMe = false;
+  void _toggleVisibility() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -43,9 +51,8 @@ class _SignFormState extends State<SignForm> {
       child: Column(
         children: [
           buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(10)),
+          buildPasswordFormField(),
           Row(
             children: [
               Checkbox(
@@ -89,7 +96,7 @@ class _SignFormState extends State<SignForm> {
                 final token_body = jsonDecode(_token);
                 if(token_body["token"] != null) {
                   storage.write(key: "jwt", value: token_body["token"]);
-                  storage.write(key: "userInfo", value: token_body['user']['name']);
+                  storage.write(key: "name", value: token_body['user']['name']);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -112,14 +119,7 @@ class _SignFormState extends State<SignForm> {
                 height: 50.0,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(211, 1, 90, 207),
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromARGB(63, 0, 0, 0),
-                      offset: Offset(0.0, 4.0),
-                      blurRadius: 4.0,
-                    )
-                  ],
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
                   child: Text(
@@ -147,7 +147,6 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      obscureText: true,
       controller: passwordcontroller,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -167,13 +166,22 @@ class _SignFormState extends State<SignForm> {
         }
         return null;
       },
+      obscureText: _isHidden,
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        suffixIcon:Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: GestureDetector(
+            onTap: _toggleVisibility,
+            child: _isHidden
+                ? Icon(Icons.visibility_off,size: 30,)
+                : Icon(Icons.visibility,size: 30,),
+          ),
+        )
       ),
     );
   }
@@ -203,10 +211,11 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+        suffixIcon: Padding(
+          padding: const EdgeInsets.only(right:20),
+          child: Icon(Icons.mail,size: 30,),
+        ),
       ),
     );
   }

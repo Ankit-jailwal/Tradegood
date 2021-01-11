@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/screens/aboutUs/components/Body.dart';
 import 'package:tradegood/size_config.dart';
+import 'package:tradegood/screens/My_cart/CartFilled/my_cart.dart';
 
 class aboutUs extends StatelessWidget {
   @override
@@ -27,11 +28,18 @@ class aboutUs extends StatelessWidget {
             height: 33,
           ),
           SizedBox(width: SizeConfig.screenWidth*0.02,),
-          Padding(
-            padding: EdgeInsets.only(right:SizeConfig.screenWidth*0.02),
-            child: Image.asset("assets/images2/4e2f4fae4dd36d9fe6ceccb20d21cad9b32dddf9.png",
-              width: 33,
-              height: 33,
+          GestureDetector(
+            onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => cart_screen()));
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right:SizeConfig.screenWidth*0.02),
+              child: Image.asset("assets/images2/4e2f4fae4dd36d9fe6ceccb20d21cad9b32dddf9.png",
+                width: 33,
+                height: 33,
+              ),
             ),
           ),
         ],

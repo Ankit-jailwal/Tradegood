@@ -19,7 +19,7 @@ class Body extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: ExactAssetImage(
-                  "assets/images2/Login_forgotpswd_TG.png",
+                  "assets/images2/signIn.png",
                 ),
                 fit: BoxFit.cover,
               ),
@@ -27,7 +27,7 @@ class Body extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.zero,
               child: Image.asset(
-                "assets/images2/Login_forgotpswd_TG.png",
+                "assets/images2/signIn.png",
                 color: null,
                 fit: BoxFit.cover,
                 width: 411.0,
@@ -143,10 +143,11 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
               if (value.isEmpty && !errors.contains(kEmailNullError)) {
                 setState(() {
                   errors.add(kEmailNullError);
+                  errors.remove(kInvalidEmailError);
                 });
-              } else if (!emailValidatorRegExp.hasMatch(value) &&
+              } else if (!value.isEmpty &&!emailValidatorRegExp.hasMatch(value) &&
                   !errors.contains(kInvalidEmailError)) {
-                setState(() {
+                setState((){
                   errors.add(kInvalidEmailError);
                 });
               }
@@ -155,8 +156,6 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
             decoration: InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
@@ -170,24 +169,17 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
                 //Navigator.pushNamed(context, LoginSuccessScreen.routeName);
-                print("hello");
               }
             },
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(20.0),
               child: Container(
                 width: 150.0,
                 height: 50.0,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(211, 1, 90, 207),
                   borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromARGB(63, 0, 0, 0),
-                      offset: Offset(0.0, 4.0),
-                      blurRadius: 4.0,
-                    )
-                  ],
+
                 ),
                 child: Center(
                   child: Text(
@@ -210,7 +202,8 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
           SizedBox(height: SizeConfig.screenHeight * 0.03),
           GestureDetector(
             onTap: (){
-              Navigator.pushNamed(context, SignInScreen.routeName);
+              //Navigator.pushNamed(context, SignInScreen.routeName);
+              Navigator.pop(context);
             },
             child: Row(
               mainAxisAlignment:  MainAxisAlignment.center,

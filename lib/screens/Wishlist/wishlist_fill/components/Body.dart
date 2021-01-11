@@ -153,11 +153,11 @@ class _BodyState extends State<Body> {
                                                         setState(() {
                                                           if (wishCheck == true)
                                                           {
+                                                            removeItemWishlist(data.data['product'][0]['_id'].toString());
                                                           wishCheck = false;
                                                           }
                                                           else
                                                           {
-                                                            removeItemWishlist(data.data['product'][0]['_id']);
                                                           wishCheck = true;
                                                           }
                                                         });

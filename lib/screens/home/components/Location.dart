@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/svg.dart';
+import 'package:tradegood/API/getRouteById.dart';
+import 'package:intl/intl.dart';
 
 class locationfield extends StatelessWidget {
   @override
@@ -15,12 +17,27 @@ class locationfield extends StatelessWidget {
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
           padding: EdgeInsets.only(bottom: 3),
-          child: Text(
-            "Choose your Route...",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-            ),
+          child: FutureBuilder(
+            future: getRouteById(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData)
+                {
+                  return Text(
+                    ' ${DateFormat('dd MMMM, yyyy').format(DateTime.parse(snapshot.data['route']['deliveryDate']),)}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
+                  );
+                }
+              return Text(
+                "Choose your Route...",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              );
+            }
           ),
         ),
         Container(
