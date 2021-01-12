@@ -43,7 +43,6 @@ class HomeHeader1 extends StatelessWidget {
             },
             child: Image.asset(
               "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
-              color: null,
               fit: BoxFit.cover,
               width: 33.0,
               height: 33.0,

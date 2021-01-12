@@ -35,11 +35,6 @@ class _BodyState extends State<Body> {
   var catData;
   bool flag;
   _BodyState(this.productUrl, this.catData,this.flag);
-  List<bool> navList = List();
-    Widget productState(){
-
-
-      }
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +92,7 @@ class _BodyState extends State<Body> {
                                                       BorderRadius.circular(
                                                           2),
                                                       child: Image.network(
-                                                        snapshot
-                                                            .data['products']
-                                                        [index]
-                                                        ['productPicture'],
+                                                        snapshot.data['products'][index]['productPicture'],
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
@@ -118,9 +110,7 @@ class _BodyState extends State<Body> {
                                                           Container(
                                                             width: 150,
                                                             child: Text(
-                                                              snapshot.data[
-                                                              'products']
-                                                              [index]['name'],
+                                                              snapshot.data['products'][index]['name'],
                                                               textAlign: TextAlign
                                                                   .center,
                                                               style: TextStyle(
@@ -210,7 +200,7 @@ class _BodyState extends State<Body> {
                                                             height: 8,
                                                           ),
                                                           Text(
-                                                            "Quantity: 10 kg",
+                                                            "Quantity: ${snapshot.data['products'][index]['quantity']}",
                                                             style: TextStyle(
                                                               color:
                                                               Colors.black54,
@@ -230,9 +220,9 @@ class _BodyState extends State<Body> {
                                               ],
                                             ),
                                             SizedBox(
-                                              height: 4,
+                                              height: 10,
                                             ),
-                                            RichText(
+                                            snapshot.data['products'][index]['offer']!=null?RichText(
                                               text: TextSpan(
                                                 children: <TextSpan>[
                                                   TextSpan(
@@ -243,9 +233,7 @@ class _BodyState extends State<Body> {
                                                           color: Colors.black)),
                                                   TextSpan(
                                                       text:
-                                                      snapshot.data[
-                                                      'products']
-                                                      [index]['offer'],
+                                                      snapshot.data['products'][index]['offer'],
                                                       style: TextStyle(
                                                           color: Colors.red)),
                                                 ],
@@ -254,7 +242,7 @@ class _BodyState extends State<Body> {
                                                     .of(context)
                                                     .style,
                                               ),
-                                            ),
+                                            ):Container(),
                                             Padding(
                                               padding: EdgeInsets.only(
                                                   top: 10, bottom: 10),
@@ -361,18 +349,13 @@ class _BodyState extends State<Body> {
                                                                   context) {
                                                                 return QuickFeedback(
                                                                   title: 'Leave a feedback',
-                                                                  // Title of dialog
                                                                   showTextBox: true,
-                                                                  // default false
                                                                   textBoxHint: 'Share your feedback',
-                                                                  // Feedback text field hint text default: Tell us more
                                                                   submitText: 'SUBMIT',
-                                                                  // submit button text default: SUBMIT
                                                                   onSubmitCallback: (
                                                                       feedback) {
                                                                     print('${feedback['rating']}');
                                                                     productRating(feedback['rating'],feedback['feedback'],snapshot.data['products'][index]['_id']);
-                                                                    // map { rating: 2, feedback: 'some feedback' }
                                                                     Navigator.of(context).pop();
                                                                     Toast.show("Thanks for your feedback", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                                                                   },
@@ -467,53 +450,6 @@ class _BodyState extends State<Body> {
   }
 }
 
-class navigationBar extends StatefulWidget {
-  @override
-  _navigationBarState createState() => _navigationBarState();
-}
-
-class _navigationBarState extends State<navigationBar> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      width: SizeConfig.screenWidth,
-      decoration: BoxDecoration(
-          color: Colors.orangeAccent.withOpacity(0.3)),
-      child: ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-       // itemCount: flag?catData['brandList'].length:catData['categoryList'].length,
-        itemBuilder: (BuildContext context, int index) =>
-            GestureDetector(
-          //    onTap: () {
-          //      print("pressed item$index");
-          //      Navigator.push(
-          //        context,
-          //        MaterialPageRoute(
-          //            builder: (context) => order_screen(
-          //                flag?catData['brandList'][index]['name']:catData['categoryList'][index]['name'],
-          //                catData,flag)),
-          //      );
-          //    },
-              child: Container(
-                child: Center(
-                    child: Padding(
-                        padding: EdgeInsets.only(left: 8, right: 15),
-                        child: Text(
-                          "flag?catData['brandList'][index]['name']:catData['categoryList'][index]['name']",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Roberto"),
-                        ))),
-              ),
-            ),
-      ),
-    );
-  }
-}
 
 
 

@@ -4,37 +4,21 @@ import 'package:tradegood/components/form_error.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/svg.dart';
-
+import 'package:tradegood/API/forgotPassword.dart';
 import '../../../constants.dart';
+import 'package:toast/toast.dart';
 
 class Body extends StatelessWidget {
   @override
+  //"assets/images2/signIn.png",
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Stack(children: <Widget>[
           Container(
-            width: 411.0,
-            height: 731.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: ExactAssetImage(
-                  "assets/images2/signIn.png",
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.zero,
-              child: Image.asset(
-                "assets/images2/signIn.png",
-                color: null,
-                fit: BoxFit.cover,
-                width: 411.0,
-                height: 731.0,
-                colorBlendMode: BlendMode.dstATop,
-              ),
-            ),
+            width: SizeConfig.screenWidth,
+            height: SizeConfig.screenHeight,
+            child: Image.asset("assets/images2/signIn.png",fit: BoxFit.fill,),
           ),
           SizedBox(
             child: Padding(
@@ -117,6 +101,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
   String email;
+  final TextEditingController emailController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -126,6 +111,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             onSaved: (newValue) => email = newValue,
+            controller: emailController,
             onChanged: (value) {
               if (value.isNotEmpty && errors.contains(kEmailNullError)) {
                 setState(() {
@@ -163,12 +149,20 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
           SizedBox(height: getProportionateScreenHeight(5)),
           FormError(errors: errors),
           SizedBox(height: SizeConfig.screenHeight * 0.03),
-          GestureDetector(
-            onTap: () {
+          FlatButton(
+            onPressed: () async{
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                // if all are valid then go to success screen
-                //Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                var res = await forgetPassword(emailController.text);
+                if (res['info']!=null)
+                  {
+                    FocusScope.of(context).unfocus();
+                    Toast.show(res['info'], context, duration: Toast.LENGTH_LONG, gravity:  Toast.TOP);
+                  }
+                else
+                  {
+                    Toast.show(res['error'], context, duration: Toast.LENGTH_LONG, gravity:  Toast.TOP);
+                  }
               }
             },
             child: ClipRRect(

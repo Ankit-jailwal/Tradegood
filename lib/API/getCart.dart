@@ -15,6 +15,7 @@ Future getCart() async{
   final response = await Http.get(url,
     headers: {"Content-Type": "application/json","Authorization":"$token"},
   );
+  print(response.body);
   final body=response.body;
   final category=jsonDecode(body);
 

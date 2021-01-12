@@ -4,13 +4,18 @@ import 'package:tradegood/API/authentication.dart';
 
 
 
-Future getOrder() async{
-  final String url = server + "/api/order/getOrderItems";
+Future forgetPassword(String email) async{
+  final String url = server + "/api/forgetPassword";
   String res= await storage.read(key: 'jwt');
+  Map data={
+    "email":email
+  };
+  print(data);
   String token= "Bearer "+res;
   print("token $token");
-  final response = await Http.get(url,
-    headers: {"Content-Type": "application/json","Authorization":"$token"},
+  final response = await Http.post(url,
+      headers: {"Content-Type": "application/json","Authorization":"$token"},
+      body: jsonEncode(data)
   );
   print(response.body);
   final body=response.body;

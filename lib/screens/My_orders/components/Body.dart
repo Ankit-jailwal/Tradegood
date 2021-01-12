@@ -9,31 +9,35 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-
+  bool passFlag=false;
+  void update(bool flagUpdate) {
+    setState(() => passFlag=flagUpdate);
+  }
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        orderNavigation(),
-        SizedBox(
-          height: SizeConfig.screenHeight * 0.01,
-        ),
-        FutureBuilder(
-          future: getOrder(),
-          builder: (context, snapshot) {
-            if(snapshot.hasData) {
-            return Expanded(
-                child: ListView.builder(
-                    itemCount: snapshot.data['orders'][0]['orderItems'].length, //list view declaration
-                    padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
-                    itemBuilder: (BuildContext context, int index) {
-                        return orderItem(snapshot.data,index);
-                    }));
-            }
-            return Center(child: Container(child: CircularProgressIndicator()));
+    return FutureBuilder(
+        future: getOrder(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: [
+                orderNavigation(update),
+                SizedBox(
+                  height: SizeConfig.screenHeight * 0.01,
+                ),
+                Expanded(
+                    child: ListView.builder(
+                        itemCount: snapshot.data['orders'].length,
+                        //list view declaration
+                        padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
+                        itemBuilder: (BuildContext context, int index) {
+                          return orderItem(snapshot.data, index, this.passFlag);
+                        }))
+              ],
+            );
           }
-        )
-      ],
+          return Center(child: Container(child: CircularProgressIndicator()));
+        }
     );
   }
 }
@@ -41,33 +45,49 @@ class _BodyState extends State<Body> {
 class orderItem extends StatefulWidget {
   var data;
   int index;
-  orderItem(this.data,this.index);
+  bool passFlag;
+  orderItem(this.data,this.index,this.passFlag);
   @override
   _orderItemState createState() => _orderItemState();
 }
 
 class _orderItemState extends State<orderItem> {
   String type="";
-  bool flag=true;
+  bool flag=false;
+bool check=false;
   checkStatus(var data)
   {
     print(data);
-    if(data[4]['isCompleted']==true)
-    {
-      flag=false;
+    if(widget.passFlag==true){
+      if (data[4]['isCompleted'] == true) {
+        flag = true;
+        type = data[4]['type'];
+      }
+      else
+        flag=false;
     }
-    else {
-      for (int i = 0; i < data.length - 1; i++) {
-        if(data[i]['isCompleted']==true)
-        {
-          type=data[i]['type'];
+    else  //Previous orders
+      {
+      if (data[4]['isCompleted'] == true) {
+        flag = false;
+        type = data[4]['type'];
+      }
+      else {
+        for (int i = 0; i < data.length - 1; i++) {
+          if (data[i]['isCompleted'] == true) {
+            flag = true;
+            print(data.length);
+            type = data[i]['type'];
+          }
         }
       }
-    }
+      }
   }
+
+
   @override
   Widget build(BuildContext context) {
-    checkStatus(widget.data["orders"][0]["orderStatus"]);
+    checkStatus(widget.data["orders"][widget.index]["orderStatus"]);
     return flag?Column(
       mainAxisAlignment: MainAxisAlignment
           .start,
@@ -103,7 +123,7 @@ class _orderItemState extends State<orderItem> {
                         width: SizeConfig.screenWidth *
                             0.65,
                         child: Text(
-                          widget.data['orders'][0]['orderItems'][widget.index]['product']['name'],
+                          widget.data['orders'][widget.index]['orderItems'][0]['product']['name'],
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
@@ -153,7 +173,7 @@ class _orderItemState extends State<orderItem> {
                   Container(
                       width: SizeConfig.screenWidth * 0.15,
                       child: Image.network(
-                          widget.data['orders'][0]['orderItems'][widget.index]['product']['productPicture'])),
+                          widget.data['orders'][widget.index]['orderItems'][0]['product']['productPicture'])),
                 ],
               ),
             ),
@@ -166,6 +186,8 @@ class _orderItemState extends State<orderItem> {
 }
 
 class orderNavigation extends StatefulWidget {
+  final ValueChanged<bool> update;
+  orderNavigation(this.update);
   @override
   _orderNavigationState createState() => _orderNavigationState();
 }
@@ -187,6 +209,7 @@ class _orderNavigationState extends State<orderNavigation> {
                   }
                 else
                   {
+                    widget.update(false);
                     orderNavigationFlag=true;
                   }
               });
@@ -226,6 +249,7 @@ class _orderNavigationState extends State<orderNavigation> {
               }
               else
               {
+                widget.update(true);
                 orderNavigationFlag=false;
               }
             });

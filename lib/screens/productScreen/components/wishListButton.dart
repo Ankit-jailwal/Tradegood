@@ -19,7 +19,6 @@ class _wishListButtonState extends State<wishListButton> {
       padding: const EdgeInsets.only(right: 15),
       child: GestureDetector(
         onTap: () {
-
           setState(() {
             if (wishCheck ==
                 true) {

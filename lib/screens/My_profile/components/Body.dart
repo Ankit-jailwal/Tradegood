@@ -155,9 +155,9 @@ class _BodyState extends State<Body> {
                       Toast.show("User information successfully saved", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.only(top:15.0),
                       child: Container(
-                        width: 90,
+                        width: 120,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.blue,

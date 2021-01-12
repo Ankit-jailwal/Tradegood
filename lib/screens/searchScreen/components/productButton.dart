@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import 'package:tradegood/API/addToCart.dart';
 import '../../../size_config.dart';
+import 'package:tradegood/size_config.dart';
+import 'package:flutter/cupertino.dart';
+import '../../../constants.dart';
 
 class productButton extends StatefulWidget {
   int index;
@@ -37,6 +40,22 @@ class _productButtonState extends State<productButton> {
         _countFlag = false;
       });
   }
+  final TextEditingController quantityController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final List<String> errors = [];
+  void addError({String error}) {
+    if (!errors.contains(error))
+      setState(() {
+        errors.add(error);
+      });
+  }
+
+  void removeError({String error}) {
+    if (errors.contains(error))
+      setState(() {
+        errors.remove(error);
+      });
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,10 +66,10 @@ class _productButtonState extends State<productButton> {
           Container(
             height: SizeConfig
                 .screenHeight *
-                0.06,
+                0.063,
             width: SizeConfig
                 .screenWidth *
-                0.25,
+                0.3,
             decoration: BoxDecoration(
                 color: Colors
                     .orangeAccent,
@@ -68,28 +87,115 @@ class _productButtonState extends State<productButton> {
               children: [
                 Row(
                   children: [
-                    Padding(
-                      padding: EdgeInsets
-                          .only(
-                          left:
-                          7),
-                      child: Text(
-                        _countFlag?"${widget.data['product'][widget.index]['quantity']*_counter}":"ADD",
-                        style:
-                        TextStyle(
-                          color: Colors
-                              .white,
-                          fontSize:
-                          14,
-                          fontWeight:
-                          FontWeight
-                              .w700,
-                          fontFamily:
-                          "Roberto",
+                    GestureDetector(
+                      onTap:() {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Stack(
+                                  overflow: Overflow.visible,
+                                  children: <Widget>[
+                                    Form(
+                                      key:_formKey,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Text("Type quantity in multiple of ${widget.data['product'][widget.index]['quantity'].toString()}!",style: TextStyle(fontWeight: FontWeight.w600),),
+                                          Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: TextFormField(
+                                                keyboardType: TextInputType.number,
+                                                controller: quantityController,
+                                                onChanged: (value) {
+                                                  if (value.isNotEmpty) {
+                                                    removeError(error: kEmailNullError);
+                                                  } else if (emailValidatorRegExp.hasMatch(value)) {
+                                                    removeError(error: kInvalidEmailError);
+                                                  }
+                                                  return null;
+                                                },
+                                                validator: (value) {
+                                                  if (value.isEmpty) {
+                                                    addError(error: kEmailNullError);
+                                                    return "";
+                                                  } else if (!emailValidatorRegExp.hasMatch(value)) {
+                                                    addError(error: kInvalidEmailError);
+                                                    return "";
+                                                  }
+                                                  return null;
+                                                },
+                                                decoration: InputDecoration(
+                                                  hintText: "Enter quantity",
+                                                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                                                  suffixIcon: Padding(
+                                                    padding: const EdgeInsets.only(right:20),
+                                                    child: Icon(Icons.edit,size: 30,),
+                                                  ),
+                                                ),
+                                              )
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: FlatButton(
+                                              onPressed: () {
+                                                int quantity= int.parse(quantityController.text);
+                                                if(quantity%widget.data['product'][widget.index]['quantity']==0&&quantity>=0)
+                                                {if(quantity<=widget.data['product'][widget.index]['availableStock']) {
+                                                  _counter = quantity ~/ widget
+                                                      .data['product'][widget
+                                                      .index]['quantity'];
+                                                  setState(() {
+                                                    _countFlag = true;
+                                                  });
+                                                  Navigator.pop(context);
+                                                }
+                                                else
+                                                  Toast.show("Quantity should be less then ${widget.data['product'][widget.index]['availableStock']}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                                }
+                                                else
+                                                  Toast.show("Enter quantity in multiple of minimum quantity", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                              },
+                                              child: Container(
+                                                  decoration:BoxDecoration(
+                                                    color: Colors.blue,
+                                                    borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+                                                    child: Text("Change",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
+                                                  )),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets
+                            .only(
+                            left: 10,right: 10),
+                        child: Text(
+                          _countFlag?"${widget.data['product'][widget.index]['quantity']*_counter}":"ADD",
+                          style:
+                          TextStyle(
+                            color: Colors
+                                .white,
+                            fontSize:
+                            14,
+                            fontWeight:
+                            FontWeight
+                                .w700,
+                            fontFamily:
+                            "Roberto",
+                          ),
                         ),
                       ),
                     ),
-                    SizedBox(width: 3,),
                     Column(
                       mainAxisAlignment:
                       MainAxisAlignment
@@ -125,12 +231,10 @@ class _productButtonState extends State<productButton> {
                         GestureDetector(
                           child:
                           Icon(
-                            Icons
-                                .remove,
+                            Icons.remove,
                             size:
                             20,
-                            color: Colors
-                                .white,
+                            color: Colors.white,
                           ),
                           onTap:
                           _decrement,
@@ -143,15 +247,15 @@ class _productButtonState extends State<productButton> {
                   onTap: () {
                     setState(() {
                       if (check == true){
-                        Toast.show("Item already added in your cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                        Toast.show("Item already added in your cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
                       }
                       else
                       {
-                        check =
-                        true;
-                        addToCart(widget.data['product'][widget.index]['_id'],
-                          _countFlag?widget.data['product'][widget.index]['quantity']*_counter:widget.data['product'][widget.index]['quantity'],);
-                        print("SUCCESS");
+                        Toast.show("Item added in cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                        check = true;
+                        addToCart(widget.data['products'][widget.index]['_id'],
+                          _countFlag?widget.data['products'][widget.index]['quantity']*_counter:widget.data['products'][widget.index]['quantity'],
+                        );
                       }
 
                     });
@@ -167,35 +271,7 @@ class _productButtonState extends State<productButton> {
               ],
             ),
           ),
-          check
-              ? Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Row(
-              children: [
-                Image.asset(
-                  "assets/images2/9cc73194de6fa0e85d13ba8fe84e31a844ad6341.png",
-                  height: 12,
-                ),
-                SizedBox(width: 4,),
-                Text(
-                  "Added",
-                  style:
-                  TextStyle(
-                    color: Colors
-                        .green,
-                    fontSize:
-                    14,
-                    fontWeight:
-                    FontWeight
-                        .w500,
-                    fontFamily:
-                    "Roberto",
-                  ),
-                ),
-              ],
-            ),
-          )
-              : Padding(
+           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Text(
               "Min. Order ${widget.data['product'][widget.index]['quantity']}",

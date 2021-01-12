@@ -8,6 +8,8 @@ import 'package:tradegood/API/removeItemWishlist.dart';
 import 'package:tradegood/screens/My_cart/CartFilled/my_cart.dart';
 import 'package:toast/toast.dart';
 import 'package:tradegood/API/addToCart.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:tradegood/screens/My_orders/my_order.dart';
 
 
 class wishListScreen extends StatefulWidget {
@@ -18,9 +20,8 @@ class wishListScreen extends StatefulWidget {
 }
 
 class _wishListScreenState extends State<wishListScreen> {
-  bool wishCheck = true;
+  bool flag;
   bool checkWishList(var data){
-    bool flag;
     if(data.length==0)
     {
       flag= false;
@@ -34,6 +35,11 @@ class _wishListScreenState extends State<wishListScreen> {
     return flag;
   }
 
+  void update(bool flagUpdate) {
+    flag=flagUpdate;
+    setState(() {} );
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +62,17 @@ class _wishListScreenState extends State<wishListScreen> {
           ),
         ),
         actions: [
-          Image.asset(
-            "assets/images2/f12e59ae8e5ecc4e4fa1ed606e384e238ff3c013.png",
-            width: 33,
-            height: 33,
+          GestureDetector(
+            onTap: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => my_order()));
+            },
+            child: Image.asset(
+              "assets/images2/order.png",
+              width: 33,
+              height: 33,
+            ),
           ),
           SizedBox(
             width: SizeConfig.screenWidth * 0.02,
@@ -97,205 +110,13 @@ class _wishListScreenState extends State<wishListScreen> {
                                 future: getProductByID(snapshot.data['wishlist']['wishlistItems'][index]['product']),
                                 builder: (context, data) {
                                   if(data.hasData){
-                                    return Column(
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 5, right: 5),
-                                          child: Container(
-                                            width: SizeConfig.screenWidth,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey.withOpacity(0.5),
-                                                  blurRadius: 5.0,
-                                                  offset: Offset(0, 3),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 15,
-                                                  right: 20),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                        children: [
-                                                          Container(
-                                                            width: SizeConfig
-                                                                .screenWidth *
-                                                                0.6,
-                                                            child: Text(
-                                                              data.data['product'][0]['name'],
-                                                              style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 14,
-                                                                  fontWeight: FontWeight
-                                                                      .w500),
-                                                            ),
-                                                          ),
-
-                                                          Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.star,
-                                                                color:
-                                                                Colors.yellow,
-                                                                size: 20,
-                                                              ),
-                                                              Icon(
-                                                                Icons.star,
-                                                                color:
-                                                                Colors.yellow,
-                                                                size: 20,
-                                                              ),
-                                                              Icon(
-                                                                Icons.star,
-                                                                color:
-                                                                Colors.yellow,
-                                                                size: 20,
-                                                              ),
-                                                              Icon(
-                                                                Icons.star,
-                                                                color:
-                                                                Colors.yellow,
-                                                                size: 20,
-                                                              ),
-                                                              Icon(
-                                                                Icons.star,
-                                                                color:
-                                                                Colors.yellow,
-                                                                size: 20,
-                                                              )
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height:
-                                                            SizeConfig.screenHeight *
-                                                                0.025,
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                "P.T.R",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight
-                                                                        .w500),
-                                                              ),
-                                                              SizedBox(width: 16,),
-                                                              Text(
-                                                                "₹${data.data['product'][0]['ptr'].toString()}",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize: 18,
-                                                                    fontWeight: FontWeight
-                                                                        .w500),
-                                                              ),
-
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                        children: [
-                                                          Container(
-                                                              width: SizeConfig
-                                                                  .screenWidth * 0.15,
-                                                              child: Image.network(
-                                                                  data.data['product'][0]['productPicture'])),
-
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                if (wishCheck == true)
-                                                                {
-                                                                  removeItemWishlist(data.data['product'][0]['_id'].toString());
-                                                                  Toast.show("${data.data['product'][0]['name']} removed from wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                                                                  wishCheck = false;
-                                                                }
-                                                              });
-                                                            },
-                                                            child: Padding(
-                                                                padding: const EdgeInsets
-                                                                    .only(
-                                                                    left: 15),
-                                                                child: Image
-                                                                    .asset(
-                                                                  "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
-                                                                  height: 25,)
-                                                            ),
-                                                          )
-
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(top: 5),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        Container(
-                                                          width: SizeConfig
-                                                              .screenWidth *
-                                                              0.6,
-                                                          child: RichText(
-                                                            text: TextSpan(
-                                                                text:
-                                                                '%',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize: 14),
-                                                                children: <TextSpan>[
-                                                                  TextSpan(
-                                                                    text: ' ${data.data['product'][0]['offer']}',
-                                                                    style: TextStyle(
-                                                                        color:
-                                                                        Colors
-                                                                            .redAccent,
-                                                                        fontSize: 12),
-                                                                  )
-                                                                ]),
-                                                          ),
-                                                        ),
-                                                        addToCartButton(data.data,index)
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: SizeConfig.screenHeight * 0.015,
-                                        ),
-                                      ],
-                                    );
+                                    return wishListItem(data.data,index,update);
                                   }
                                   return Container();
                                 }
                             );
                           }
-
                       )),
-
                 ],
               ): wishlist();
             }
@@ -305,6 +126,194 @@ class _wishListScreenState extends State<wishListScreen> {
     );
   }
 }
+class wishListItem extends StatefulWidget {
+  var wishListData;
+  int index;
+  final ValueChanged<bool> update;
+  wishListItem(this.wishListData,this.index,this.update);
+  @override
+  _wishListItemState createState() => _wishListItemState();
+}
+
+class _wishListItemState extends State<wishListItem> {
+  bool wishCheck = true;
+  @override
+  Widget build(BuildContext context) {
+    return wishCheck?Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 5, right: 5),
+          child: Container(
+            width: SizeConfig.screenWidth,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  blurRadius: 5.0,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 10,
+                  left: 15,
+                  right: 20),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: SizeConfig
+                                .screenWidth *
+                                0.6,
+                            child: Text(
+                              widget.wishListData['product'][0]['name'],
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight
+                                      .w800),
+                            ),
+                          ),
+                          SizedBox(height: 5,),
+                          SmoothStarRating(
+                              allowHalfRating: false,
+                              starCount: 5,
+                              rating: widget.wishListData['product'][0]['rating'].toDouble(),
+                              isReadOnly:true,
+                              filledIconData: Icons.star,
+                              halfFilledIconData: Icons.star,
+                              color: Colors.yellow,
+                              borderColor: Colors.grey,
+                              spacing:0.0
+                          ),
+                          SizedBox(
+                            height:
+                            SizeConfig.screenHeight *
+                                0.025,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "P.T.R",
+                                style: TextStyle(
+                                    color: Colors
+                                        .grey,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight
+                                        .w800),
+                              ),
+                              SizedBox(width: 16,),
+                              Text(
+                                "₹${widget.wishListData['product'][0]['ptr'].toString()}",
+                                style: TextStyle(
+                                    color: Colors
+                                        .black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight
+                                        .w800),
+                              ),
+
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              width: SizeConfig
+                                  .screenWidth * 0.15,
+                              child: Image.network(
+                                  widget.wishListData['product'][0]['productPicture'])),
+
+                          GestureDetector(
+                            onTap: () async{
+
+                              if (wishCheck == true)
+                              {wishCheck = false;
+                                widget.update(false);
+                                setState(() {
+
+                                });
+                                Toast.show("${widget.wishListData['product'][0]['name']} removed from wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                                await removeItemWishlist(widget.wishListData['product'][0]['_id'].toString());
+                              }
+
+                            },
+                            child: Padding(
+                                padding: const EdgeInsets
+                                    .only(
+                                    left: 15),
+                                child: Image
+                                    .asset(
+                                  "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
+                                  height: 25,)
+                            ),
+                          )
+
+                        ],
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: [
+                        widget.wishListData['product'][0]['offer']!=null?Container(
+                          width: SizeConfig
+                              .screenWidth *
+                              0.6,
+                          child: RichText(
+                            text: TextSpan(
+                                text:
+                                '%',
+                                style: TextStyle(
+                                    color: Colors
+                                        .black,
+                                    fontSize: 14),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: ' ${widget.wishListData['product'][0]['offer']}',
+                                    style: TextStyle(
+                                        color:
+                                        Colors
+                                            .redAccent,
+                                        fontSize: 12),
+                                  )
+                                ]),
+                          ),
+                        ):Container(),
+                        addToCartButton(widget.wishListData,widget.index)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: SizeConfig.screenHeight * 0.015,
+        ),
+      ],
+    ):Container();
+  }
+}
+
+
 
 class addToCartButton extends StatefulWidget {
   var data;

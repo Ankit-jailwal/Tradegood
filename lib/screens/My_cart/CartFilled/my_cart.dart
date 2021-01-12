@@ -11,7 +11,13 @@ import 'package:tradegood/API/getUserInfo.dart';
 import 'package:tradegood/screens/Location_list/location_list.dart';
 import 'package:tradegood/API/getRouteById.dart';
 import 'package:intl/intl.dart';
+import 'package:tradegood/API/updateQuantity.dart';
 import 'package:tradegood/API/calculateCartSum.dart';
+import 'package:toast/toast.dart';
+import '../../../constants.dart';
+import '../../../size_config.dart';
+import 'package:tradegood/screens/My_orders/my_order.dart';
+import 'package:tradegood/screens/My_cart/CartFilled/OrderPlaced.dart';
 
 
 class cart_screen extends StatefulWidget {
@@ -24,7 +30,11 @@ class cart_screen extends StatefulWidget {
 class _cart_screenState extends State<cart_screen> {
   bool flag;
   bool checkCart(var data){
-    if(data.length==0)
+    if(data['cart']=="empty")
+      {
+        flag=false;
+      }
+    else if(data.length==0)
     {
       flag= false;
     }
@@ -36,8 +46,20 @@ class _cart_screenState extends State<cart_screen> {
       flag=false;
     return flag;
   }
+  bool sumFlag=false;
+  double updateCartSum=0;
   void update(bool flagUpdate) {
     setState(() => flag=flagUpdate);
+  }
+  var cartData;
+  void updateSum(double sumUpdate) {
+    setState(() {
+      print(sumUpdate);
+    updateCartSum=sumUpdate;
+        sumFlag=true;
+    }
+    );
+    print("Updated CartSum $updateCartSum");
   }
 
   @override
@@ -72,16 +94,16 @@ class _cart_screenState extends State<cart_screen> {
             ),
           ),
           SizedBox(width: SizeConfig.screenWidth * 0.02,),
-          GestureDetector(
-            onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => cart_screen()));
-            },
-            child: Padding(
-              padding: EdgeInsets.only(right: SizeConfig.screenWidth * 0.02),
+          Padding(
+            padding: const EdgeInsets.only(right: 4),
+            child: GestureDetector(
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => my_order()));
+              },
               child: Image.asset(
-                "assets/images2/4e2f4fae4dd36d9fe6ceccb20d21cad9b32dddf9.png",
+                "assets/images2/order.png",
                 width: 33,
                 height: 33,
               ),
@@ -101,7 +123,7 @@ class _cart_screenState extends State<cart_screen> {
                   return FutureBuilder(
                       future: calculateCartSum(snapshot.data),
                       builder: (context, cartSum)  {
-                        if(snapshot.hasData) {
+                        if(cartSum.hasData) {
                           return Column(
                             children: [
                               Container(
@@ -195,7 +217,8 @@ class _cart_screenState extends State<cart_screen> {
                                             future: getProductByID(snapshot.data['cart']['cartItems'][index]['product']),
                                             builder: (context, cartItem) {
                                               if (cartItem.hasData) {
-                                                return cartItemClass(cartItem.data,snapshot.data,cartSum.data,index,update);
+                                                cartData=cartItem.data;
+                                                return cartItemClass(cartItem.data,snapshot.data,cartSum.data,index,update,updateSum);
                                               }
                                               return Container();
                                             }
@@ -226,13 +249,41 @@ class _cart_screenState extends State<cart_screen> {
                                         ),
                                       ),
                                       FlatButton(
-                                        onPressed: () {
-                                          placeOrderItem(
-                                              snapshot.data['cart']['cartItems']);
+                                        onPressed: () async{
+                                          showDialog(
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                              title: Text("Confirm your order",style: TextStyle(fontWeight: FontWeight.w800),),
+                                              content: Text("Are you sure you want to place order?"),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text("NO",style: TextStyle(color: Colors.red,fontWeight: FontWeight.w800,fontSize: 16),),
+                                                ),
+                                                FlatButton(
+                                                  onPressed: () async{
+                                                    final orderConfirmation= await placeOrderItem(snapshot.data,cartSum.data.toInt());
+                                                    if(orderConfirmation!=null)
+                                                    {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(builder: (context) => orderPlaced()),
+                                                      );
+                                                    }
+                                                  },
+                                                  child: Text("Yes",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w800)),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+
+
                                         },
                                         child: Container(
                                           height: SizeConfig.screenHeight *
-                                              0.045,
+                                              0.05,
                                           width: SizeConfig.screenWidth * 0.25,
                                           decoration: BoxDecoration(
                                             color: Colors.deepOrangeAccent,
@@ -244,8 +295,8 @@ class _cart_screenState extends State<cart_screen> {
                                               "Place order",
                                               style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w800),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w900),
                                             ),
                                           ),
                                         ),
@@ -278,23 +329,53 @@ class cartItemClass extends StatefulWidget {
   var cartData;
   var cartSumData;
   final ValueChanged<bool> update;
+  final ValueChanged<double> sumUpdate;
   int index;
-  cartItemClass(this.cartItemData,this.cartData,this.cartSumData,this.index,this.update);
+
+  cartItemClass(this.cartItemData,this.cartData,this.cartSumData,this.index,this.update,this.sumUpdate);
   @override
   _cartItemClassState createState() => _cartItemClassState();
 }
 
 class _cartItemClassState extends State<cartItemClass> {
+  final _formKey = GlobalKey<FormState>();
   bool check(int index, int size){
     if (index == size - 1)
       return true;
     else
       return false;
   }
+  int realQuantity=0;
+  int changeQuantity(int quantity)
+  {
+      setState(() {
+        realQuantity=quantity;
+      });
+      return realQuantity;
+  }
+  bool sumFlag=false;
+  bool updateFlag=true;
+  double sumUpdate=0;
+  final List<String> errors = [];
+  void addError({String error}) {
+    if (!errors.contains(error))
+      setState(() {
+        errors.add(error);
+      });
+  }
+
+  void removeError({String error}) {
+    if (errors.contains(error))
+      setState(() {
+        errors.remove(error);
+      });
+  }
   bool removeItemFlag=true;
+  int prevQuantity=0;
+  final TextEditingController quantityController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return removeItemFlag?Column(
+    return true?Column(
       children: [
         Padding(
           padding: EdgeInsets.only(
@@ -357,7 +438,7 @@ class _cartItemClassState extends State<cartItemClass> {
                           Row(
                             children: [
                               Text(
-                                "₹${(widget.cartItemData['product'][0]['ptr']*(widget.cartData['cart']['cartItems'][widget.index]['quantity']/widget.cartItemData['product'][0]['quantity']))
+                                "₹${(updateFlag?widget.cartItemData['product'][0]['ptr']*widget.cartData['cart']['cartItems'][widget.index]['quantity']/widget.cartItemData['product'][0]['quantity']:widget.cartItemData['product'][0]['ptr']*realQuantity/widget.cartItemData['product'][0]['quantity'])
                                     .toString()}",
                                 style: TextStyle(
                                     color: Colors
@@ -369,49 +450,140 @@ class _cartItemClassState extends State<cartItemClass> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Container(
-                                height: SizeConfig
-                                    .screenHeight *
-                                    0.045,
-                                width:
-                                SizeConfig
-                                    .screenWidth *
-                                    0.18,
-                                decoration: BoxDecoration(
-                                  color: Colors
-                                      .white,
-                                  border: Border
-                                      .all(
-                                      color: Colors
-                                          .grey),
-                                  borderRadius:
-                                  BorderRadius
-                                      .circular(
-                                      3),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .center,
-                                  children: [
-                                    Text(
-                                      "Qty: ${widget.cartData['cart']['cartItems'][widget.index]['quantity']}",
-                                      style: TextStyle(
+                              GestureDetector(
+                                onTap: (){
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: Stack(
+                                            overflow: Overflow.visible,
+                                            children: <Widget>[
+                                              Form(
+                                                key:_formKey,
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Text("Type quantity in multiple of ${widget.cartItemData['product'][0]['quantity'].toString()}!",style: TextStyle(fontWeight: FontWeight.w600),),
+                                                    Padding(
+                                                      padding: EdgeInsets.all(8.0),
+                                                      child: TextFormField(
+                                                        keyboardType: TextInputType.emailAddress,
+                                                        controller: quantityController,
+                                                        onChanged: (value) {
+                                                          if (value.isNotEmpty) {
+                                                            removeError(error: kEmailNullError);
+                                                          } else if (emailValidatorRegExp.hasMatch(value)) {
+                                                            removeError(error: kInvalidEmailError);
+                                                          }
+                                                          return null;
+                                                        },
+                                                        validator: (value) {
+                                                          if (value.isEmpty) {
+                                                            addError(error: kEmailNullError);
+                                                            return "";
+                                                          } else if (!emailValidatorRegExp.hasMatch(value)) {
+                                                            addError(error: kInvalidEmailError);
+                                                            return "";
+                                                          }
+                                                          return null;
+                                                        },
+                                                        decoration: InputDecoration(
+                                                          hintText: "Enter quantity",
+                                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                                          suffixIcon: Padding(
+                                                            padding: const EdgeInsets.only(right:20),
+                                                            child: Icon(Icons.edit,size: 30,),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: FlatButton(
+                                                        onPressed: () async{
+                                                          int quantity= int.parse(quantityController.text);
+                                                          if(quantity%widget.cartItemData['product'][0]['quantity']==0&&quantity>0)
+                                                            {
+
+                                                              if(quantity<=widget.cartItemData['product'][0]['availableStock']) {
+                                                                prevQuantity=updateFlag?changeQuantity(widget.cartData['cart']['cartItems'][widget.index]['quantity']):realQuantity;
+                                                                updateFlag=false;
+                                                                changeQuantity(quantity);
+                                                                await updateQuantity(realQuantity,widget.cartData['cart']['cartItems'][widget.index]['product']);
+                                                                sumUpdate=widget.cartItemData['product'][0]['ptr']*((realQuantity-prevQuantity)/widget.cartItemData['product'][0]['quantity']);
+                                                                sumFlag=true;
+                                                                widget.sumUpdate(widget.cartItemData['product'][0]['ptr']*((realQuantity-prevQuantity)/widget.cartItemData['product'][0]['quantity']));
+                                                                Navigator.pop(context);
+                                                              }
+                                                              else
+                                                                Toast.show("Quantity should be less then ${widget.cartItemData['product'][0]['availableStock']}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                                            }
+                                                          else
+                                                            Toast.show("Enter quantity in multiple of minimum quantity", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                                        },
+                                                        child: Container(
+                                                            decoration:BoxDecoration(
+                                                              color: Colors.blue,
+                                                              borderRadius: BorderRadius.circular(10),
+                                                            ),
+                                                            child: Padding(
+                                                          padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+                                                          child: Text("Change",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
+                                                        )),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      });
+                                },
+                                child: Container(
+                                  height: SizeConfig
+                                      .screenHeight *
+                                      0.045,
+                                  decoration: BoxDecoration(
+                                    color: Colors
+                                        .white,
+                                    border: Border
+                                        .all(
+                                        color: Colors
+                                            .grey),
+                                    borderRadius:
+                                    BorderRadius
+                                        .circular(
+                                        3),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10,right: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .center,
+                                      children: [
+                                        Text(
+                                          "Qty: ${updateFlag?changeQuantity(widget.cartData['cart']['cartItems'][widget.index]['quantity']):realQuantity}",
+                                          style: TextStyle(
+                                              color: Colors
+                                                  .black54,
+                                              fontSize: 14,
+                                              fontWeight:
+                                              FontWeight
+                                                  .w700),
+                                        ),
+                                        Icon(
+                                          Icons
+                                              .edit,
                                           color: Colors
-                                              .black54,
-                                          fontSize: 14,
-                                          fontWeight:
-                                          FontWeight
-                                              .w700),
+                                              .black,
+                                          size: 12,
+                                        )
+                                      ],
                                     ),
-                                    Icon(
-                                      Icons
-                                          .edit,
-                                      color: Colors
-                                          .black,
-                                      size: 12,
-                                    )
-                                  ],
+                                  ),
                                 ),
                               )
                             ],
@@ -484,10 +656,10 @@ class _cartItemClassState extends State<cartItemClass> {
                             setState(() {
                               removeItemFlag=false;
                             });
-                            await removeItemCart(widget.cartItemData['product'][0]['_id']);
                             setState(() {
                               widget.update(false);
                             });
+                            await removeItemCart(widget.cartItemData['product'][0]['_id']);
                           },
                           child: Container(
                             height: SizeConfig.screenHeight * 0.045,
@@ -636,5 +808,7 @@ class _cartItemClassState extends State<cartItemClass> {
             : Container()
       ],
     ):Container();
+
   }
+
 }

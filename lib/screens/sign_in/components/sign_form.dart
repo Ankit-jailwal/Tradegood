@@ -51,40 +51,10 @@ class _SignFormState extends State<SignForm> {
       child: Column(
         children: [
           buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(10)),
+          SizedBox(height: getProportionateScreenHeight(15)),
           buildPasswordFormField(),
-          Row(
-            children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
-                },
-              ),
-              Text("Remember me"),
-              Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, ForgotPasswordScreen.routeName),
-                child: Text(
-                  "Forgot Password ?",
-                  style: TextStyle(
-                    height: 1.171875,
-                    fontSize: 16.0,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(255, 1, 90, 207),
-                    /* letterSpacing: 0.0, */
-                  ),
-                ),
-              )
-            ],
-          ),
           FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(10)),
+          SizedBox(height: getProportionateScreenHeight(20)),
           FlatButton(
             onPressed: () async {
               if (_formKey.currentState.validate()) {
@@ -138,7 +108,6 @@ class _SignFormState extends State<SignForm> {
                 ),
               ),
             ),
-
           ),
         ],
       ),
@@ -170,8 +139,6 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon:Padding(
           padding: const EdgeInsets.only(right: 20),

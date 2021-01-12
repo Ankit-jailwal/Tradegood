@@ -408,7 +408,7 @@ class _BodyState extends State<Body> {
                       ),
                       FlatButton(
                         onPressed: (){
-                          placeOrderItem(snapshot.data['cart']['cartItems']);
+
                         },
                         child: Container(
                           height: SizeConfig.screenHeight * 0.045,

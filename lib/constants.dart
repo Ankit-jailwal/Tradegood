@@ -22,6 +22,8 @@ const defaultDuration = Duration(milliseconds: 250);
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 const String kEmailNullError = "Please Enter your email";
+const String kQuantityNullError = "Please Enter quantity";
+const String kQuantityError = "Please enter in multiple of min. quantity";
 const String kInvalidEmailError = "Please Enter Valid Email";
 const String kPassNullError = "Please Enter your password";
 const String kShortPassError = "Password is too short";

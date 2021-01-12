@@ -26,12 +26,12 @@ class my_order extends StatelessWidget {
           ),),
         actions: [
           GestureDetector(
-            //onTap: (){
-            //  Navigator.push(
-            //      context,
-            //      MaterialPageRoute(builder: (context) => wishListScreen()));
-            //},
-            child: Image.asset("assets/images2/f12e59ae8e5ecc4e4fa1ed606e384e238ff3c013.png",
+           onTap: (){
+             Navigator.push(
+                 context,
+                 MaterialPageRoute(builder: (context) => wishListScreen()));
+           },
+            child: Image.asset("assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
               width: 33,
               height: 33,
             ),

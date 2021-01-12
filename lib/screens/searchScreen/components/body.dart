@@ -182,7 +182,7 @@ class _BodyState extends State<Body> {
                                                   height: 8,
                                                 ),
                                                 Text(
-                                                  "Quantity: 10 kg",
+                                                  "Quantity: ${widget.data['product'][index]['quantity']}",
                                                   style: TextStyle(
                                                     color:
                                                     Colors.black54,
@@ -202,9 +202,9 @@ class _BodyState extends State<Body> {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 4,
+                                    height: 10,
                                   ),
-                                  RichText(
+                                  widget.data['product'][index]['offer']!=null?RichText(
                                     text: TextSpan(
                                       children: <TextSpan>[
                                         TextSpan(
@@ -226,7 +226,7 @@ class _BodyState extends State<Body> {
                                           .of(context)
                                           .style,
                                     ),
-                                  ),
+                                  ):Container(),
                                   Padding(
                                     padding: EdgeInsets.only(
                                         top: 10, bottom: 10),
