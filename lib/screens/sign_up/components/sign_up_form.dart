@@ -100,7 +100,12 @@ class _SignUpFormState extends State<SignUpForm> {
               final email = emailcontroller.text;
               final password = passwordcontroller.text;
               var body;
-               remember==true?body=await attemptSignUp(fullname, phno, email, password):Toast.show("Please agree Terms and Conditions", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+              if(remember==true)
+                {
+                  body=await attemptSignUp(fullname, phno, email, password);
+                }
+              else
+                Toast.show("Please agree Terms and Conditions", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
               final decode_body = jsonDecode(body);
               print(body);
               if (decode_body["message"] == "User created successfully") {
@@ -112,6 +117,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 displayDialog(context, "That email is already registered",
                     "Please try to sign up using another email or login if you already have an account.");
               else {
+                Toast.show(decode_body['errors'], context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
               }
               // if all are valid then go to success screen
           },

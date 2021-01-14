@@ -253,8 +253,8 @@ class _productButtonState extends State<productButton> {
                       {
                         Toast.show("Item added in cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
                         check = true;
-                        addToCart(widget.data['products'][widget.index]['_id'],
-                          _countFlag?widget.data['products'][widget.index]['quantity']*_counter:widget.data['products'][widget.index]['quantity'],
+                        addToCart(widget.data['product'][widget.index]['_id'],
+                          _countFlag?widget.data['product'][widget.index]['quantity']*_counter:widget.data['product'][widget.index]['quantity'],
                         );
                       }
 
