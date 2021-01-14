@@ -854,7 +854,5 @@ class _cartItemClassState extends State<cartItemClass> {
             : Container()
       ],
     );
-
   }
-
 }
