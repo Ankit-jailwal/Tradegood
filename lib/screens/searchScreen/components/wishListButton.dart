@@ -6,29 +6,30 @@ import 'package:tradegood/API/removeItemWishlist.dart';
 class wishListButton extends StatefulWidget {
   var data;
   int index;
-  wishListButton(this.data,this.index);
+  var wishListData;
+  wishListButton(this.data,this.index,this.wishListData);
   @override
   _wishListButtonState createState() => _wishListButtonState();
 }
 
 class _wishListButtonState extends State<wishListButton> {
   bool wishCheck=true;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 15),
       child: GestureDetector(
         onTap: () {
-
           setState(() {
             if (wishCheck == true) {
               wishCheck = false;
                addToWishlist(widget.data['product'][widget.index]['_id']);
-              Toast.show("Item added in wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+              Toast.show("Item added in wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
             }
             else {
               wishCheck = true;
-              Toast.show("Item removed from wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+              Toast.show("Item removed from wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
               removeItemWishlist(widget.data['product'][widget.index]['_id']);
             }
           });

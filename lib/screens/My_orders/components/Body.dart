@@ -55,6 +55,8 @@ class _orderItemState extends State<orderItem> {
   String type="";
   bool flag=false;
 bool check=false;
+int prevCount=0;
+int reCount=0;
   checkStatus(var data)
   {
     print(data);
@@ -64,7 +66,8 @@ bool check=false;
         type = data[4]['type'];
       }
       else
-        flag=false;
+        flag = false;
+
     }
     else  //Previous orders
       {
@@ -82,6 +85,7 @@ bool check=false;
         }
       }
       }
+    print("PRev $prevCount");
   }
 
 
@@ -89,8 +93,7 @@ bool check=false;
   Widget build(BuildContext context) {
     checkStatus(widget.data["orders"][widget.index]["orderStatus"]);
     return flag?Column(
-      mainAxisAlignment: MainAxisAlignment
-          .start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(left: 5, right: 5),
@@ -205,7 +208,7 @@ class _orderNavigationState extends State<orderNavigation> {
               setState(() {
                 if(orderNavigationFlag!=false)
                   {
-                    Toast.show("Already in recent Orders", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                    Toast.show("Already in Recent Orders", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                   }
                 else
                   {

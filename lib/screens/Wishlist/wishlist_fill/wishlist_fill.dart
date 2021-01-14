@@ -40,7 +40,18 @@ class _wishListScreenState extends State<wishListScreen> {
     setState(() {} );
     
   }
-
+  bool pseudoFlag;
+  Future updatePage() async{
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      pseudoFlag=true;
+    }
+    );
+  }
+  bool updateScreenFlag;
+  void updateCart(bool pseudoFlag) {
+    setState(() => updateScreenFlag=true);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,42 +106,59 @@ class _wishListScreenState extends State<wishListScreen> {
         ],
         backgroundColor: Colors.blue,
       ),
-      body: FutureBuilder(
-          future: getWishlist(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return checkWishList(snapshot.data)? Column(
-                children: [
-                  Expanded(
-                      child: ListView.builder(
-                          itemCount: snapshot.data['wishlist']['wishlistItems'].length, //list view declaration
-                          padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
-                          itemBuilder: (BuildContext context, int index) {
-                            return FutureBuilder(
-                                future: getProductByID(snapshot.data['wishlist']['wishlistItems'][index]['product']),
-                                builder: (context, data) {
-                                  if(data.hasData){
-                                    return wishListItem(data.data,index,update);
-                                  }
-                                  return Container();
-                                }
-                            );
-                          }
-                      )),
-                ],
-              ): wishlist();
+      body: RefreshIndicator(
+        onRefresh:updatePage,
+        child: FutureBuilder(
+            future: getWishlist(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return checkWishList(snapshot.data)? Column(
+                  children: [
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: snapshot.data['wishlist']['wishlistItems'].length, //list view declaration
+                            padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
+                            itemBuilder: (BuildContext context, int index) {
+                              var item=snapshot.data['wishlist']['wishlistItems'];
+                              return Dismissible(
+                                key: Key(item.toString()),
+                                direction: DismissDirection.horizontal,
+                                child: FutureBuilder(
+                                    future: getProductByID(snapshot.data['wishlist']['wishlistItems'][index]['product']),
+                                    builder: (context, data) {
+                                      if(data.hasData){
+                                        return wishListItem(data.data,index,update,snapshot.data,updateCart);
+                                      }
+                                      return Container();
+                                    }
+                                ),
+                                onDismissed: (direction) async{
+                                  await removeItemWishlist(snapshot.data['wishlist']['wishlistItems'][index]['product'].toString());
+                                  snapshot.data['wishlist']['wishlistItems'].removeAt(index);
+                                  setState(() {
+                                    updateCart(true);
+                                  });
+                                },
+                              );
+                            }
+                        )),
+                  ],
+                ): wishlist();
+              }
+              return Center(child: Container(child: CircularProgressIndicator()));
             }
-            return Center(child: Container(child: CircularProgressIndicator()));
-          }
-            ),
+              ),
+      ),
     );
   }
 }
 class wishListItem extends StatefulWidget {
   var wishListData;
   int index;
+  var Data;
   final ValueChanged<bool> update;
-  wishListItem(this.wishListData,this.index,this.update);
+  final ValueChanged<bool> updateWishlist;
+  wishListItem(this.wishListData,this.index,this.update,this.Data,this.updateWishlist);
   @override
   _wishListItemState createState() => _wishListItemState();
 }
@@ -139,7 +167,7 @@ class _wishListItemState extends State<wishListItem> {
   bool wishCheck = true;
   @override
   Widget build(BuildContext context) {
-    return wishCheck?Column(
+    return Column(
       children: [
         Padding(
           padding: EdgeInsets.only(left: 5, right: 5),
@@ -240,16 +268,10 @@ class _wishListItemState extends State<wishListItem> {
                           GestureDetector(
                             onTap: () async{
 
-                              if (wishCheck == true)
-                              {wishCheck = false;
-                                widget.update(false);
-                                setState(() {
-
-                                });
-                                Toast.show("${widget.wishListData['product'][0]['name']} removed from wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                                await removeItemWishlist(widget.wishListData['product'][0]['_id'].toString());
-                              }
-
+                              widget.Data['wishlist']['wishlistItems'].removeAt(widget.index);
+                              await removeItemWishlist(widget.wishListData['product'][0]['_id'].toString());
+                              Toast.show("${widget.wishListData['product'][0]['name']} removed from wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                              widget.updateWishlist(true);
                             },
                             child: Padding(
                                 padding: const EdgeInsets
@@ -309,7 +331,7 @@ class _wishListItemState extends State<wishListItem> {
           height: SizeConfig.screenHeight * 0.015,
         ),
       ],
-    ):Container();
+    );
   }
 }
 
