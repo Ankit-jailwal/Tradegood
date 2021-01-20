@@ -16,6 +16,7 @@ import 'package:tradegood/API/signout.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:tradegood/API/applicationRating.dart';
 import 'package:toast/toast.dart';
+import 'package:tradegood/screens/additionalInfo/additionalInfo.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -229,6 +230,26 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.pop(context);
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => location_list()));
+                          },
+                        ),
+                        ListTile(
+                          leading: Container(
+                            width: SizeConfig.screenWidth * 0.095,
+                            child: Image.asset(
+                              "assets/images2/file.png",
+                            ),
+                          ),
+                          title: Text(
+                            'Additional Details',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => additionalInfo()));
                           },
                         ),
                         ListTile(

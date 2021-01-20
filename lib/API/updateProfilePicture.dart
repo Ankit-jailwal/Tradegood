@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tradegood/API/authentication.dart';
 
 
@@ -13,6 +14,16 @@ Future updateProfilePicture(File file) async {
     File compressedFile = await FlutterNativeImage.compressImage(file.path, quality: 80,
         targetWidth: 300, targetHeight: 300);
     String res= await storage.read(key: 'jwt');
+    bool hasExpired = JwtDecoder.isExpired(res);
+    if(hasExpired==true)
+    {
+      String email= await storage.read(key: 'email');
+      String password= await storage.read(key: 'password');
+      final token = await AuthenticationService().login(email, password);
+      final tokenBody=jsonDecode(token);
+      storage.write(key: "jwt", value: tokenBody["token"]);
+      res=tokenBody["token"];
+    }
     String token= "Bearer "+res;
     FormData data = FormData.fromMap({
       "profilePicture": await MultipartFile.fromFile(

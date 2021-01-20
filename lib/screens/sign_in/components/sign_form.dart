@@ -66,7 +66,8 @@ class _SignFormState extends State<SignForm> {
                 final token_body = jsonDecode(_token);
                 if(token_body["token"] != null) {
                   storage.write(key: "jwt", value: token_body["token"]);
-                  storage.write(key: "name", value: token_body['user']['name']);
+                  storage.write(key: "email", value: email);
+                  storage.write(key: "password", value: password);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -176,8 +177,8 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
+        labelText: "Phone Number",
+        hintText: "Enter your Phone Number",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: Padding(
           padding: const EdgeInsets.only(right:20),

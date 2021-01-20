@@ -13,29 +13,29 @@ class Body extends StatelessWidget {
         child: SingleChildScrollView(
           child: Stack(
             children:<Widget>[
-            Container(
-            width: SizeConfig.screenWidth,
-            height: SizeConfig.screenHeight,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: ExactAssetImage(
-                  "assets/images2/signUp.png",
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.zero,
-              child: Image.asset(
-                "assets/images2/signUp.png",
-                color: null,
-                fit: BoxFit.cover,
-                width: 414.0,
-                height: 731.0,
-                colorBlendMode: BlendMode.dstATop,
-              ),
-            ),
-          ),
+          //  Container(
+          //  width: SizeConfig.screenWidth,
+          //  height: SizeConfig.screenHeight,
+          //  decoration: BoxDecoration(
+          //    image: DecorationImage(
+          //      image: ExactAssetImage(
+          //        "assets/images2/signUp.png",
+          //      ),
+          //      fit: BoxFit.scaleDown,
+          //    ),
+          //  ),
+          //  child: ClipRRect(
+          //    borderRadius: BorderRadius.zero,
+          //    child: Image.asset(
+          //      "assets/images2/signUp.png",
+          //      color: null,
+          //      fit: BoxFit.cover,
+          //      width: 414.0,
+          //      height: 731.0,
+          //      colorBlendMode: BlendMode.dstATop,
+          //    ),
+          //  ),
+          //),
               SizedBox(
               child: Padding(
                 padding:
@@ -83,6 +83,7 @@ class Body extends StatelessWidget {
                     SignUpForm(),
                     SizedBox(height: SizeConfig.screenHeight * 0.01),
                     haveAccountText(),
+                    SizedBox(height: 40,)
                   ],
                 ),
               ),

@@ -181,37 +181,6 @@ class _cart_screenState extends State<cart_screen> {
                                             ),
                                           ],
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      location_list()),
-                                            );
-                                          },
-                                          child: Container(
-                                            height: SizeConfig.screenHeight *
-                                                0.045,
-                                            width: SizeConfig.screenWidth * 0.25,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                  color: Colors.black54),
-                                              borderRadius: BorderRadius.circular(
-                                                  5),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "Change",
-                                                style: TextStyle(
-                                                    color: Colors.lightBlue,
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w700),
-                                              ),
-                                            ),
-                                          ),
-                                        )
                                       ],
                                     ),
                                   ),
@@ -233,7 +202,7 @@ class _cart_screenState extends State<cart_screen> {
                                               builder: (context, cartItem) {
                                                 if (cartItem.hasData) {
                                                   cartData=cartItem.data;
-                                                  return cartItemClass(cartItem.data,snapshot.data,cartSum.data,index,update,updateSum,updateCart);
+                                                  return cartItemClass(cartItem.data,snapshot.data,cartSum.data,index,update,updateSum,updateCart,userInfo.data);
                                                 }
                                                 return Container();
                                               }
@@ -265,57 +234,62 @@ class _cart_screenState extends State<cart_screen> {
                                         ),
                                         FlatButton(
                                           onPressed: () async{
-                                            if(userInfo.data['user']['route']!=null) {
-                                              showDialog(
-                                                context: context,
-                                                builder: (ctx) =>
-                                                    AlertDialog(
-                                                      title: Text(
-                                                        "Confirm your order",
-                                                        style: TextStyle(
-                                                            fontWeight: FontWeight
-                                                                .w800),),
-                                                      content: Text(
-                                                          "Are you sure you want to place order?"),
-                                                      actions: <Widget>[
-                                                        FlatButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Text("NO",
-                                                            style: TextStyle(
-                                                                color: Colors.red,
-                                                                fontWeight: FontWeight
-                                                                    .w800,
-                                                                fontSize: 16),),
-                                                        ),
-                                                        FlatButton(
-                                                          onPressed: () async {
-                                                            final orderConfirmation = await placeOrderItem(
-                                                                snapshot.data,
-                                                                cartSum.data
-                                                                    .toInt());
-                                                            if (orderConfirmation !=
-                                                                null) {
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder: (
-                                                                        context) =>
-                                                                        orderPlaced()),
-                                                              );
-                                                            }
-                                                          },
-                                                          child: Text("Yes",
+                                            if(userInfo.data['user']['route']!=null){
+                                              if(userInfo.data['user']['address']!=null&&userInfo.data['user']['certificate']!=null) {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (ctx) =>
+                                                      AlertDialog(
+                                                        title: Text(
+                                                          "Confirm your order",
+                                                          style: TextStyle(
+                                                              fontWeight: FontWeight
+                                                                  .w800),),
+                                                        content: Text(
+                                                            "Are you sure you want to place order?"),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child: Text("NO",
                                                               style: TextStyle(
-                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .red,
                                                                   fontWeight: FontWeight
-                                                                      .w800)),
-                                                        ),
-                                                      ],
-                                                    ),
-                                              );
+                                                                      .w800,
+                                                                  fontSize: 16),),
+                                                          ),
+                                                          FlatButton(
+                                                            onPressed: () async {
+                                                              final orderConfirmation = await placeOrderItem(
+                                                                  snapshot.data,
+                                                                  cartSum.data
+                                                                      .toInt());
+                                                              if (orderConfirmation !=
+                                                                  null) {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (
+                                                                          context) =>
+                                                                          orderPlaced()),
+                                                                );
+                                                              }
+                                                            },
+                                                            child: Text("Yes",
+                                                                style: TextStyle(
+                                                                    fontSize: 16,
+                                                                    fontWeight: FontWeight
+                                                                        .w800)),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                );
+                                              }
+                                              else
+                                                Toast.show("Please fill additional details", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
                                             }
                                             else
                                               Toast.show("Please select route before placing order", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
@@ -368,12 +342,13 @@ class cartItemClass extends StatefulWidget {
   var cartItemData;
   var cartData;
   var cartSumData;
+  var routeData;
   final ValueChanged<bool> update;
   final ValueChanged<bool> updateCart;
   final ValueChanged<double> sumUpdate;
   int index;
 
-  cartItemClass(this.cartItemData,this.cartData,this.cartSumData,this.index,this.update,this.sumUpdate,this.updateCart);
+  cartItemClass(this.cartItemData,this.cartData,this.cartSumData,this.index,this.update,this.sumUpdate,this.updateCart,this.routeData);
   @override
   _cartItemClassState createState() => _cartItemClassState();
 }
@@ -382,6 +357,12 @@ class _cartItemClassState extends State<cartItemClass> {
   final _formKey = GlobalKey<FormState>();
   bool check(int index, int size){
     if (index == size - 1)
+      return true;
+    else
+      return false;
+  }
+  bool checkRoute(int index, int size){
+    if (index == 0)
       return true;
     else
       return false;
@@ -418,6 +399,114 @@ class _cartItemClassState extends State<cartItemClass> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        checkRoute(widget.index, widget.cartData['cart']['cartItems'].length)?Column(
+          children: [
+            FutureBuilder(
+                future: getRouteById(),
+              builder: (context, route) {
+                  if(route.hasData) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: Container(
+                        width: SizeConfig.screenWidth,
+                        decoration: BoxDecoration(color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3))
+                            ]),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment
+                                .spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .start,
+                                mainAxisAlignment: MainAxisAlignment
+                                    .center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(route.data['route']['day'], style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800),),
+                                      Text(
+                                        "Delivery on: ${DateFormat('d MMM, yy').format(DateTime.parse(route.data['route']['deliveryDate']),)}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                        ),),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5,),
+                                  Container(
+                                    child: Text(
+                                      "Route: ${route.data['route']['location'].join(', ')}",
+                                      style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),),
+                                  ),
+                                  SizedBox(height: 5,)
+                                ],
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            location_list()),
+                                  );
+                                },
+                                child: Container(
+                                  height: SizeConfig.screenHeight *
+                                      0.045,
+                                  width: SizeConfig.screenWidth * 0.25,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: Colors.black54),
+                                    borderRadius: BorderRadius.circular(
+                                        5),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Change",
+                                      style: TextStyle(
+                                          color: Colors.lightBlue,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: SizeConfig.screenHeight * 0.01,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  return Container();
+              }
+            ),
+            SizedBox(
+              height: SizeConfig
+                  .screenHeight *
+                  0.015,
+            ),
+          ],
+        ):Container(),
+
         Dismissible(
           key: Key(widget.cartData['cart']['cartItems'].toString()),
           direction: DismissDirection.horizontal,

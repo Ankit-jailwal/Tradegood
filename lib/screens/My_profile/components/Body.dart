@@ -139,7 +139,23 @@ class _BodyState extends State<Body> {
                     ), //Obscure logic
                   ),
                 ),
-
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: TextFormField(
+                      initialValue: snapshot.data['user']['address'],
+                    enabled: false,
+                    decoration: InputDecoration(
+                      labelText: "Address",
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                      ),
+                    ), //Obscure logic
+                  ),
+                ),
 
                 Align(
                   alignment: FractionalOffset.bottomRight,

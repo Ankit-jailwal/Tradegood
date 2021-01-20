@@ -41,6 +41,8 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController phnocontroller = TextEditingController();
   final TextEditingController emailcontroller = TextEditingController();
   final TextEditingController passwordcontroller = TextEditingController();
+  final TextEditingController GSTcontroller = TextEditingController();
+  final TextEditingController addresscontroller = TextEditingController();
   bool remember = false;
   final List<String> errors = [];
 
@@ -57,7 +59,13 @@ class _SignUpFormState extends State<SignUpForm> {
         errors.remove(error);
       });
   }
-
+  bool _isHidden = true;
+  bool rememberMe = false;
+  void _toggleVisibility() {
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -68,7 +76,7 @@ class _SignUpFormState extends State<SignUpForm> {
         SizedBox(height: getProportionateScreenHeight(20)),
         Container(
             height: SizeConfig.screenHeight * 0.08,
-            child: buildPhnoFormField()),
+            child: buildPhoneFormField()),
         SizedBox(height: getProportionateScreenHeight(20)),
         Container(
             height: SizeConfig.screenHeight * 0.08,
@@ -187,7 +195,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      obscureText: true,
+      obscureText: _isHidden,
       controller: passwordcontroller,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -211,10 +219,15 @@ class _SignUpFormState extends State<SignUpForm> {
         labelText: "Password",
         hintText: "Enter your password",
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Icon(Icons.visibility),
-        )
+          suffixIcon:Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: GestureDetector(
+              onTap: _toggleVisibility,
+              child: _isHidden
+                  ? Icon(Icons.visibility_off,size: 30,)
+                  : Icon(Icons.visibility,size: 30,),
+            ),
+          )
       ),
     );
   }
@@ -244,7 +257,6 @@ class _SignUpFormState extends State<SignUpForm> {
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
-
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -287,7 +299,69 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildPhnoFormField() {
+  TextFormField buildAddressFormField() {
+    return TextFormField(
+      keyboardType: TextInputType.name,
+      controller: addresscontroller,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kEmailNullError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          addError(error: kEmailNullError);
+          return "";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          labelText: "Address",
+          hintText: "Enter your Address",
+          // If  you are using latest version of flutter then lable text and hint text shown like this
+          // if you r using flutter less then 1.20.* then maybe this is not working properly
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          suffixIcon: Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Icon(Icons.my_location_outlined),
+          )
+      ),
+    );
+  }
+
+  TextFormField buildGSTFormField() {
+    return TextFormField(
+      keyboardType: TextInputType.name,
+      controller: GSTcontroller,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kEmailNullError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          addError(error: kEmailNullError);
+          return "";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+          labelText: "GST Number",
+          hintText: "Enter your GST Number",
+          // If  you are using latest version of flutter then lable text and hint text shown like this
+          // if you r using flutter less then 1.20.* then maybe this is not working properly
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          suffixIcon: Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Icon(Icons.article_outlined),
+          )
+      ),
+    );
+  }
+
+  TextFormField buildPhoneFormField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
       controller: phnocontroller,
@@ -305,10 +379,8 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Mobile No",
+        labelText: "Phone No",
         hintText: "Enter your Phone Number",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: Padding(
           padding: const EdgeInsets.only(right: 20),

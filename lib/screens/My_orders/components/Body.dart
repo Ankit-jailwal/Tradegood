@@ -28,7 +28,6 @@ class _BodyState extends State<Body> {
                 Expanded(
                     child: ListView.builder(
                         itemCount: snapshot.data['orders'].length,
-                        //list view declaration
                         padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
                         itemBuilder: (BuildContext context, int index) {
                           return orderItem(snapshot.data, index, this.passFlag);
@@ -123,13 +122,12 @@ int reCount=0;
                         .start,
                     children: [
                       Container(
-                        width: SizeConfig.screenWidth *
-                            0.65,
+                        width: SizeConfig.screenWidth * 0.85,
                         child: Text(
-                          widget.data['orders'][widget.index]['orderItems'][0]['product']['name'],
+                          "Order name: OD${widget.data['orders'][widget.index]['_id']}",
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -171,12 +169,31 @@ int reCount=0;
                               )
                             ]),
                       ),
+                      Container(
+                        width: SizeConfig.screenWidth*0.85,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: widget.data["orders"][widget.index]["orderItems"].length,
+                            padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(child: Row(
+                                children: [
+                                  Icon(Icons.circle,size: 8,),
+                                  SizedBox(width: 5,),
+                                  Text("${widget.data["orders"][widget.index]["orderItems"][index]['product']['name']} | Quantity: ${widget.data["orders"][widget.index]["orderItems"][index]['purchasedQuantity']} | Price: ₹${widget.data["orders"][widget.index]["orderItems"][index]['payablePrice'].toString()}",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight
+                                          .w700
+                                  ),),
+                                ],
+                              ),);
+                            }),
+                      ),
                     ],
                   ),
-                  Container(
-                      width: SizeConfig.screenWidth * 0.15,
-                      child: Image.network(
-                          widget.data['orders'][widget.index]['orderItems'][0]['product']['productPicture'])),
                 ],
               ),
             ),

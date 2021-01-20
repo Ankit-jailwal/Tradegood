@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as Http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tradegood/API/authentication.dart';
 import 'package:tradegood/API/getProductById.dart';
 
@@ -8,6 +9,16 @@ import 'package:tradegood/API/getProductById.dart';
 Future placeOrderItem(var cartData,int cartTotal) async{
   final String url = server + "/api/order/addOrderItems";
   String res= await storage.read(key: 'jwt');
+  bool hasExpired = JwtDecoder.isExpired(res);
+  if(hasExpired==true)
+  {
+    String email= await storage.read(key: 'email');
+    String password= await storage.read(key: 'password');
+    final token = await AuthenticationService().login(email, password);
+    final tokenBody=jsonDecode(token);
+    storage.write(key: "jwt", value: tokenBody["token"]);
+    res=tokenBody["token"];
+  }
   var orderList=[];
 for(int i=0; i<cartData['cart']['cartItems'].length ;i++)
   {print(cartData['cart']['cartItems'][i]['_id']);

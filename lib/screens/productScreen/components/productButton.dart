@@ -4,7 +4,9 @@ import 'package:tradegood/API/addToCart.dart';
 import '../../../size_config.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../constants.dart';
+import 'viewMore.dart';
 
 class productButton extends StatefulWidget {
   int index;
@@ -110,7 +112,7 @@ final TextEditingController quantityController = TextEditingController();
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
-                                          Text("Type quantity in multiple of ${widget.data['products'][widget.index]['quantity'].toString()}!",style: TextStyle(fontWeight: FontWeight.w600),),
+                                          Text("Available Stock: ${widget.data['products'][widget.index]['availableStock']}",style: TextStyle(fontWeight: FontWeight.w600),),
                                           Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: TextFormField(
@@ -149,24 +151,31 @@ final TextEditingController quantityController = TextEditingController();
                                             child: FlatButton(
                                               onPressed: () {
                                                 int quantity= int.parse(quantityController.text);
-
-                                                if(quantity%widget.data['products'][widget.index]['quantity']==0&&quantity>=0)
-                                                {
-                                                  {if(quantity<=widget.data['products'][widget.index]['availableStock']) {
-                                                    _counter = quantity ~/ widget
-                                                        .data['products'][widget
-                                                        .index]['quantity'];
+                                                if(quantity>widget.data['products'][widget.index]['quantity']) {
+                                                  if (quantity <= widget
+                                                      .data['products'][widget
+                                                      .index]['availableStock']) {
+                                                    _counter = quantity-widget.data['products'][widget.index]['quantity']+1;
                                                     setState(() {
                                                       _countFlag = true;
                                                     });
                                                     Navigator.pop(context);
                                                   }
                                                   else
-                                                    Toast.show("Quantity should be less then ${widget.data['products'][widget.index]['availableStock']}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
-                                                  }
+                                                    Toast.show(
+                                                        "Quantity should be less then ${widget
+                                                            .data['products'][widget
+                                                            .index]['availableStock']}",
+                                                        context, duration: Toast
+                                                        .LENGTH_SHORT,
+                                                        gravity: Toast.TOP);
                                                 }
                                                 else
-                                                  Toast.show("Enter quantity in multiple of minimum quantity", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                                  Toast.show(
+                                                      "Quantity should be greater then ${widget.data['products'][widget.index]['quantity']}",
+                                                      context, duration: Toast
+                                                      .LENGTH_SHORT,
+                                                      gravity: Toast.TOP);
                                               },
                                               child: Container(
                                                   decoration:BoxDecoration(
@@ -192,7 +201,7 @@ final TextEditingController quantityController = TextEditingController();
                             .only(
                             left: 10,right: 10),
                         child: Text(
-                          _countFlag?"${widget.data['products'][widget.index]['quantity']*_counter}":"ADD",
+                          _countFlag?"${_counter+widget.data['products'][widget.index]['quantity']-1}":"ADD",
                           style:
                           TextStyle(
                             color: Colors
@@ -208,6 +217,7 @@ final TextEditingController quantityController = TextEditingController();
                         ),
                       ),
                     ),
+
                     Column(
                       mainAxisAlignment:
                       MainAxisAlignment
@@ -225,13 +235,17 @@ final TextEditingController quantityController = TextEditingController();
                             onTap:
                                 () {
                               if (_counter >= 0) {
-                                setState(() {
-                                  _counter++;
-                                  print(
-                                      _counter);
-                                  _countFlag =
-                                  true;
-                                });
+                                if(_counter < widget.data['products'][widget.index]['availableStock']) {
+                                  setState(() {
+                                    _counter++;
+                                    print(
+                                        _counter);
+                                    _countFlag =
+                                    true;
+                                  });
+                                }
+                                else
+                                  Toast.show("Quantity should be less then ${widget.data['products'][widget.index]['availableStock']}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                               }
                               else {
                                 setState(() {
@@ -255,22 +269,23 @@ final TextEditingController quantityController = TextEditingController();
                     ),
                   ],
                 ),
+
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      if (check == true){
-                        Toast.show("Item already added in your cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                      }
-                      else
-                      {
-                        Toast.show("Item added in cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                        check = true;
-                        addToCart(widget.data['products'][widget.index]['_id'],
-                            _countFlag?widget.data['products'][widget.index]['quantity']*_counter:widget.data['products'][widget.index]['quantity'],
-                            );
-                      }
+                       setState(() {
+                         if (check == true){
+                           Toast.show("Item already added in your cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                         }
+                         else
+                         {
+                           Toast.show("Item added in cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                           check = true;
+                           addToCart(widget.data['products'][widget.index]['_id'],
+                               _countFlag?_counter+widget.data['products'][widget.index]['quantity']-1:widget.data['products'][widget.index]['quantity'],
+                               );
+                         }
 
-                    });
+                       });
                   },
                   child: Container(
                     height: 23,
@@ -283,6 +298,7 @@ final TextEditingController quantityController = TextEditingController();
               ],
             ),
           ),
+          
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Text(
