@@ -47,7 +47,7 @@ class _OtpFormState extends State<OtpForm> {
           PinCodeTextField(
             appContext: context,
             length: 6,
-            obscureText: true,
+            obscureText: false,
             pinTheme: PinTheme(
               shape: PinCodeFieldShape.box,
               activeColor: Colors.blue,

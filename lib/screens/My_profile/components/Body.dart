@@ -37,8 +37,6 @@ class _BodyState extends State<Body> {
       nameController=TextEditingController(text: name1);
       phoneController=TextEditingController(text: ph1);
   }
-
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -111,23 +109,6 @@ class _BodyState extends State<Body> {
                 Padding(
                   padding: EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
-                    controller: phoneController,
-                    //initialValue: snapshot.data['user']['phoneNumber'].toString(),
-                    decoration: InputDecoration(
-                      labelText: "Phone No.",
-                      labelStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16.0,
-                      ),
-                    ), //Obscure logic
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: TextFormField(
                     initialValue: snapshot.data['user']['email'],
                     enabled: false,
                     decoration: InputDecoration(
@@ -145,7 +126,24 @@ class _BodyState extends State<Body> {
                 Padding(
                   padding: EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
-                      initialValue: snapshot.data['user']['address'],
+                    initialValue: snapshot.data['user']['phoneNumber'].toString(),
+                    enabled: false,
+                    decoration: InputDecoration(
+                      labelText: "Phone Number",
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                      ),
+                    ), //Obscure logic
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: TextFormField(
+                      initialValue: snapshot.data['user']['address']!=null?snapshot.data['user']['address']:"No address found",
                     enabled: false,
                     decoration: InputDecoration(
                       labelText: "Address",
@@ -156,7 +154,6 @@ class _BodyState extends State<Body> {
                     ), //Obscure logic
                   ),
                 ),
-
                 Align(
                   alignment: FractionalOffset.bottomRight,
                   child: FlatButton(

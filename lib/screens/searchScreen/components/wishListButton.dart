@@ -17,13 +17,19 @@ class _wishListButtonState extends State<wishListButton> {
   bool defaultCheck=true;
   bool changeWishCheck()
   {
-    for (int i = 0; i < widget.wishListData['wishlist']['wishlistItems'].length; i++) {
-      if (widget.wishListData['wishlist']['wishlistItems'][i]['product'] == widget.data['product'][widget.index]['_id']) {
-        setState(() {
-          wishCheck = false;
-        });
+    if(widget.wishListData.length!=0){
+      for (int i = 0; i <
+          widget.wishListData['wishlist']['wishlistItems'].length; i++) {
+        if (widget.wishListData['wishlist']['wishlistItems'][i]['product'] ==
+            widget.data['product'][widget.index]['_id']) {
+          setState(() {
+            wishCheck = false;
+          });
+        }
       }
     }
+    else
+      wishCheck=true;
     return wishCheck;
   }
   @override

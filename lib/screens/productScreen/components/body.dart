@@ -55,7 +55,7 @@ class _BodyState extends State<Body> {
   bool checkCat(var catData)
   {
     bool flag=true;
-    if(catData['message']=="No products in this category")
+    if(catData['message']!=null)
       {
         flag=false;
       }

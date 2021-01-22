@@ -182,7 +182,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
           resetFlag?TextFormField(
             keyboardType: TextInputType.number,
             controller: OTPcontroller,
-            obscureText: true,
+            obscureText: false,
             decoration: InputDecoration(
               labelText: "OTP",
               hintText: "Enter OTP",
