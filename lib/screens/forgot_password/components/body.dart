@@ -276,8 +276,8 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
             ),
           ),
           resetFlag?SizedBox(height: SizeConfig.screenHeight * 0.02):Container(),
-          resetFlag?GestureDetector(
-            onTap: () async{
+          resetFlag?FlatButton(
+            onPressed: () async{
               var response=await resetPasswordOTP(phoneController.text);
               print(response);
               Toast.show(response['message'], context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);

@@ -75,7 +75,7 @@ class _OtpFormState extends State<OtpForm> {
             text: "Continue",
             press: () async{
               var response=await checkOTP(OTPcontroller.text);
-              if(response['Valid']==true) {
+              if(response['Valid']==true){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SignInScreen()),
@@ -88,10 +88,10 @@ class _OtpFormState extends State<OtpForm> {
             },
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.05),
-          GestureDetector(
-            onTap: () async{
-             var response=await resendOTP(widget.phone);
-             print(response);
+          FlatButton(
+            onPressed: () async{
+             await resendOTP(widget.phone);
+
              Toast.show("OTP successfully sent to ${widget.phone}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
             },
             child: Text(

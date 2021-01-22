@@ -7,25 +7,13 @@ import 'package:tradegood/API/authentication.dart';
 
 Future resetPasswordOTP(String phone) async{
   final String url = server + "/api/sendResetPasswordToken";
-  String res= await storage.read(key: 'jwt');
-  bool hasExpired = JwtDecoder.isExpired(res);
-  if(hasExpired==true)
-  {
-    String email= await storage.read(key: 'email');
-    String password= await storage.read(key: 'password');
-    final token = await AuthenticationService().login(email, password);
-    final tokenBody=jsonDecode(token);
-    storage.write(key: "jwt", value: tokenBody["token"]);
-    res=tokenBody["token"];
-  }
   Map data={
     "phoneNumber": phone
   };
   print(data);
-  String token= "Bearer "+res;
   print("token $token");
   final response = await Http.post(url,
-      headers: {"Content-Type": "application/json","Authorization":"$token"},
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode(data)
   );
   print(response.body);
