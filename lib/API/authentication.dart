@@ -47,10 +47,10 @@ class AuthenticationService {
 
 //TOKEN
 
-  Future login(String email, String password) async {
+  Future login(String phone, String password) async {
     final String url = server + "/api/signin";
 
-    Map<String, String> data = {"email": email, "password": password};
+    Map<String, String> data = {"phoneNumber": phone, "password": password};
     //print(data);
 
     final response = await http.post(url,

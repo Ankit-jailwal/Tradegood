@@ -10,6 +10,8 @@ import 'package:tradegood/screens/productScreen/components/productButton.dart';
 import 'package:tradegood/screens/productScreen/components/wishListButton.dart';
 import 'package:tradegood/API/productRating.dart';
 import 'package:tradegood/screens/noItemsAvailable/components/Body.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'viewMore.dart';
 
 class Body extends StatefulWidget {
   String productUrl;
@@ -62,8 +64,8 @@ class _BodyState extends State<Body> {
     return flag;
   }
   @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
+  Widget build(BuildContext context) =>
+     RefreshIndicator(
       onRefresh: updatePage,
       child: FutureBuilder(
           future: getProduct(productUrl),
@@ -113,6 +115,7 @@ class _BodyState extends State<Body> {
                                                       mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceBetween,
+                                                      crossAxisAlignment: CrossAxisAlignment.end,
                                                       children: [
                                                         Padding(
                                                           padding: const EdgeInsets
@@ -251,8 +254,7 @@ class _BodyState extends State<Body> {
                                                                         height: 8,
                                                                       ),
                                                                       Text(
-                                                                        "Quantity: ${snapshot
-                                                                            .data['products'][index]['quantity']}",
+                                                                        "Quantity: ${snapshot.data['products'][index]['quantity']}",
                                                                         style: TextStyle(
                                                                           color:
                                                                           Colors
@@ -264,6 +266,82 @@ class _BodyState extends State<Body> {
                                                                           fontFamily:
                                                                           "Roberto",
                                                                         ),
+                                                                      ),
+                                                                      SizedBox(height: 5,),
+                                                                      GestureDetector(
+                                                                        onTap: (){
+                                                                          showModalBottomSheet(
+                                                                            enableDrag: true,
+                                                                            isDismissible: true,
+                                                                            shape: RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.only(
+                                                                                topLeft: Radius.circular(24),
+                                                                                topRight: Radius.circular(24),
+                                                                              ),
+                                                                            ),
+                                                                            barrierColor: Colors.black45.withOpacity(0.2),
+                                                                            context: context,
+                                                                            builder: (context) => Column(
+                                                                              mainAxisSize: MainAxisSize.min,
+                                                                              children: <Widget>[
+                                                                                SizedBox(height: 10,),
+                                                                                Text(snapshot.data['products'][index]['name'],style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w600),),
+                                                                                SizedBox(height: 10,),
+                                                                                Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                                                  children: [
+                                                                                    Padding(
+                                                                                      padding: const EdgeInsets.only(left:10.0,right: 10),
+                                                                                      child: RichText(
+                                                                                        text: TextSpan(
+                                                                                          children: <TextSpan>[
+                                                                                            TextSpan(
+                                                                                                text: 'Description: ',
+                                                                                              style: TextStyle(color:Colors.black,fontSize: 16,fontWeight: FontWeight.w600),),
+                                                                                            TextSpan(
+                                                                                                text: snapshot.data['products'][index]['description'],
+                                                                                              style: TextStyle(color:Colors.black,fontSize: 16,fontWeight: FontWeight.w400),),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    SizedBox(height: 10,)
+                                                                                  ],
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          );
+                                                                        },
+                                                                        child: Container(
+                                                                            decoration: BoxDecoration(
+                                                                                color: Colors
+                                                                                    .white,
+                                                                                borderRadius: BorderRadius
+                                                                                    .circular(
+                                                                                    5),
+                                                                                boxShadow: [
+                                                                                  new BoxShadow(
+                                                                                    color: Colors
+                                                                                        .black
+                                                                                        .withOpacity(
+                                                                                        0.3),
+                                                                                    blurRadius: 3,
+                                                                                    offset: Offset(
+                                                                                        0,
+                                                                                        3),
+                                                                                  ),
+                                                                                ]
+                                                                            ),
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets
+                                                                                  .only(
+                                                                                  top: 3,
+                                                                                  bottom: 3,
+                                                                                  left: 10,
+                                                                                  right: 10),
+                                                                              child: Text(
+                                                                                  "Quick view"),
+                                                                            )),
                                                                       ),
                                                                     ]),
                                                                 wishListButton(
@@ -543,7 +621,35 @@ class _BodyState extends State<Body> {
 
             ),
     );
-  }
+    void showBottomSheet() => showModalBottomSheet(
+      enableDrag: true,
+      isDismissible: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+      barrierColor: Colors.black45.withOpacity(0.2),
+      context: context,
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.share),
+            title: Text('Share'),
+            onTap: () {
+              Navigator.of(context).pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.link),
+            title: Text('Copy link'),
+            onTap: () => {},
+          ),
+        ],
+      ),
+    );
 }
 
 

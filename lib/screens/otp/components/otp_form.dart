@@ -1,115 +1,103 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/components/default_button.dart';
 import 'package:tradegood/size_config.dart';
-
+import 'package:tradegood/API/checkOTP.dart';
 import '../../../constants.dart';
+import 'package:toast/toast.dart';
+import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
+import 'package:tradegood/API/resendOTP.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 
+void displayDialog(context, title, text) => showDialog(
+  context: context,
+  builder: (context) => AlertDialog(
+    title: Text(title),
+    content: Text(text),
+    actions: [
+      FlatButton(
+        child: Text("Sign In"),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => SignInScreen()));
+        },
+      )
+    ],
+  ),
+);
 class OtpForm extends StatefulWidget {
-  const OtpForm({
-    Key key,
-  }) : super(key: key);
+  String phone;
+  OtpForm(this.phone);
 
   @override
   _OtpFormState createState() => _OtpFormState();
 }
 
 class _OtpFormState extends State<OtpForm> {
-  FocusNode pin2FocusNode;
-  FocusNode pin3FocusNode;
-  FocusNode pin4FocusNode;
 
-  @override
-  void initState() {
-    super.initState();
-    pin2FocusNode = FocusNode();
-    pin3FocusNode = FocusNode();
-    pin4FocusNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    pin2FocusNode.dispose();
-    pin3FocusNode.dispose();
-    pin4FocusNode.dispose();
-  }
-
-  void nextField(String value, FocusNode focusNode) {
-    if (value.length == 1) {
-      focusNode.requestFocus();
-    }
-  }
+  final TextEditingController OTPcontroller = TextEditingController();
+    var currentText;
 
   @override
   Widget build(BuildContext context) {
     return Form(
       child: Column(
         children: [
-          SizedBox(height: SizeConfig.screenHeight * 0.15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: getProportionateScreenWidth(60),
-                child: TextFormField(
-                  autofocus: true,
-                  obscureText: true,
-                  style: TextStyle(fontSize: 24),
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  decoration: otpInputDecoration,
-                  onChanged: (value) {
-                    nextField(value, pin2FocusNode);
-                  },
-                ),
-              ),
-              SizedBox(
-                width: getProportionateScreenWidth(60),
-                child: TextFormField(
-                  focusNode: pin2FocusNode,
-                  obscureText: true,
-                  style: TextStyle(fontSize: 24),
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  decoration: otpInputDecoration,
-                  onChanged: (value) => nextField(value, pin3FocusNode),
-                ),
-              ),
-              SizedBox(
-                width: getProportionateScreenWidth(60),
-                child: TextFormField(
-                  focusNode: pin3FocusNode,
-                  obscureText: true,
-                  style: TextStyle(fontSize: 24),
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  decoration: otpInputDecoration,
-                  onChanged: (value) => nextField(value, pin4FocusNode),
-                ),
-              ),
-              SizedBox(
-                width: getProportionateScreenWidth(60),
-                child: TextFormField(
-                  focusNode: pin4FocusNode,
-                  obscureText: true,
-                  style: TextStyle(fontSize: 24),
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  decoration: otpInputDecoration,
-                  onChanged: (value) {
-                    if (value.length == 1) {
-                      pin4FocusNode.unfocus();
-                      // Then you need to check is the code is correct or not
-                    }
-                  },
-                ),
-              ),
-            ],
+          SizedBox(height: SizeConfig.screenHeight * 0.13),
+          PinCodeTextField(
+            appContext: context,
+            length: 6,
+            obscureText: true,
+            pinTheme: PinTheme(
+              shape: PinCodeFieldShape.box,
+              activeColor: Colors.blue,
+              fieldHeight: 50,
+              fieldWidth: 40,
+              selectedFillColor: Colors.white,
+              inactiveColor: Colors.blue,
+              inactiveFillColor: Colors.white,
+              activeFillColor: Colors.white,
+            ),
+            animationDuration: Duration(milliseconds: 300),
+            enableActiveFill: true,
+            controller: OTPcontroller,
+            onCompleted: (v) {
+              print("Completed");
+            },
+            onChanged: (value) {
+              setState(() {
+                currentText = value;
+              });
+            },
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.15),
           DefaultButton(
             text: "Continue",
-            press: () {},
+            press: () async{
+              var response=await checkOTP(OTPcontroller.text);
+              if(response['Valid']==true) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignInScreen()),
+                );
+              }
+              else
+                {
+                  Toast.show("Please enter valid OTP", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                }
+            },
+          ),
+          SizedBox(height: SizeConfig.screenHeight * 0.05),
+          GestureDetector(
+            onTap: () async{
+             var response=await resendOTP(widget.phone);
+             print(response);
+             Toast.show("OTP successfully sent to ${widget.phone}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+            },
+            child: Text(
+              "Resend OTP",
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+            ),
           )
         ],
       ),

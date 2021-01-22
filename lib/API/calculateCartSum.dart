@@ -9,7 +9,7 @@ Future calculateCartSum(var data) async{
     productData = await getProductByID(data['cart']['cartItems'][i]['product']);
     print(data['cart']['cartItems'][i]['quantity']);
     print(productData['product'][0]['quantity']);
-    cartSum =cartSum + (productData['product'][0]['ptr']*(data['cart']['cartItems'][i]['quantity'])/(productData['product'][0]['quantity']));
+    cartSum =cartSum + (productData['product'][0]['ptr']*(data['cart']['cartItems'][i]['quantity']));
   }
   print(cartSum);
   return cartSum;

@@ -18,14 +18,26 @@ class _wishListButtonState extends State<wishListButton> {
   bool defaultCheck=true;
   bool changeWishCheck()
   {
-      for (int i = 0; i < widget.wishData['wishlist']['wishlistItems'].length; i++) {
-        if (widget.wishData['wishlist']['wishlistItems'][i]['product'] == widget.data['products'][widget.index]['_id']) {
+
+    print(widget.wishData);
+    if(widget.wishData.length!=0)
+    {
+      for (int i = 0;
+          i < widget.wishData['wishlist']['wishlistItems'].length;
+          i++) {
+        if (widget.wishData['wishlist']['wishlistItems'][i]['product'] ==
+            widget.data['products'][widget.index]['_id']) {
           setState(() {
             wishCheck = false;
           });
         }
+      }
     }
-      return wishCheck;
+    else {
+      wishCheck=true;
+    }
+
+    return wishCheck;
   }
   @override
   Widget build(BuildContext context) {

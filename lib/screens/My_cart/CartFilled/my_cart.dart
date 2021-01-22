@@ -264,9 +264,7 @@ class _cart_screenState extends State<cart_screen> {
                                                           FlatButton(
                                                             onPressed: () async {
                                                               final orderConfirmation = await placeOrderItem(
-                                                                  snapshot.data,
-                                                                  cartSum.data
-                                                                      .toInt());
+                                                                  snapshot.data, cartSum.data.toInt());
                                                               if (orderConfirmation !=
                                                                   null) {
                                                                 Navigator.push(
@@ -571,7 +569,7 @@ class _cartItemClassState extends State<cartItemClass> {
                             Row(
                               children: [
                                 Text(
-                                  "₹${(updateFlag?widget.cartItemData['product'][0]['ptr']*widget.cartData['cart']['cartItems'][widget.index]['quantity']/widget.cartItemData['product'][0]['quantity']:widget.cartItemData['product'][0]['ptr']*realQuantity/widget.cartItemData['product'][0]['quantity'])
+                                  "₹${(updateFlag?widget.cartItemData['product'][0]['ptr']*widget.cartData['cart']['cartItems'][widget.index]['quantity']:widget.cartItemData['product'][0]['ptr']*realQuantity)
                                       .toString()}",
                                   style: TextStyle(
                                       color: Colors
@@ -597,7 +595,7 @@ class _cartItemClassState extends State<cartItemClass> {
                                                   child: Column(
                                                     mainAxisSize: MainAxisSize.min,
                                                     children: <Widget>[
-                                                      Text("Type quantity in multiple of ${widget.cartItemData['product'][0]['quantity'].toString()}!",style: TextStyle(fontWeight: FontWeight.w600),),
+                                                      Text("Quantity should be greater then ${widget.cartItemData['product'][0]['quantity'].toString()}!",style: TextStyle(fontWeight: FontWeight.w600),),
                                                       Padding(
                                                         padding: EdgeInsets.all(8.0),
                                                         child: TextFormField(
@@ -636,9 +634,8 @@ class _cartItemClassState extends State<cartItemClass> {
                                                         child: FlatButton(
                                                           onPressed: () async{
                                                             int quantity= int.parse(quantityController.text);
-                                                            if(quantity%widget.cartItemData['product'][0]['quantity']==0&&quantity>0)
+                                                            if(quantity>=widget.cartItemData['product'][0]['quantity'])
                                                               {
-
                                                                 if(quantity<=widget.cartItemData['product'][0]['availableStock']) {
                                                                   prevQuantity=updateFlag?changeQuantity(widget.cartData['cart']['cartItems'][widget.index]['quantity']):realQuantity;
                                                                   updateFlag=false;
@@ -653,7 +650,7 @@ class _cartItemClassState extends State<cartItemClass> {
                                                                   Toast.show("Quantity should be less then ${widget.cartItemData['product'][0]['availableStock']}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
                                                               }
                                                             else
-                                                              Toast.show("Enter quantity in multiple of minimum quantity", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                                              Toast.show("Quantity should be greater then minimum quantity", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
                                                           },
                                                           child: Container(
                                                               decoration:BoxDecoration(

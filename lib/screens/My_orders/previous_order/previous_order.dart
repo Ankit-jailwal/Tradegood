@@ -8,7 +8,7 @@ class Previous_page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Body(),
+      body: noOrderBody(),
       appBar: AppBar(
         leading: GestureDetector(
           onTap: (){

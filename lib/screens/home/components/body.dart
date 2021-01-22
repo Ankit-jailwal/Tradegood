@@ -76,41 +76,43 @@ class _BodyState extends State<Body> {
                                 color: Color.fromARGB(255, 243, 243, 243),
                                 child: Padding(
                                   padding: EdgeInsets.all(5),
-                                  child: DropdownButton(
-                                      value: _value,
-                                      items: [
-                                        DropdownMenuItem(
-                                          child: Text("By Categories"),
-                                          value: 1,
-                                        ),
-                                        DropdownMenuItem(
-                                          child: Text("By Brands"),
-                                          value: 2,
-                                        ),
-                                      ],
-                                      onChanged: (value) {
-                                        if (value == 1) {
-                                          if(value!=_value)
-                                          setState(() {
-                                            _value = 1;
-                                             type="Categories";
-                                             url="/category/getCategory";
-                                             productUrl='/category/';
-                                             flag=false;
-                                            reloadFlag=false;
-                                          });
-                                        } else if (value == 2) {
-                                          if(value!=_value)
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                        value: _value,
+                                        items: [
+                                          DropdownMenuItem(
+                                            child: Text("By Categories"),
+                                            value: 1,
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text("By Brands"),
+                                            value: 2,
+                                          ),
+                                        ],
+                                        onChanged: (value) {
+                                          if (value == 1) {
+                                            if(value!=_value)
                                             setState(() {
-                                              _value = 2;
-                                              type="Brands";
-                                              url="/brand/getBrand";
-                                              productUrl='/brand/';
-                                              flag=true;
+                                              _value = 1;
+                                               type="Categories";
+                                               url="/category/getCategory";
+                                               productUrl='/category/';
+                                               flag=false;
                                               reloadFlag=false;
                                             });
-                                        }
-                                      }),
+                                          } else if (value == 2) {
+                                            if(value!=_value)
+                                              setState(() {
+                                                _value = 2;
+                                                type="Brands";
+                                                url="/brand/getBrand";
+                                                productUrl='/brand/';
+                                                flag=true;
+                                                reloadFlag=false;
+                                              });
+                                          }
+                                        }),
+                                  ),
                                 ),
                               ),
                               Padding(

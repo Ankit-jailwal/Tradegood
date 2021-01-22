@@ -4,6 +4,7 @@ import '../../../size_config.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:tradegood/API/getAdditionalDetails.dart';
+import 'package:toast/toast.dart';
 
 class Body extends StatefulWidget {
   File _image;
@@ -185,7 +186,18 @@ int _value = 1;
           SizedBox(height: getProportionateScreenHeight(25  )),
           FlatButton(
             onPressed: () async {
-              await updateAdditionalDetails(addresscontroller.text,widget._image);
+              if(addresscontroller.text!=null&&widget._image!=null)
+                {
+                  final response=await updateAdditionalDetails(addresscontroller.text,widget._image);
+                  if(response['message']!=null)
+                  {
+                    Toast.show(response['message'], context, duration: Toast.LENGTH_LONG, gravity:  Toast.TOP);
+                  }
+                  else
+                    Toast.show("Something went wrong", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                }
+              else
+                Toast.show("Please enter valid details", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),

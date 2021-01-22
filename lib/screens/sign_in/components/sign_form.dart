@@ -15,9 +15,9 @@ class SignForm extends StatefulWidget {
 
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
-  String email;
+  String phone;
   String password;
-  final TextEditingController emailcontroller = TextEditingController();
+  final TextEditingController phonecontroller = TextEditingController();
   final TextEditingController passwordcontroller = TextEditingController();
   bool remember = false;
   final List<String> errors = [];
@@ -57,16 +57,14 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           FlatButton(
             onPressed: () async {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                final email=emailcontroller.text;
+                final phone=phonecontroller.text;
                 final password=passwordcontroller.text;
                 final _token = await AuthenticationService()
-                    .login(email, password);
+                    .login(phone, password);
                 final token_body = jsonDecode(_token);
                 if(token_body["token"] != null) {
                   storage.write(key: "jwt", value: token_body["token"]);
-                  storage.write(key: "email", value: email);
+                  storage.write(key: "email", value: phone);
                   storage.write(key: "password", value: password);
                   Navigator.push(
                       context,
@@ -81,7 +79,7 @@ class _SignFormState extends State<SignForm> {
                     addError(error: token_body["message"]);
                 }
                 print(_token);
-              }
+
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
@@ -156,26 +154,8 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      controller: emailcontroller,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        }
-        return null;
-      },
+      keyboardType: TextInputType.number,
+      controller: phonecontroller,
       decoration: InputDecoration(
         labelText: "Phone Number",
         hintText: "Enter your Phone Number",

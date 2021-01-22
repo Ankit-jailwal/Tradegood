@@ -222,6 +222,82 @@ class _BodyState extends State<Body> {
                                                           "Roberto",
                                                         ),
                                                       ),
+                                                      SizedBox(height: 5,),
+                                                      GestureDetector(
+                                                        onTap: (){
+                                                          showModalBottomSheet(
+                                                            enableDrag: true,
+                                                            isDismissible: true,
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.only(
+                                                                topLeft: Radius.circular(24),
+                                                                topRight: Radius.circular(24),
+                                                              ),
+                                                            ),
+                                                            barrierColor: Colors.black45.withOpacity(0.2),
+                                                            context: context,
+                                                            builder: (context) => Column(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              children: <Widget>[
+                                                                SizedBox(height: 10,),
+                                                                Text(widget.data['product'][index]['name'],style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w600),),
+                                                                SizedBox(height: 10,),
+                                                                Column(
+                                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(left:10.0,right: 10),
+                                                                      child: RichText(
+                                                                        text: TextSpan(
+                                                                          children: <TextSpan>[
+                                                                            TextSpan(
+                                                                              text: 'Description: ',
+                                                                              style: TextStyle(color:Colors.black,fontSize: 16,fontWeight: FontWeight.w600),),
+                                                                            TextSpan(
+                                                                              text: widget.data['product'][index]['description'],
+                                                                              style: TextStyle(color:Colors.black,fontSize: 16,fontWeight: FontWeight.w400),),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(height: 10,)
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        },
+                                                        child: Container(
+                                                            decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                borderRadius: BorderRadius
+                                                                    .circular(
+                                                                    5),
+                                                                boxShadow: [
+                                                                  new BoxShadow(
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                        0.3),
+                                                                    blurRadius: 3,
+                                                                    offset: Offset(
+                                                                        0,
+                                                                        3),
+                                                                  ),
+                                                                ]
+                                                            ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets
+                                                                  .only(
+                                                                  top: 3,
+                                                                  bottom: 3,
+                                                                  left: 10,
+                                                                  right: 10),
+                                                              child: Text(
+                                                                  "Quick view"),
+                                                            )),
+                                                      ),
                                                     ]),
                                                     wishListButton(
                                                         widget.data, index,

@@ -38,5 +38,5 @@ Future updateAdditionalDetails(String address,File file) async {
   ),).then((response) {
     jsonResponse = jsonDecode(response.toString());
   }).catchError((error) => print(error));
-  print(jsonResponse);
+  return jsonResponse;
 }

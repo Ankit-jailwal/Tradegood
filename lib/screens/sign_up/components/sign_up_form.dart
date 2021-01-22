@@ -5,8 +5,10 @@ import 'package:tradegood/components/form_error.dart';
 import 'package:tradegood/API/authentication.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import 'package:tradegood/screens/otp/otp_screen.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:toast/toast.dart';
+import 'package:tradegood/API/OTPverification.dart';
 
 void displayDialog(context, title, text) => showDialog(
       context: context,
@@ -103,32 +105,40 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
         FlatButton(
           onPressed: () async {
-              final fullname = fullnamecontroller.text;
-              final phno = phnocontroller.text;
-              final email = emailcontroller.text;
-              final password = passwordcontroller.text;
-              var body;
-              if(remember==true)
-                {
-                  body=await attemptSignUp(fullname, phno, email, password);
-                }
-              else
-                Toast.show("Please agree Terms and Conditions", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
-              final decode_body = jsonDecode(body);
-              print(body);
-              if (decode_body["message"] == "User created successfully") {
-                displayDialog(
-                    context, "Success", "The user was created. Log in now.");
-              }
-              //print(decode_body["message"]);
-              else if (decode_body["message"] == "User already registered")
-                displayDialog(context, "That email is already registered",
-                    "Please try to sign up using another email or login if you already have an account.");
-              else {
-                Toast.show(decode_body['errors'], context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
-              }
-              // if all are valid then go to success screen
-          },
+
+           final fullname = fullnamecontroller.text;
+           final phno = phnocontroller.text;
+           final email = emailcontroller.text;
+           final password = passwordcontroller.text;
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => OtpScreen(fullname,phno,email,password)),
+          // );
+           var body;
+           if(remember==true)
+           {
+             body=await attemptSignUp(fullname, phno, email, password);
+             print(body);
+             final decodeBody = jsonDecode(body);
+             if (decodeBody["message"] == "Verification token has been sent to your mobile") {
+               //Toast.show(decodeBody['errors'], context, duration: Toast.LENGTH_SHORT, gravity: Toast.TOP);
+                 Navigator.push(
+                   context,
+                   MaterialPageRoute(builder: (context) => OtpScreen(fullname,phno,email,password)),
+                 );
+             }
+             else{
+               if (decodeBody["message"] == "User already registered")
+                 displayDialog(context, decodeBody["message"], "Please try to sign up using another phone number or login if you already have an account.");
+               if(decodeBody['errors']!=null)
+                 Toast.show(decodeBody['errors'], context, duration: Toast.LENGTH_SHORT, gravity: Toast.TOP);
+               if(decodeBody['error']!=null)
+                 Toast.show("Something went wrong!", context, duration: Toast.LENGTH_SHORT, gravity: Toast.TOP);
+             }
+           }
+           else
+             Toast.show("Please agree Terms and Conditions", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+        },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Container(
@@ -216,7 +226,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Password",
+        labelText: "Password*",
         hintText: "Enter your password",
         floatingLabelBehavior: FloatingLabelBehavior.always,
           suffixIcon:Padding(
@@ -286,7 +296,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Full Name",
+        labelText: "Full Name*",
         hintText: "Enter your Full Name",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -317,7 +327,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-          labelText: "Address",
+          labelText: "Address*",
           hintText: "Enter your Address",
           // If  you are using latest version of flutter then lable text and hint text shown like this
           // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -348,7 +358,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-          labelText: "GST Number",
+          labelText: "GST Number*",
           hintText: "Enter your GST Number",
           // If  you are using latest version of flutter then lable text and hint text shown like this
           // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -379,7 +389,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Phone No",
+        labelText: "Phone No*",
         hintText: "Enter your Phone Number",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: Padding(

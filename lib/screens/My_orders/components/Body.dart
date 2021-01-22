@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/API/getOrder.dart';
 import 'package:toast/toast.dart';
+import 'package:tradegood/screens/My_orders/previous_order/components/Body.dart';
 class Body extends StatefulWidget {
   @override
   _BodyState createState() => _BodyState();
@@ -10,6 +11,28 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   bool passFlag=false;
+  int checkCount(var data,bool flag)
+  {int count=0;
+  if(data["orders"].length!=0)
+  {
+      if (flag == true) {
+        for (int i = 0; i < data["orders"].length; i++) {
+          if (data["orders"][i]["orderStatus"][4]['isCompleted'] != true) {
+            count++;
+          }
+        }
+      } else {
+        for (int i = 0; i < data["orders"].length; i++) {
+          if (data["orders"][i]["orderStatus"][4]['isCompleted'] == true) {
+            count++;
+          }
+        }
+      }
+    }
+  else
+    count=1;
+    return count;
+  }
   void update(bool flagUpdate) {
     setState(() => passFlag=flagUpdate);
   }
@@ -25,13 +48,13 @@ class _BodyState extends State<Body> {
                 SizedBox(
                   height: SizeConfig.screenHeight * 0.01,
                 ),
-                Expanded(
+                checkCount(snapshot.data,passFlag)==0?Expanded(
                     child: ListView.builder(
                         itemCount: snapshot.data['orders'].length,
                         padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
                         itemBuilder: (BuildContext context, int index) {
                           return orderItem(snapshot.data, index, this.passFlag);
-                        }))
+                        })):noOrderBody()
               ],
             );
           }
@@ -56,6 +79,7 @@ class _orderItemState extends State<orderItem> {
 bool check=false;
 int prevCount=0;
 int reCount=0;
+
   checkStatus(var data)
   {
     print(data);

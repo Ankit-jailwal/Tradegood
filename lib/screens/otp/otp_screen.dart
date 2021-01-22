@@ -4,6 +4,11 @@ import 'package:tradegood/size_config.dart';
 import 'components/body.dart';
 
 class OtpScreen extends StatelessWidget {
+  String name;
+  String phone;
+  String email;
+  String password;
+  OtpScreen(this.name,this.phone,this.email,this.password);
   static String routeName = "/otp";
   @override
   Widget build(BuildContext context) {
@@ -12,7 +17,7 @@ class OtpScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("OTP Verification"),
       ),
-      body: Body(),
+      body: Body(name,phone,email,password),
     );
   }
 }
