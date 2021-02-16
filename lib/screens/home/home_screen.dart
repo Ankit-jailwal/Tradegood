@@ -16,6 +16,7 @@ import 'package:tradegood/API/signout.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:tradegood/API/applicationRating.dart';
 import 'package:toast/toast.dart';
+import 'package:tradegood/screens/privacyPolicy/privacyPolicy.dart';
 import 'package:tradegood/screens/additionalInfo/additionalInfo.dart';
 
 
@@ -357,7 +358,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                 builder: (context) => termsAndConditions()));
                           },
                         ),
-
+                        ListTile(
+                          leading: Container(
+                            width: SizeConfig.screenWidth * 0.095,
+                            child: Image.asset(
+                              "assets/images2/1ee94de249fcfd41cde38e7fe7daea4b0f472cfd.png",
+                            ),
+                          ),
+                          title: Text(
+                            'Privacy Policy',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => privacyPolicy()));
+                          },
+                        ),
                         ListTile(
                           title: Container(
                             height: 40,

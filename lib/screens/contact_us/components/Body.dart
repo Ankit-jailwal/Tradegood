@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -24,16 +25,21 @@ class Body extends StatelessWidget {
             ),
           ),
           SizedBox(height: SizeConfig.screenHeight*0.01,),
-          Text("Phone No: +91-12345678",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-              fontFamily: "Roberto",
+          GestureDetector(
+            onTap: (){
+              launch('tel://9403295506');
+            },
+            child: Text("Phone No: +91 9403295506",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Roberto",
+              ),
             ),
           ),
           SizedBox(height: SizeConfig.screenHeight*0.01,),
-          Text("Email Address: tradegood@contactus",
+          Text("Email Address: support@tradegood.in",
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,

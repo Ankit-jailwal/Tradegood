@@ -19,6 +19,7 @@ class _BodyState extends State<Body> {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
+        print(pickedFile.path);
         widget._image = File(pickedFile.path);
       } else {
         print('No image selected.');

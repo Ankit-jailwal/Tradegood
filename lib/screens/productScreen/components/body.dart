@@ -391,8 +391,7 @@ class _BodyState extends State<Body> {
                                                         mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
-                                                        crossAxisAlignment: CrossAxisAlignment
-                                                            .end,
+                                                        crossAxisAlignment: snapshot.data['products'][index]['availableStock']==0?CrossAxisAlignment.center:CrossAxisAlignment.end,
                                                         children: [
                                                           Padding(
                                                             padding: EdgeInsets
@@ -573,7 +572,10 @@ class _BodyState extends State<Body> {
                                                               ],
                                                             ),
                                                           ),
-                                                          productButton(
+                                                          snapshot.data['products'][index]['availableStock']==0?Padding(
+                                                            padding: const EdgeInsets.all(16.0),
+                                                            child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontSize: 18,fontWeight: FontWeight.bold),),
+                                                          ):productButton(
                                                               snapshot.data,
                                                               index)
                                                         ],

@@ -44,6 +44,7 @@ dependencies:
   dio: ^3.0.10
   giffy_dialog: ^1.8.0
   frefresh: any
+  url_launcher: ^5.4.0
   smooth_star_rating: 1.1.1
   flutter_native_image: ^0.0.5
   image_picker: ^0.6.7+17

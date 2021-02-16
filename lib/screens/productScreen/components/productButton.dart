@@ -302,7 +302,7 @@ final TextEditingController quantityController = TextEditingController();
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Text(
-              "Min. Order ${widget.data['products'][widget.index]['quantity']}",
+              "Min. Order ${widget.data['products'][widget.index]['minQuantity']}",
               style: TextStyle(
                 color:
                 Colors.red,

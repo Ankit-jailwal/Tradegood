@@ -35,6 +35,9 @@ print(orderList);
     "totalAmount": cartTotal,
     "orderItems":orderList,
     "paymentStatus":"pending",
+   // "orderDeliveryDay":,
+   // "orderDeliveryDate":,
+   // "orderDeliveryCharge":,
     "orderStatus": [
       {
         "type": "ordered",

@@ -27,7 +27,7 @@ Future updateAdditionalDetails(String address,File file) async {
   "address":address,
     "certificate": await MultipartFile.fromFile(
         file.path,
-        filename: "fileName"
+        filename: "fileName",
     ),
   });
   var jsonResponse;

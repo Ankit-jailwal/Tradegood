@@ -209,7 +209,10 @@ class _BodyState extends State<Body> {
                                                           ]),
                                                     ),
                                                   ),
-                                                  Container(
+                                                  data.data['product'][index]['availableStock']==0?Padding(
+                                                    padding: const EdgeInsets.all(16.0),
+                                                    child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontSize: 18,fontWeight: FontWeight.bold),),
+                                                  ):Container(
                                                     height: SizeConfig
                                                         .screenHeight *
                                                         0.05,

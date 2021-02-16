@@ -35,35 +35,41 @@ class HomeHeader1 extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => location_list()));
               },
               child: locationfield()),
-          GestureDetector(
-            onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => wishListScreen()));
-            },
-            child: Image.asset(
-              "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
-              fit: BoxFit.cover,
-              width: 33.0,
-              height: 33.0,
-              colorBlendMode: BlendMode.dstATop,
-            ),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => wishListScreen()));
+                },
+                child: Image.asset(
+                  "assets/images2/406096fa0d4df7618ea2b7bd7b3b1beaa4c6b8bd.png",
+                  fit: BoxFit.cover,
+                  width: 33.0,
+                  height: 33.0,
+                  colorBlendMode: BlendMode.dstATop,
+                ),
+              ),
+              SizedBox(width: SizeConfig.screenWidth*0.02,),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => cart_screen()));
+                },
+                child: Image.asset(
+                  "assets/images2/4e2f4fae4dd36d9fe6ceccb20d21cad9b32dddf9.png",
+                  color: null,
+                  fit: BoxFit.cover,
+                  width: 33.0,
+                  height: 33.0,
+                  colorBlendMode: BlendMode.dstATop,
+                ),
+              ),
+            ],
           ),
-          GestureDetector(
-            onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => cart_screen()));
-            },
-            child: Image.asset(
-              "assets/images2/4e2f4fae4dd36d9fe6ceccb20d21cad9b32dddf9.png",
-              color: null,
-              fit: BoxFit.cover,
-              width: 33.0,
-              height: 33.0,
-              colorBlendMode: BlendMode.dstATop,
-            ),
-          ),
+
         ],
       ),
     );

@@ -279,7 +279,7 @@ class _productButtonState extends State<productButton> {
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: Text(
-              "Min. Order ${widget.data['product'][widget.index]['quantity']}",
+              "Min. Order ${widget.data['product'][widget.index]['minQuantity']}",
               style: TextStyle(
                 color: Colors.red,
                 fontSize: 14,

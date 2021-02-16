@@ -291,13 +291,12 @@ class _wishListItemState extends State<wishListItem> {
                   Padding(
                     padding: EdgeInsets.only(top: 5),
                     child: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         widget.wishListData['product'][0]['offer']!=null?Container(
                           width: SizeConfig
                               .screenWidth *
-                              0.6,
+                              0.5,
                           child: RichText(
                             text: TextSpan(
                                 text:
@@ -348,7 +347,10 @@ class addToCartButton extends StatefulWidget {
 class _addToCartButtonState extends State<addToCartButton> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return widget.data['product'][0]['availableStock']==0?Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontSize: 14,fontWeight: FontWeight.bold),),
+    ):GestureDetector(
       onTap: (){
         setState(() {
             Toast.show("Item added in cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);

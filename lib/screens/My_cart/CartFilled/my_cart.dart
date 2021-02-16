@@ -8,8 +8,8 @@ import 'package:tradegood/API/placeOrder.dart';
 import 'package:tradegood/screens/My_cart/CartEmpty/components/Body.dart';
 import 'package:tradegood/API/getCart.dart';
 import 'package:tradegood/API/getUserInfo.dart';
+import 'package:tradegood/API/editDeliveryDate.dart';
 import 'package:tradegood/screens/Location_list/location_list.dart';
-import 'package:tradegood/API/getRouteById.dart';
 import 'package:intl/intl.dart';
 import 'package:tradegood/API/updateQuantity.dart';
 import 'package:tradegood/API/calculateCartSum.dart';
@@ -129,14 +129,11 @@ class _cart_screenState extends State<cart_screen> {
         onRefresh: updatePage,
         child: FutureBuilder(
           future: getCart(),
-          builder: (context, snapshot) {
-            if(snapshot.hasData) {
-              return checkCart(snapshot.data)?FutureBuilder(
-                future: getUserInfo(),
-                builder: (context, userInfo) {
-                  if(userInfo.hasData) {
-                    return FutureBuilder(
-                        future: calculateCartSum(snapshot.data),
+          builder: (context, cartData) {
+            if(cartData.hasData) {
+              return checkCart(cartData.data)?
+                    FutureBuilder(
+                        future: calculateCartSum(cartData.data),
                         builder: (context, cartSum)  {
                           if(cartSum.hasData) {
                             return Column(
@@ -170,7 +167,7 @@ class _cart_screenState extends State<cart_screen> {
                                                       fontSize: 16),
                                                   children: <TextSpan>[
                                                     TextSpan(
-                                                      text: userInfo.data['user']['name'],
+                                                      text: cartData.data['cart']['user']['name'],
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20,
@@ -190,23 +187,12 @@ class _cart_screenState extends State<cart_screen> {
                                 ),
                                 Expanded(
                                     child: ListView.builder(
-                                        itemCount: snapshot
-                                            .data['cart']['cartItems']
+                                        itemCount: cartData.data['cart']['cartItems']
                                             .length, //list view declaration
                                         padding: EdgeInsets.only(
                                             top: 10.0, bottom: 15.0),
                                         itemBuilder: (BuildContext context, int index) {
-                                          final item=snapshot.data['cart']['cartItems'];
-                                          return FutureBuilder(
-                                              future: getProductByID(snapshot.data['cart']['cartItems'][index]['product']),
-                                              builder: (context, cartItem) {
-                                                if (cartItem.hasData) {
-                                                  cartData=cartItem.data;
-                                                  return cartItemClass(cartItem.data,snapshot.data,cartSum.data,index,update,updateSum,updateCart,userInfo.data);
-                                                }
-                                                return Container();
-                                              }
-                                          );
+                                                  return cartItemClass(cartData.data,cartSum.data,index,update,updateSum,updateCart);
                                         })),
                                 Container(
                                   decoration: BoxDecoration(color: Colors.white,
@@ -234,8 +220,8 @@ class _cart_screenState extends State<cart_screen> {
                                         ),
                                         FlatButton(
                                           onPressed: () async{
-                                            if(userInfo.data['user']['route']!=null){
-                                              if(userInfo.data['user']['address']!=null&&userInfo.data['user']['certificate']!=null) {
+                                            if(cartData.data['user']['route']!=null){
+                                              if(cartData.data['user']['address']!=null&&cartData.data['user']['certificate']!=null) {
                                                 showDialog(
                                                   context: context,
                                                   builder: (ctx) =>
@@ -253,7 +239,7 @@ class _cart_screenState extends State<cart_screen> {
                                                               Navigator.pop(
                                                                   context);
                                                             },
-                                                            child: Text("NO",
+                                                            child: Text("No",
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .red,
@@ -263,8 +249,9 @@ class _cart_screenState extends State<cart_screen> {
                                                           ),
                                                           FlatButton(
                                                             onPressed: () async {
+                                                              Navigator.pop(context);
                                                               final orderConfirmation = await placeOrderItem(
-                                                                  snapshot.data, cartSum.data.toInt());
+                                                                  cartData.data, cartSum.data.toInt());
                                                               if (orderConfirmation !=
                                                                   null) {
                                                                 Navigator.push(
@@ -321,10 +308,6 @@ class _cart_screenState extends State<cart_screen> {
                           }
                           return Center(child: Container(child: CircularProgressIndicator()));
                       }
-                    );
-                  }
-                  return Center(child: Container(child: CircularProgressIndicator()));
-                }
               ):cartEmptyBody();
             }
             return Center(child: Container(child: CircularProgressIndicator()));
@@ -337,16 +320,14 @@ class _cart_screenState extends State<cart_screen> {
 
 
 class cartItemClass extends StatefulWidget {
-  var cartItemData;
   var cartData;
   var cartSumData;
-  var routeData;
   final ValueChanged<bool> update;
   final ValueChanged<bool> updateCart;
   final ValueChanged<double> sumUpdate;
   int index;
 
-  cartItemClass(this.cartItemData,this.cartData,this.cartSumData,this.index,this.update,this.sumUpdate,this.updateCart,this.routeData);
+  cartItemClass(this.cartData,this.cartSumData,this.index,this.update,this.sumUpdate,this.updateCart);
   @override
   _cartItemClassState createState() => _cartItemClassState();
 }
@@ -359,6 +340,8 @@ class _cartItemClassState extends State<cartItemClass> {
     else
       return false;
   }
+  var removeCart;
+  var picked;
   bool checkRoute(int index, int size){
     if (index == 0)
       return true;
@@ -395,15 +378,12 @@ class _cartItemClassState extends State<cartItemClass> {
   final TextEditingController quantityController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    removeCart=widget.cartData;
     return Column(
       children: [
         checkRoute(widget.index, widget.cartData['cart']['cartItems'].length)?Column(
           children: [
-            FutureBuilder(
-                future: getRouteById(),
-              builder: (context, route) {
-                  if(route.hasData) {
-                    return Padding(
+                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 5),
                       child: Container(
                         width: SizeConfig.screenWidth,
@@ -430,22 +410,64 @@ class _cartItemClassState extends State<cartItemClass> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(route.data['route']['day'], style: TextStyle(
+                                      Text(picked==null?widget.cartData['cart']['user']['route']['day']:DateFormat('EEEE').format(picked), style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,
                                           fontWeight: FontWeight.w800),),
-                                      Text(
-                                        "Delivery on: ${DateFormat('d MMM, yy').format(DateTime.parse(route.data['route']['deliveryDate']),)}",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                        ),),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Delivery on: ${picked==null?DateFormat('d MMM, yy').format(DateTime.parse(widget.cartData['cart']['user']['route']['deliveryDate']),):DateFormat('d MMM, yy').format(picked,)}",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                            ),),
+                                          GestureDetector(
+                                              onTap: ()async{
+                                                final DateTime selected = await showDatePicker(
+                                                  helpText: "Choose Customized Delivery Date",
+                                                  context: context,
+                                                  initialDate: picked==null?DateTime.parse(widget.cartData['cart']['user']['route']['deliveryDate']):picked, // Refer step 1
+                                                  firstDate: DateTime(2000),
+                                                  lastDate: DateTime(2025),
+                                                );
+                                                if (selected != null && selected != widget.cartData['cart']['user']['route']['deliveryDate']) {
+                                                  if(DateFormat('dd').format(DateTime.parse(widget.cartData['cart']['user']['route']['deliveryDate']),)!=DateFormat('dd').format(selected)) {
+                                                    setState(() {
+                                                      picked = selected;
+                                                    });
+                                                    editDeliveryDate(picked);
+                                                  }
+                                                  else if(picked!=null)
+                                                    {
+                                                      if(DateFormat('dd').format(DateTime.parse(widget.cartData['cart']['user']['route']['deliveryDate']))==DateFormat('dd').format(selected))
+                                                        {
+                                                          setState(() {
+                                                            picked=null;
+                                                          });
+                                                        }
+                                                      else{
+                                                        setState(() {
+                                                          picked = selected;
+                                                        });
+                                                        editDeliveryDate(picked);
+                                                      }
+                                                    }
+                                                }
+                                              },
+                                              child: Padding(
+                                            padding: const EdgeInsets.only(left:8.0),
+                                            child: Icon(Icons.edit,size:20
+                                              ,color: Colors.black,),
+                                          )),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                   SizedBox(height: 5,),
                                   Container(
                                     child: Text(
-                                      "Route: ${route.data['route']['location'].join(', ')}",
+                                      "Route: ${picked==null?widget.cartData['cart']['user']['route']['location'].join(', '):widget.cartData['cart']['user']['address']}",
                                       style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14,
@@ -454,36 +476,47 @@ class _cartItemClassState extends State<cartItemClass> {
                                   SizedBox(height: 5,)
                                 ],
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            location_list()),
-                                  );
-                                },
-                                child: Container(
-                                  height: SizeConfig.screenHeight *
-                                      0.045,
-                                  width: SizeConfig.screenWidth * 0.25,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: Colors.black54),
-                                    borderRadius: BorderRadius.circular(
-                                        5),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Change",
-                                      style: TextStyle(
-                                          color: Colors.lightBlue,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w700),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Delivery Charge: ${picked==null?widget.cartData['cart']['user']['route']['deliveryCharge']==0?"FREE":"₹"+widget.cartData['cart']['user']['route']['deliveryCharge'].toString():"₹"+widget.cartData['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'].toString()}",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                location_list()),
+                                      );
+                                    },
+                                    child: Container(
+                                      height: SizeConfig.screenHeight *
+                                          0.045,
+                                      width: SizeConfig.screenWidth * 0.25,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: Colors.black54),
+                                        borderRadius: BorderRadius.circular(
+                                            5),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Change",
+                                          style: TextStyle(
+                                              color: Colors.lightBlue,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
                               SizedBox(
                                 height: SizeConfig.screenHeight * 0.01,
@@ -492,11 +525,7 @@ class _cartItemClassState extends State<cartItemClass> {
                           ),
                         ),
                       ),
-                    );
-                  }
-                  return Container();
-              }
-            ),
+                    ),
             SizedBox(
               height: SizeConfig
                   .screenHeight *
@@ -551,7 +580,7 @@ class _cartItemClassState extends State<cartItemClass> {
                                   .screenWidth *
                                   0.7,
                               child: Text(
-                                widget.cartItemData['product'][0]['name'],
+                                widget.cartData['cart']['cartItems'][widget.index]['product']['name'],
                                 style: TextStyle(
                                     color: Colors
                                         .black,
@@ -569,7 +598,7 @@ class _cartItemClassState extends State<cartItemClass> {
                             Row(
                               children: [
                                 Text(
-                                  "₹${(updateFlag?widget.cartItemData['product'][0]['ptr']*widget.cartData['cart']['cartItems'][widget.index]['quantity']:widget.cartItemData['product'][0]['ptr']*realQuantity)
+                                  "₹${(updateFlag?widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*widget.cartData['cart']['cartItems'][widget.index]['quantity']:widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*realQuantity)
                                       .toString()}",
                                   style: TextStyle(
                                       color: Colors
@@ -595,7 +624,7 @@ class _cartItemClassState extends State<cartItemClass> {
                                                   child: Column(
                                                     mainAxisSize: MainAxisSize.min,
                                                     children: <Widget>[
-                                                      Text("Quantity should be greater then ${widget.cartItemData['product'][0]['quantity'].toString()}!",style: TextStyle(fontWeight: FontWeight.w600),),
+                                                      Text("Quantity should be greater then ${widget.cartData['cart']['cartItems'][widget.index]['quantity'].toString()}!",style: TextStyle(fontWeight: FontWeight.w600),),
                                                       Padding(
                                                         padding: EdgeInsets.all(8.0),
                                                         child: TextFormField(
@@ -634,20 +663,20 @@ class _cartItemClassState extends State<cartItemClass> {
                                                         child: FlatButton(
                                                           onPressed: () async{
                                                             int quantity= int.parse(quantityController.text);
-                                                            if(quantity>=widget.cartItemData['product'][0]['quantity'])
+                                                            if(quantity>=widget.cartData['cart']['cartItems'][widget.index]['quantity'])
                                                               {
-                                                                if(quantity<=widget.cartItemData['product'][0]['availableStock']) {
+                                                                if(quantity<=widget.cartData['cart']['cartItems'][widget.index]['product']['availableStock']) {
                                                                   prevQuantity=updateFlag?changeQuantity(widget.cartData['cart']['cartItems'][widget.index]['quantity']):realQuantity;
                                                                   updateFlag=false;
                                                                   changeQuantity(quantity);
                                                                   await updateQuantity(realQuantity,widget.cartData['cart']['cartItems'][widget.index]['product']);
-                                                                  sumUpdate=widget.cartItemData['product'][0]['ptr']*((realQuantity-prevQuantity)/widget.cartItemData['product'][0]['quantity']);
+                                                                  sumUpdate=widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*((realQuantity-prevQuantity)/widget.cartData['cart']['cartItems'][widget.index]['quantity']);
                                                                   sumFlag=true;
-                                                                  widget.sumUpdate(widget.cartItemData['product'][0]['ptr']*((realQuantity-prevQuantity)/widget.cartItemData['product'][0]['quantity']));
+                                                                  widget.sumUpdate(widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*((realQuantity-prevQuantity)/widget.cartData['cart']['cartItems'][widget.index]['quantity']));
                                                                   Navigator.pop(context);
                                                                 }
                                                                 else
-                                                                  Toast.show("Quantity should be less then ${widget.cartItemData['product'][0]['availableStock']}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                                                  Toast.show("Quantity should be less then ${widget.cartData['cart']['cartItems'][widget.index]['product']['availableStock']}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
                                                               }
                                                             else
                                                               Toast.show("Quantity should be greater then minimum quantity", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
@@ -730,7 +759,7 @@ class _cartItemClassState extends State<cartItemClass> {
                                   5),
                               child: Image
                                   .network(
-                                widget.cartItemData['product'][0]['productPicture'],
+                                widget.cartData['cart']['cartItems'][widget.index]['product']['productPicture'],
                                 fit: BoxFit.fill,),
                             )),
                       ],
@@ -744,47 +773,20 @@ class _cartItemClassState extends State<cartItemClass> {
                         MainAxisAlignment
                             .spaceBetween,
                         children: [
-                          FutureBuilder(
-                              future: getRouteById(),
-                              builder: (
-                                  context,
-                                  snapshot) {
-                                if (snapshot
-                                    .hasData) {
-                                  return RichText(
+                              RichText(
                                     text: TextSpan(
                                         text:
-                                        'Delivery by ${DateFormat('d MMM, yy')
-                                            .format(
-                                          DateTime
-                                              .parse(
-                                              snapshot
-                                                  .data['route']['deliveryDate']),)} |',
+                                        'Delivery by ${picked==null?DateFormat('d MMM, yy').format(DateTime.parse(widget.cartData['cart']['user']['route']['deliveryDate']),):DateFormat('d MMM, yy').format(picked,)}',
                                         style: TextStyle(
                                             color: Colors
                                                 .black,
                                             fontSize: 14),
-                                        children: <
-                                            TextSpan>[
-                                          TextSpan(
-                                            text: ' FREE',
-                                            style: TextStyle(
-                                                color:
-                                                Colors
-                                                    .lightGreenAccent
-                                                    .shade700,
-                                                fontSize: 14),
-                                          )
-                                        ]),
-                                  );
-                                }
-                                return Container();
-                              }
-                          ),
+                                    )
+                                  ),
                           GestureDetector(
                             onTap: () async{
+                              removeItemCart(widget.cartData['cart']['cartItems'][widget.index]['product']['_id']);
                               widget.cartData['cart']['cartItems'].removeAt(widget.index);
-                              await removeItemCart(widget.cartItemData['product'][0]['_id']);
                               widget.updateCart(true);
                             },
                             child: Container(
@@ -828,7 +830,7 @@ class _cartItemClassState extends State<cartItemClass> {
             ),
           ),
           onDismissed: (direction) async{
-            await removeItemCart(widget.cartData['cart']['cartItems'][widget.index]['product']);
+            await removeItemCart(widget.cartData['cart']['cartItems'][widget.index]['product']['_id']);
             widget.cartData['cart']['cartItems'].removeAt(widget.index);
             widget.updateCart(true);
           },
@@ -891,18 +893,44 @@ class _cartItemClassState extends State<cartItemClass> {
                     ],
                   ),
                   /*Row(
-                                                          mainAxisAlignment: MainAxisAlignment
-                                                              .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              "Discount", style: TextStyle(
-                                                                color: Colors.black),),
-                                                            Text("-₹1000", style: TextStyle(
-                                                                color: Colors
-                                                                    .lightGreenAccent
-                                                                    .shade700)),
-                                                          ],
-                                                        ),*/
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceBetween,
+                        children: [
+                          Text(
+                            "Discount", style: TextStyle(
+                              color: Colors.black),),
+                          Text("-₹1000", style: TextStyle(
+                              color: Colors
+                                  .lightGreenAccent
+                                  .shade700)),
+                        ],
+                      ),*/
+                ],
+              ),
+            ),
+            Divider(
+              color: Colors.grey
+                  .withOpacity(
+                  0.6),
+              thickness: 0.5,),
+            Padding(
+              padding: const EdgeInsets
+                  .only(
+                  left: 10,
+                  right: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceBetween,
+                children: [
+                  Text(
+                    "Delivery Charge",
+                    style: TextStyle(
+                        color: Colors
+                            .black),),
+                  Text("${picked==null?(widget.cartData['cart']['user']['route']['deliveryCharge']==0?"FREE":"₹"+double.parse(widget.cartData['cart']['user']['route']['deliveryCharge']).toString()):"₹"+double.parse(widget.cartData['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']).toString()}",
+                      style: TextStyle(
+                          color: Colors
+                              .black)),
                 ],
               ),
             ),
@@ -925,7 +953,7 @@ class _cartItemClassState extends State<cartItemClass> {
                     style: TextStyle(
                         color: Colors
                             .black),),
-                  Text("₹${widget.cartSumData}",
+                  Text("₹${widget.cartSumData+(picked==null?widget.cartData['cart']['user']['route']['deliveryCharge']:widget.cartData['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'])}",
                       style: TextStyle(
                           color: Colors
                               .black)),

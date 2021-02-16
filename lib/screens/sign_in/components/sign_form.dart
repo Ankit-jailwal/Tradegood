@@ -162,7 +162,7 @@ class _SignFormState extends State<SignForm> {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: Padding(
           padding: const EdgeInsets.only(right:20),
-          child: Icon(Icons.mail,size: 30,),
+          child: Icon(Icons.phone,size: 30,),
         ),
       ),
     );

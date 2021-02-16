@@ -46,3 +46,6 @@ OutlineInputBorder outlineInputBorder() {
     borderSide: BorderSide(color: kTextColor),
   );
 }
+String aboutUs='''TradeGood is a Business-to-Business (B2B) e-commerce platform, connecting retailers to known brands, new brands. And most importantly local Made in India brands which are struggling to get exposure in the Marketplace. This a single platform on which retailers can source merchandise from manufacturers as well as distributors.
+
+Well all are aware how much it is difficult to get a exposure to new made in India brands. As it is a high time its important to support Made in India local business and to provide them with exposure in the marketplace.E platform gives them access to buy on their terms with hassle free logistics.Discovering products &suppliers across multiple categories.Access to new brands ,manufacturers and marketing,sales support to retailers for business.TradeGood provides access to low cost & Reliable delivery system.TradeGood allows direct connection between distributors and retailers which allow conversations in real time.''';

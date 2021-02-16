@@ -148,31 +148,42 @@ class _routeSelectState extends State<routeSelect>{
                     padding: const EdgeInsets.only(
                         top: 5, bottom: 5),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        locCheck ? Padding(
-                          padding: const EdgeInsets.only(right: 4),
-                          child: Image.asset(
-                            "assets/images2/9cc73194de6fa0e85d13ba8fe84e31a844ad6341.png",
-                            height: 25,),
-                        ) : Container(),
-                        Container(
-                          height: 30,
-                          width: locCheck ? SizeConfig.screenWidth *
-                              0.25 : SizeConfig.screenWidth * 0.2,
-                          decoration: BoxDecoration(
-                            color:Colors
-                                .blue,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Select",
-                              style: TextStyle(
-                                color: Colors.white,
+                        widget.data['routing'][widget.index]['deliveryCharge']==0?Row(
+                          children: [
+                            Text("Delivery Charge: ",style: TextStyle(color: Colors.black),),
+                            Text("FREE",style: TextStyle(color: Colors.lightGreen,fontWeight: FontWeight.w600),),
+                          ],
+                        ):Text("Delivery Charge: ₹${widget.data['routing'][widget.index]['deliveryCharge']}",style: TextStyle(color: Colors.black),),
+                        Row(
+                          children: [
+                            locCheck ? Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Image.asset(
+                                "assets/images2/9cc73194de6fa0e85d13ba8fe84e31a844ad6341.png",
+                                height: 25,),
+                            ) : Container(),
+                            Container(
+                              height: 30,
+                              width: locCheck ? SizeConfig.screenWidth *
+                                  0.25 : SizeConfig.screenWidth * 0.2,
+                              decoration: BoxDecoration(
+                                color:Colors
+                                    .blue,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Select",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),

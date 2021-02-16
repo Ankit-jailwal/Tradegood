@@ -341,7 +341,8 @@ class _BodyState extends State<Body> {
                                             mainAxisAlignment:
                                             MainAxisAlignment
                                                 .spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment
+                                            crossAxisAlignment: widget.data['product'][index]['availableStock']==0?CrossAxisAlignment
+                                                .center:CrossAxisAlignment
                                                 .end,
                                             children: [
                                               Padding(
@@ -514,7 +515,10 @@ class _BodyState extends State<Body> {
                                                   ],
                                                 ),
                                               ),
-                                              productButton(widget.data, index)
+                                              widget.data['product'][index]['availableStock']==0?Padding(
+                                                padding: const EdgeInsets.all(16.0),
+                                                child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontSize: 18,fontWeight: FontWeight.bold),),
+                                              ):productButton(widget.data, index)
                                             ],
                                           ),
                                         )
