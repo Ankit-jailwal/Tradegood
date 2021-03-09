@@ -201,7 +201,7 @@ final TextEditingController quantityController = TextEditingController();
                             .only(
                             left: 10,right: 10),
                         child: Text(
-                          _countFlag?"${_counter+widget.data['products'][widget.index]['quantity']-1}":"ADD",
+                          _countFlag?"${_counter+widget.data['products'][widget.index]['minQuantity']-1}":"ADD",
                           style:
                           TextStyle(
                             color: Colors
@@ -281,7 +281,7 @@ final TextEditingController quantityController = TextEditingController();
                            Toast.show("Item added in cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                            check = true;
                            addToCart(widget.data['products'][widget.index]['_id'],
-                               _countFlag?_counter+widget.data['products'][widget.index]['quantity']-1:widget.data['products'][widget.index]['quantity'],
+                               _countFlag?_counter+widget.data['products'][widget.index]['minQuantity']-1:widget.data['products'][widget.index]['minQuantity'],
                                );
                          }
 

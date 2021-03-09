@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/screens/Wishlist/wishlist_fill/wishlist_fill.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:tradegood/API/getProductById.dart';
 import 'package:tradegood/API/removeItemCart.dart';
 import 'package:tradegood/API/placeOrder.dart';
 import 'package:tradegood/screens/My_cart/CartEmpty/components/Body.dart';
 import 'package:tradegood/API/getCart.dart';
-import 'package:tradegood/API/getUserInfo.dart';
 import 'package:tradegood/API/editDeliveryDate.dart';
 import 'package:tradegood/screens/Location_list/location_list.dart';
 import 'package:intl/intl.dart';
@@ -428,7 +426,7 @@ class _cartItemClassState extends State<cartItemClass> {
                                                   helpText: "Choose Customized Delivery Date",
                                                   context: context,
                                                   initialDate: picked==null?DateTime.parse(widget.cartData['cart']['user']['route']['deliveryDate']):picked, // Refer step 1
-                                                  firstDate: DateTime(2000),
+                                                  firstDate: DateTime.now().subtract(Duration(days: 0)),
                                                   lastDate: DateTime(2025),
                                                 );
                                                 if (selected != null && selected != widget.cartData['cart']['user']['route']['deliveryDate']) {
@@ -663,16 +661,16 @@ class _cartItemClassState extends State<cartItemClass> {
                                                         child: FlatButton(
                                                           onPressed: () async{
                                                             int quantity= int.parse(quantityController.text);
-                                                            if(quantity>=widget.cartData['cart']['cartItems'][widget.index]['quantity'])
+                                                            if(quantity>=widget.cartData['cart']['cartItems'][widget.index]['minQuantity'])
                                                               {
                                                                 if(quantity<=widget.cartData['cart']['cartItems'][widget.index]['product']['availableStock']) {
-                                                                  prevQuantity=updateFlag?changeQuantity(widget.cartData['cart']['cartItems'][widget.index]['quantity']):realQuantity;
+                                                                  prevQuantity=updateFlag?changeQuantity(widget.cartData['cart']['cartItems'][widget.index]['minQuantity']):realQuantity;
                                                                   updateFlag=false;
                                                                   changeQuantity(quantity);
                                                                   await updateQuantity(realQuantity,widget.cartData['cart']['cartItems'][widget.index]['product']);
-                                                                  sumUpdate=widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*((realQuantity-prevQuantity)/widget.cartData['cart']['cartItems'][widget.index]['quantity']);
+                                                                  sumUpdate=widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*((realQuantity-prevQuantity)/widget.cartData['cart']['cartItems'][widget.index]['minQuantity']);
                                                                   sumFlag=true;
-                                                                  widget.sumUpdate(widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*((realQuantity-prevQuantity)/widget.cartData['cart']['cartItems'][widget.index]['quantity']));
+                                                                  widget.sumUpdate(widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*((realQuantity-prevQuantity)/widget.cartData['cart']['cartItems'][widget.index]['minQuantity']));
                                                                   Navigator.pop(context);
                                                                 }
                                                                 else
@@ -923,11 +921,11 @@ class _cartItemClassState extends State<cartItemClass> {
                     .spaceBetween,
                 children: [
                   Text(
-                    "Delivery Charge",
+                    "Delivery charge: ",
                     style: TextStyle(
                         color: Colors
                             .black),),
-                  Text("${picked==null?(widget.cartData['cart']['user']['route']['deliveryCharge']==0?"FREE":"₹"+double.parse(widget.cartData['cart']['user']['route']['deliveryCharge']).toString()):"₹"+double.parse(widget.cartData['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']).toString()}",
+                  Text("${picked==null?widget.cartData['cart']['user']['route']['deliveryCharge']==0?"FREE":"₹"+widget.cartData['cart']['user']['route']['deliveryCharge'].toString():"₹"+widget.cartData['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'].toString()}",
                       style: TextStyle(
                           color: Colors
                               .black)),
@@ -953,7 +951,7 @@ class _cartItemClassState extends State<cartItemClass> {
                     style: TextStyle(
                         color: Colors
                             .black),),
-                  Text("₹${widget.cartSumData+(picked==null?widget.cartData['cart']['user']['route']['deliveryCharge']:widget.cartData['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'])}",
+                  Text("₹${widget.cartSumData}",
                       style: TextStyle(
                           color: Colors
                               .black)),

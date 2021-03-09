@@ -127,7 +127,7 @@ class _BodyState extends State<Body> {
                   padding: EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
                     initialValue: snapshot.data['user']['phoneNumber'].toString(),
-                    enabled: false,
+                    //enabled: false,
                     decoration: InputDecoration(
                       labelText: "Phone Number",
                       labelStyle: TextStyle(

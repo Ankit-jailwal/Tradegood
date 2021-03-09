@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frefresh/frefresh.dart';
 import 'package:quick_feedback/quick_feedback.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/screens/My_orders/my_order.dart';

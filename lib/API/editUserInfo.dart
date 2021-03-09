@@ -27,6 +27,7 @@ Map data={"name":name,"phoneNumber":ph};
     headers: {"Content-Type": "application/json","Authorization":"$token"},
     body:jsonEncode(data)
   );
+  print(response.body);
   final body=response.body;
   final category=jsonDecode(body);
   return category;
