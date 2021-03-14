@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as Http;
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tradegood/API/authentication.dart';
 
 
@@ -17,6 +16,8 @@ Future checkOTP(String OTP) async{
   );
   print(response.body);
   print(response.statusCode);
+  //if(response.statusCode==500)
+  //  return
   final body=response.body;
   final category=jsonDecode(body);
   return category;

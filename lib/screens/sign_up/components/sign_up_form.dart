@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tradegood/components/custom_surfix_icon.dart';
 import 'package:tradegood/components/form_error.dart';
 import 'package:tradegood/API/authentication.dart';
 import '../../../constants.dart';
@@ -8,7 +8,7 @@ import '../../../size_config.dart';
 import 'package:tradegood/screens/otp/otp_screen.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:toast/toast.dart';
-import 'package:tradegood/API/OTPverification.dart';
+import 'package:tradegood/screens/termsAndConditions/components/Body.dart';
 
 void displayDialog(context, title, text) => showDialog(
       context: context,
@@ -100,7 +100,22 @@ class _SignUpFormState extends State<SignUpForm> {
                 });
               },
             ),
-            Text("I read and agree to Terms and Conditions"),
+    Flexible(
+      child: RichText(
+      text: TextSpan(
+      children: <TextSpan>[
+      TextSpan(text: 'By clicking create account, you agree to our ',style: TextStyle(color: Colors.black45)),
+      TextSpan(
+      text: 'Terms and conditions.',style: TextStyle(color: Colors.blue),
+        recognizer: new TapGestureRecognizer()..onTap = () =>  Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Scaffold(
+              body: Body())),
+        )),
+      ],
+      ),
+      ),
+    )
           ],
         ),
         FlatButton(

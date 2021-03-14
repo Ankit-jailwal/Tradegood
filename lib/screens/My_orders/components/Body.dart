@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/API/getOrder.dart';
 import 'package:toast/toast.dart';
-import 'package:tradegood/screens/My_orders/previous_order/components/Body.dart';
+import 'package:tradegood/screens/My_orders/components/noOrders.dart';
 class Body extends StatefulWidget {
   @override
   _BodyState createState() => _BodyState();
@@ -148,7 +148,7 @@ int reCount=0;
                       Container(
                         width: SizeConfig.screenWidth * 0.85,
                         child: Text(
-                          "Order name: OD${widget.data['orders'][widget.index]['_id']}",
+                          "Order ID: ${widget.data['orders'][0]['orderNumber']}",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 14,

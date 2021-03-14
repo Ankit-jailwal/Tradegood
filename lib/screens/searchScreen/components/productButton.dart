@@ -138,12 +138,9 @@ class _productButtonState extends State<productButton> {
                                               onPressed: () {
                                                 int quantity = int.parse(
                                                     quantityController.text);
-                                                if (quantity > widget.data['product'][widget.index]['quantity']) {
-                                                  if (quantity <=
-                                                      widget.data['product']
-                                                              [widget.index]
-                                                          ['availableStock']) {
-                                                    _counter = quantity-widget.data['product'][widget.index]['quantity']+1;
+                                                if (quantity >= widget.data['product'][widget.index]['minQuantity']) {
+                                                  if (quantity <= widget.data['product'][widget.index]['availableStock']) {
+                                                    _counter = quantity-widget.data['product'][widget.index]['minQuantity']+1;
                                                     setState(() {
                                                       _countFlag = true;
                                                     });
@@ -157,7 +154,7 @@ class _productButtonState extends State<productButton> {
                                                         gravity: Toast.TOP);
                                                 } else
                                                   Toast.show(
-                                                      "Quantity should be greater then ${widget.data['product'][widget.index]['quantity']}",
+                                                      "Quantity should be greater then ${widget.data['product'][widget.index]['minQuantity']}",
                                                       context,
                                                       duration:
                                                           Toast.LENGTH_SHORT,
@@ -198,7 +195,7 @@ class _productButtonState extends State<productButton> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 10, right: 10),
                         child: Text(
-                          _countFlag ? "${_counter + widget.data['product'][widget.index]['quantity'] - 1}" : "ADD",
+                          _countFlag ? "${_counter + widget.data['product'][widget.index]['minQuantity'] - 1}" : "ADD",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -261,7 +258,7 @@ class _productButtonState extends State<productButton> {
                         check = true;
                         addToCart(
                           widget.data['product'][widget.index]['_id'],
-                          _countFlag ? _counter+widget.data['product'][widget.index]['quantity']-1 : widget.data['product'][widget.index]['quantity'],
+                          _countFlag ? _counter+widget.data['product'][widget.index]['minQuantity']-1 : widget.data['product'][widget.index]['minQuantity'],
                         );
                       }
                     });

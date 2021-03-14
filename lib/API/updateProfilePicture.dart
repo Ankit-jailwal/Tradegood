@@ -8,9 +8,7 @@ import 'package:tradegood/API/authentication.dart';
 
 Dio dio = new Dio();
 Future updateProfilePicture(File file) async {
-    String uploadURL= server+"/api/updateUserProfilePicture";
-    String fileName = file.path.split('/').last;
-    print(fileName);
+    String uploadURL= server+"/api/updateUserInfo";
     File compressedFile = await FlutterNativeImage.compressImage(file.path, quality: 80,
         targetWidth: 300, targetHeight: 300);
     String res= await storage.read(key: 'jwt');
@@ -25,6 +23,7 @@ Future updateProfilePicture(File file) async {
       res=tokenBody["token"];
     }
     String token= "Bearer "+res;
+    print("FILE: ${MultipartFile.fromFile(compressedFile.path, filename: "fileName")}");
     FormData data = FormData.fromMap({
       "profilePicture": await MultipartFile.fromFile(
         compressedFile.path,

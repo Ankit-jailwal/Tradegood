@@ -16,22 +16,29 @@ class SearchField extends StatelessWidget {
           MaterialPageRoute(builder: (context) => searchField()),
         );
       },
-      child: Container(
-        height: SizeConfig.screenHeight*0.05,
-        width: SizeConfig.screenWidth * 0.6,
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 243, 243, 243),
-          borderRadius: BorderRadius.circular(2),
-        ),
+      child: IntrinsicHeight(
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Icon(Icons.search,color: Colors.grey,),
+            Container(
+              height: SizeConfig.screenHeight*0.05,
+              width: SizeConfig.screenWidth*0.58,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 243, 243, 243),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Icon(Icons.search,color: Colors.grey,),
+                  ),
+                  Text("Search Products...")
+                ],
+              )
             ),
-            Text("Search Products...")
           ],
-        )
+        ),
       ),
     );
   }

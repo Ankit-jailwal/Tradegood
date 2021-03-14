@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:tradegood/components/custom_surfix_icon.dart';
 import 'package:tradegood/components/form_error.dart';
 import 'package:tradegood/API/authentication.dart';
-import 'package:tradegood/screens/forgot_password/forgot_password_screen.dart';
 import 'package:tradegood/screens/home/home_screen.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';

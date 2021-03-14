@@ -3,7 +3,7 @@ import 'package:tradegood/API/getWishlist.dart';
 import 'package:tradegood/screens/Wishlist/Wishlist_empty/wishlist.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:tradegood/API/getProductById.dart';
+//import 'package:tradegood/API/getProductById.dart';
 import 'package:tradegood/API/removeItemWishlist.dart';
 import 'package:tradegood/screens/My_cart/CartFilled/my_cart.dart';
 import 'package:toast/toast.dart';
@@ -123,15 +123,7 @@ class _wishListScreenState extends State<wishListScreen> {
                               return Dismissible(
                                 key: Key(item.toString()),
                                 direction: DismissDirection.horizontal,
-                                child: FutureBuilder(
-                                    future: getProductByID(snapshot.data['wishlist']['wishlistItems'][index]['product']),
-                                    builder: (context, data) {
-                                      if(data.hasData){
-                                        return wishListItem(data.data,index,update,snapshot.data,updateCart);
-                                      }
-                                      return Container();
-                                    }
-                                ),
+                                child: wishListItem(index,update,snapshot.data,updateCart),
                                 onDismissed: (direction) async{
                                   await removeItemWishlist(snapshot.data['wishlist']['wishlistItems'][index]['product'].toString());
                                   snapshot.data['wishlist']['wishlistItems'].removeAt(index);
@@ -153,12 +145,11 @@ class _wishListScreenState extends State<wishListScreen> {
   }
 }
 class wishListItem extends StatefulWidget {
-  var wishListData;
   int index;
   var Data;
   final ValueChanged<bool> update;
   final ValueChanged<bool> updateWishlist;
-  wishListItem(this.wishListData,this.index,this.update,this.Data,this.updateWishlist);
+  wishListItem(this.index,this.update,this.Data,this.updateWishlist);
   @override
   _wishListItemState createState() => _wishListItemState();
 }
@@ -204,7 +195,7 @@ class _wishListItemState extends State<wishListItem> {
                                 .screenWidth *
                                 0.6,
                             child: Text(
-                              widget.wishListData['product'][0]['name'],
+                              widget.Data['wishlist']['wishlistItems'][widget.index]['product']['name'],
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
@@ -216,7 +207,7 @@ class _wishListItemState extends State<wishListItem> {
                           SmoothStarRating(
                               allowHalfRating: false,
                               starCount: 5,
-                              rating: widget.wishListData['product'][0]['rating'].toDouble(),
+                              rating: widget.Data['wishlist']['wishlistItems'][widget.index]['product']['rating'].toDouble(),
                               isReadOnly:true,
                               filledIconData: Icons.star,
                               halfFilledIconData: Icons.star,
@@ -242,7 +233,7 @@ class _wishListItemState extends State<wishListItem> {
                               ),
                               SizedBox(width: 16,),
                               Text(
-                                "₹${widget.wishListData['product'][0]['ptr'].toString()}",
+                                "₹${widget.Data['wishlist']['wishlistItems'][widget.index]['product']['ptr'].toString()}",
                                 style: TextStyle(
                                     color: Colors
                                         .black,
@@ -263,14 +254,14 @@ class _wishListItemState extends State<wishListItem> {
                               width: SizeConfig
                                   .screenWidth * 0.15,
                               child: Image.network(
-                                  widget.wishListData['product'][0]['productPicture'])),
+                                  widget.Data['wishlist']['wishlistItems'][widget.index]['product']['productPicture'])),
 
                           GestureDetector(
                             onTap: () async{
 
                               widget.Data['wishlist']['wishlistItems'].removeAt(widget.index);
-                              await removeItemWishlist(widget.wishListData['product'][0]['_id'].toString());
-                              Toast.show("${widget.wishListData['product'][0]['name']} removed from wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                              await removeItemWishlist(widget.Data['wishlist']['wishlistItems'][widget.index]['product']['_id'].toString());
+                              Toast.show("${widget.Data['wishlist']['wishlistItems'][widget.index]['product']['name']} removed from wishlist", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                               widget.updateWishlist(true);
                             },
                             child: Padding(
@@ -293,7 +284,7 @@ class _wishListItemState extends State<wishListItem> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        widget.wishListData['product'][0]['offer']!=null?Container(
+                        widget.Data['wishlist']['wishlistItems'][widget.index]['product']['offer']!=null?Container(
                           width: SizeConfig
                               .screenWidth *
                               0.5,
@@ -307,7 +298,7 @@ class _wishListItemState extends State<wishListItem> {
                                     fontSize: 14),
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: ' ${widget.wishListData['product'][0]['offer']}',
+                                    text: ' ${widget.Data['wishlist']['wishlistItems'][widget.index]['product']['offer']}',
                                     style: TextStyle(
                                         color:
                                         Colors
@@ -317,7 +308,7 @@ class _wishListItemState extends State<wishListItem> {
                                 ]),
                           ),
                         ):Container(),
-                        addToCartButton(widget.wishListData,widget.index)
+                        addToCartButton(widget.Data,widget.index)
                       ],
                     ),
                   ),
@@ -347,14 +338,14 @@ class addToCartButton extends StatefulWidget {
 class _addToCartButtonState extends State<addToCartButton> {
   @override
   Widget build(BuildContext context) {
-    return widget.data['product'][0]['availableStock']==0?Padding(
+    return widget.data['wishlist']['wishlistItems'][widget.index]['product']['availableStock']==0?Padding(
       padding: const EdgeInsets.all(16.0),
       child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontSize: 14,fontWeight: FontWeight.bold),),
     ):GestureDetector(
       onTap: (){
         setState(() {
             Toast.show("Item added in cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-            addToCart(widget.data['product'][0]['_id'],widget.data['product'][0]['quantity'],);
+            addToCart(widget.data['wishlist']['wishlistItems'][widget.index]['product']['_id'],widget.data['wishlist']['wishlistItems'][widget.index]['product']['quantity'],);
             print("SUCCESS");
         });
       },

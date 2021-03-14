@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity/connectivity.dart';
-import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
-import 'package:tradegood/theme.dart';
 
 
 const Map Server = {"host": "http://3.95.65.92", "port": "8050"};
@@ -87,59 +84,9 @@ class AuthenticationService {
 }
 
 
-// Method #2 trail version(In use now!!)
-var _page_state;
-void auth_trail() async{
-  WidgetsFlutterBinding.ensureInitialized();
-  ConnectionStatusSingleton connectionStatus =  ConnectionStatusSingleton.getInstance();
-  connectionStatus.initialize();
-  if(connectionStatus.hasConnection== false)
-  {
-    runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body:  Center(
-          child: new CircularProgressIndicator(
-            value: null,
-            strokeWidth: 7.0,
-          ),
-        ),
-      ),
-    ));
-  }
-  final token = storage.read(key: "jwt");
-  final check = await check_token();
-  print(check);
-  // client token check
-  if (token == null) {
-    _page_state=SignInScreen();
-  }
-  // server token check
-  else {
-    if (check == 200 || check == 300) {
-      //_page_state=HomeScreen();
-    } else
-      _page_state=SignInScreen();
-  }
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'Homescreen',
-    theme: theme(),
-    // home: SplashScreen(),
-    // We use routeName so that we dont need to remember the name
-    home: _page_state,
 
-  ));
-}
 
-Future check_token() async{
-  var url = server + '/api/login';
-  var check;
-  http.Response response =
-  await http.get(url, headers: {"token": await storage.read(key: "jwt")});
-  check=response.statusCode;
-  return check;
-}
+
 
 class ConnectionStatusSingleton {
   static final ConnectionStatusSingleton _singleton = new ConnectionStatusSingleton._internal();
@@ -193,20 +140,6 @@ Future attemptSignUp(String fullname, String phno, String email, String password
   final String url = server + "/api/signup";
 
   Map<String, String> data = {"name": fullname, "phoneNumber": phno, "email": email, "password": password};
-  //print(data);
-
-  final response = await http.post(url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(data));
-
-  return response.body;
-}
-
-Future forgot_password(String fullname, String phno, String email, String password) async {
-  final String url = server + "/api/signup";
-
-  Map<String, String> data = {"name": fullname, "phoneNumber": phno, "email": email, "password": password};
-  //print(data);
 
   final response = await http.post(url,
       headers: {"Content-Type": "application/json"},

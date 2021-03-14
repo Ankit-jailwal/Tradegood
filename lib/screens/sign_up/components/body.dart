@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/components/account_exist.dart';
-import 'package:tradegood/constants.dart';
 import 'package:tradegood/size_config.dart';
-
 import '../../../svg.dart';
 import 'sign_up_form.dart';
 
@@ -13,29 +11,6 @@ class Body extends StatelessWidget {
         child: SingleChildScrollView(
           child: Stack(
             children:<Widget>[
-          //  Container(
-          //  width: SizeConfig.screenWidth,
-          //  height: SizeConfig.screenHeight,
-          //  decoration: BoxDecoration(
-          //    image: DecorationImage(
-          //      image: ExactAssetImage(
-          //        "assets/images2/signUp.png",
-          //      ),
-          //      fit: BoxFit.scaleDown,
-          //    ),
-          //  ),
-          //  child: ClipRRect(
-          //    borderRadius: BorderRadius.zero,
-          //    child: Image.asset(
-          //      "assets/images2/signUp.png",
-          //      color: null,
-          //      fit: BoxFit.cover,
-          //      width: 414.0,
-          //      height: 731.0,
-          //      colorBlendMode: BlendMode.dstATop,
-          //    ),
-          //  ),
-          //),
               SizedBox(
               child: Padding(
                 padding:

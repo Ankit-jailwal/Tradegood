@@ -5,7 +5,7 @@ import 'package:tradegood/API/authentication.dart';
 
 
 
-Future editUserInfo(String name,String ph) async{
+Future editUserInfo(String name,String email) async{
   final String url = server + "/api/updateUserInfo";
   String res= await storage.read(key: 'jwt');
   bool hasExpired = JwtDecoder.isExpired(res);
@@ -18,7 +18,7 @@ Future editUserInfo(String name,String ph) async{
     storage.write(key: "jwt", value: tokenBody["token"]);
     res=tokenBody["token"];
   }
-Map data={"name":name,"phoneNumber":ph};
+Map data={"name":name,"email":email};
   print(res);
   print(data);
   String token= "Bearer "+res;

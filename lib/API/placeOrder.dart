@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as Http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tradegood/API/authentication.dart';
-import 'package:tradegood/API/getProductById.dart';
+import 'package:intl/intl.dart';
 
 
 
-Future placeOrderItem(var cartData,int cartTotal) async{
+
+Future placeOrderItem(var cartData,int cartTotal,var time,var deliveryCharge) async{
   final String url = server + "/api/order/addOrderItems";
   String res= await storage.read(key: 'jwt');
   bool hasExpired = JwtDecoder.isExpired(res);
@@ -20,24 +21,26 @@ Future placeOrderItem(var cartData,int cartTotal) async{
     res=tokenBody["token"];
   }
   var orderList=[];
+  print("CART DATA: $cartData");
 for(int i=0; i<cartData['cart']['cartItems'].length ;i++)
-  {print(cartData['cart']['cartItems'][i]['_id']);
-    var productData=await getProductByID(cartData['cart']['cartItems'][i]['product']);
-    print("DATA OF PRODUCT $productData");
-    orderList.add({
-      "product": productData['product'][0]['_id'],
-      "payablePrice":productData['product'][0]['ptr']*(cartData['cart']['cartItems'][i]['quantity']),
+  {orderList.add({
+      "product": cartData['cart']['cartItems'][i]['product']['_id'],
+      "payablePrice":cartData['cart']['cartItems'][i]['product']['ptr']*(cartData['cart']['cartItems'][i]['quantity']),
       "purchasedQuantity":cartData['cart']['cartItems'][i]['quantity'],
     });
   }
+  var parsedDate = DateTime.parse(time);
+
+  DateFormat('EEEE').format(parsedDate);
+  DateFormat('yyyy-MM-dd').format(parsedDate);
 print(orderList);
   Map data={
     "totalAmount": cartTotal,
     "orderItems":orderList,
     "paymentStatus":"pending",
-   // "orderDeliveryDay":,
-   // "orderDeliveryDate":,
-   // "orderDeliveryCharge":,
+    "orderDeliveryDay":DateFormat('EEEE').format(parsedDate),
+    "orderDeliveryDate":DateFormat('yyyy-MM-dd').format(parsedDate),
+    "orderDeliveryCharge":deliveryCharge,
     "orderStatus": [
       {
         "type": "ordered",

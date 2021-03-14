@@ -10,8 +10,6 @@ import 'package:tradegood/screens/productScreen/components/productButton.dart';
 import 'package:tradegood/screens/productScreen/components/wishListButton.dart';
 import 'package:tradegood/API/productRating.dart';
 import 'package:tradegood/screens/noItemsAvailable/components/Body.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'viewMore.dart';
 
 class Body extends StatefulWidget {
   String productUrl;
@@ -305,7 +303,7 @@ class _BodyState extends State<Body> {
                                                                                         ),
                                                                                       ),
                                                                                     ),
-                                                                                    SizedBox(height: 10,)
+                                                                                    SizedBox(height: 15,)
                                                                                   ],
                                                                                 ),
                                                                               ],
@@ -340,7 +338,7 @@ class _BodyState extends State<Body> {
                                                                                   left: 10,
                                                                                   right: 10),
                                                                               child: Text(
-                                                                                  "Quick view"),
+                                                                                  "Description"),
                                                                             )),
                                                                       ),
                                                                     ]),

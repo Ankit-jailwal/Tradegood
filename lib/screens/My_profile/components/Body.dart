@@ -21,6 +21,7 @@ class _BodyState extends State<Body> {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
+        print(pickedFile.path);
         widget._image = File(pickedFile.path);
       } else {
         print('No image selected.');
@@ -28,14 +29,14 @@ class _BodyState extends State<Body> {
     });
   }
   String name1="";
-  String ph1="";
+  String email1="";
   var nameController = TextEditingController(text: "");
-  var phoneController = TextEditingController(text: "");
-  Future<void> getController(String name,String ph) {
+  var emailController = TextEditingController(text: "");
+  Future<void> getController(String name,String email) {
       name1=name;
-      ph1=ph;
+      email1=email;
       nameController=TextEditingController(text: name1);
-      phoneController=TextEditingController(text: ph1);
+      emailController=TextEditingController(text: email);
   }
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class _BodyState extends State<Body> {
       future: getUserInfo(),
       builder: (context, snapshot) {
         if(snapshot.hasData) {
-          getController(snapshot.data['user']['name'],snapshot.data["user"]['phoneNumber'].toString());
+          getController(snapshot.data['user']['name'],snapshot.data["user"]['email'].toString());
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -109,8 +110,9 @@ class _BodyState extends State<Body> {
                 Padding(
                   padding: EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
-                    initialValue: snapshot.data['user']['email'],
-                    enabled: false,
+                    //initialValue: snapshot.data['user']['email'],
+                    //enabled: false,
+                    controller: emailController,
                     decoration: InputDecoration(
                       labelText: "Email Address",
                       labelStyle: TextStyle(
@@ -127,7 +129,7 @@ class _BodyState extends State<Body> {
                   padding: EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
                     initialValue: snapshot.data['user']['phoneNumber'].toString(),
-                    //enabled: false,
+                    enabled: false,
                     decoration: InputDecoration(
                       labelText: "Phone Number",
                       labelStyle: TextStyle(
@@ -159,12 +161,10 @@ class _BodyState extends State<Body> {
                   child: FlatButton(
                     onPressed: (){
                       final editedName=nameController.text;
-                      final editiedPhone=phoneController.text;
-                      print(editiedPhone);
-                      print(editedName);
+                      final editiedEmail=emailController.text;
                       FocusScope.of(context).requestFocus(FocusNode());
                       updateProfilePicture(widget._image);
-                      editUserInfo(editedName,editiedPhone);
+                      editUserInfo(editedName,editiedEmail);
                       Toast.show("User information successfully saved", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                     },
                     child: Padding(

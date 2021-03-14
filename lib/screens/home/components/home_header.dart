@@ -6,9 +6,9 @@ import '../../../size_config.dart';
 import 'package:tradegood/screens/Wishlist/wishlist_fill/wishlist_fill.dart';
 
 class HomeHeader1 extends StatelessWidget {
-  const HomeHeader1({
-    Key key,
-  }) : super(key: key);
+  var userData;
+  HomeHeader1(this.userData);
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class HomeHeader1 extends StatelessWidget {
                     context,
                     MaterialPageRoute(builder: (context) => location_list()));
               },
-              child: locationfield()),
+              child: locationField(userData)),
           Row(
             children: [
               GestureDetector(

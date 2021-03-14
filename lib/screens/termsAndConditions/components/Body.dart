@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tradegood/size_config.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -11,13 +10,15 @@ class Body extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: Text("Welcome to TRADEGOOD",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontFamily: "Roberto",
-                  fontWeight: FontWeight.w600,
+              child: Center(
+                child: Text("Welcome to TRADEGOOD",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontFamily: "Roberto",
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
             ),

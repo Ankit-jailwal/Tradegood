@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, snapshot) {
           if(snapshot.hasData) {
             return Scaffold(
-              body: Body(),
+              body: Body(snapshot.data),
               drawer: Container(
                 width: SizeConfig.screenWidth * 0.7,
                 child: SafeArea(

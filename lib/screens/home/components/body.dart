@@ -7,9 +7,10 @@ import 'search_field.dart';
 import 'package:tradegood/API/getCategory.dart';
 import 'package:tradegood/screens/productScreen/productScreen.dart';
 import 'package:tradegood/API/signout.dart';
-import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 
 class Body extends StatefulWidget {
+  var userData;
+  Body(this.userData);
   @override
   _BodyState createState() => _BodyState();
 }
@@ -63,7 +64,7 @@ class _BodyState extends State<Body> {
                     Column(
                       children: [
                         SizedBox(height: getProportionateScreenHeight(8)),
-                        HomeHeader1(),
+                        HomeHeader1(widget.userData),
                         SizedBox(height: getProportionateScreenWidth(8)),
                         Padding(
                           padding: EdgeInsets.symmetric(
@@ -73,6 +74,7 @@ class _BodyState extends State<Body> {
                             children: [
                               Container(
                                 height: SizeConfig.screenHeight * 0.05,
+                                width: SizeConfig.screenWidth * 0.35,
                                 color: Color.fromARGB(255, 243, 243, 243),
                                 child: Padding(
                                   padding: EdgeInsets.all(5),

@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tradegood/components/custom_surfix_icon.dart';
-import 'package:tradegood/components/form_error.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/svg.dart';
 import 'package:tradegood/API/resetPasswordOTP.dart';
-import 'package:tradegood/API/forgotPassword.dart';
-import '../../../constants.dart';
 import 'package:tradegood/API/resetPassword.dart';
 import 'package:toast/toast.dart';
-import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
-import 'package:tradegood/API/resendOTP.dart';
 
 class Body extends StatefulWidget {
   @override

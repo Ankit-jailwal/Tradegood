@@ -295,7 +295,7 @@ class _BodyState extends State<Body> {
                                                                   left: 10,
                                                                   right: 10),
                                                               child: Text(
-                                                                  "Quick view"),
+                                                                  "Description"),
                                                             )),
                                                       ),
                                                     ]),

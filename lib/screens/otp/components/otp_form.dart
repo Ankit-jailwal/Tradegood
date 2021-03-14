@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tradegood/components/default_button.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/API/checkOTP.dart';
-import '../../../constants.dart';
+import 'package:tradegood/API/OTPverification.dart';
 import 'package:toast/toast.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
-import 'package:tradegood/API/resendOTP.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
+
 
 void displayDialog(context, title, text) => showDialog(
   context: context,
@@ -90,7 +89,7 @@ class _OtpFormState extends State<OtpForm> {
           SizedBox(height: SizeConfig.screenHeight * 0.05),
           FlatButton(
             onPressed: () async{
-             await resendOTP(widget.phone);
+             await OTPverification(widget.phone);
 
              Toast.show("OTP successfully sent to ${widget.phone}", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
             },

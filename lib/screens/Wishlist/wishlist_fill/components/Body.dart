@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
-import 'package:tradegood/API/getProductById.dart';
 import 'package:tradegood/API/removeItemWishlist.dart';
 
 class Body extends StatefulWidget {
@@ -25,7 +24,6 @@ class _BodyState extends State<Body> {
                       padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
                       itemBuilder: (BuildContext context, int index) {
                         return FutureBuilder(
-                          future: getProductByID(wishData['wishlist']['wishlistItems'][index]['product']),
                           builder: (context, data) {
                             if(data.hasData){
                               return Column(

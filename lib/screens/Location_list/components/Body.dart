@@ -5,7 +5,6 @@ import 'package:tradegood/size_config.dart';
 import 'package:tradegood/API/getRoutes.dart';
 import 'package:tradegood/API/selectRoute.dart';
 import 'package:toast/toast.dart';
-import 'package:tradegood/API/getRouteById.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -20,32 +19,24 @@ class _BodyState extends State<Body> {
       future:getRoutes(),
       builder: (context, snapshot) {
         if(snapshot.hasData) {
-          return FutureBuilder(
-            future: getRouteById(),
-            builder: (context, routeById) {
-              if(snapshot.hasData) {
+
                 return ListView.builder(
                     padding: const EdgeInsets.all(8),
                     itemCount: snapshot.data['routing'].length,
                     itemBuilder: (BuildContext context, int index) {
-                      return routeSelect(snapshot.data, index, routeById.data);
+                      return routeSelect(snapshot.data, index);
                     });
               }
               return Center(child: Container(child: CircularProgressIndicator()));
             }
           );
         }
-        return Center(child: Container(child: CircularProgressIndicator()));
-      }
-    );
-  }
 }
 //
 class routeSelect extends StatefulWidget {
   var data;
   int index;
-  var routeData;
-  routeSelect(this.data,this.index,this.routeData);
+  routeSelect(this.data,this.index);
   @override
   _routeSelectState createState() => _routeSelectState();
 }
@@ -117,11 +108,7 @@ class _routeSelectState extends State<routeSelect>{
                   onTap: () async{
                       if (locCheck == true) {
                         setState(() {
-
                         });
-                        final route=await getRouteById();
-                        print(route);
-
                       }
                       else {
                         selectRoute(widget.data['routing'][widget.index]['_id']);

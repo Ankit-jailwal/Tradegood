@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as Http;
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tradegood/API/authentication.dart';
 
 
