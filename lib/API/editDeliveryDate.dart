@@ -31,7 +31,8 @@ Future editDeliveryDate(DateTime editedDate) async{
       headers: {"Content-Type": "application/json","Authorization":"$token"},
       body:jsonEncode(data)
   );
-  print("EDITED:${response.body}");
+  print("EDITED: ${response.body}");
+  print(response.statusCode);
   final body=response.body;
   final category=jsonDecode(body);
   return category;

@@ -15,6 +15,8 @@ import 'package:toast/toast.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'package:tradegood/screens/My_orders/my_order.dart';
+import 'package:tradegood/components/internet_handler.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:tradegood/screens/My_cart/CartFilled/OrderPlaced.dart';
 
 
@@ -69,7 +71,16 @@ class _cart_screenState extends State<cart_screen> {
     else
       return false;
   }
-
+  bool stockFlag=true;
+  bool checkAvailability(var quantity,var stock) {
+    if(quantity>stock) {
+      stockFlag=false;
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
   bool updateFlag=true;
   double sumUpdate=0;
   final List<String> errors = [];
@@ -158,635 +169,635 @@ class _cart_screenState extends State<cart_screen> {
         ],
         backgroundColor: Colors.blue,
       ),
-      body: RefreshIndicator(
-        onRefresh: updatePage,
-        child: FutureBuilder(
-          future: getCart(),
-          builder: (context, cartData) {
-            if(cartData.hasData) {
-              carStaticData=cartData.data;
-              return checkCart(cartData.data)?
-                    FutureBuilder(
-                        future: calculateCartSum(cartData.data),
-                        builder: (context, cartSum)  {
-                          if(cartSum.hasData) {
-                            return Column(
-                              children: [
-                                Container(
-                                  height: SizeConfig.screenHeight * 0.075,
-                                  decoration: BoxDecoration(color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            blurRadius: 5,
-                                            offset: Offset(0, 3))
-                                      ]),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 10, right: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start,
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center,
-                                          children: [
-                                            RichText(
-                                              text: TextSpan(
-                                                  text: 'Deliver to ',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16),
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                      text: cartData.data['cart']['user']['name'],
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight: FontWeight
-                                                              .w800),
-                                                    )
-                                                  ]),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+      body: Builder(
+        builder: (BuildContext context) {
+      return OfflineBuilder(
+          connectivityBuilder: (BuildContext context,
+              ConnectivityResult connectivity, Widget child) {
+            final bool connected =
+                connectivity != ConnectivityResult.none;
+            return !connected?noInternet():RefreshIndicator(
+              onRefresh: updatePage,
+              child: FutureBuilder(
+                  future: getCart(),
+                  builder: (context, cartData) {
+                    if(cartData.hasData) {
+                      carStaticData=cartData.data;
+                      return checkCart(cartData.data)?
+                      FutureBuilder(
+                          future: calculateCartSum(cartData.data),
+                          builder: (context, cartSum)  {
+                            if(cartSum.hasData) {
+                              return Column(
+                                children: [
+                                  Container(
+                                    height: SizeConfig.screenHeight * 0.075,
+                                    decoration: BoxDecoration(color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.grey.withOpacity(0.5),
+                                              blurRadius: 5,
+                                              offset: Offset(0, 3))
+                                        ]),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 10, right: 10),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .center,
+                                            children: [
+                                              RichText(
+                                                text: TextSpan(
+                                                    text: 'Deliver to ',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16),
+                                                    children: <TextSpan>[
+                                                      TextSpan(
+                                                        text: cartData.data['cart']['user']['name'],
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 20,
+                                                            fontWeight: FontWeight
+                                                                .w800),
+                                                      )
+                                                    ]),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: SizeConfig.screenHeight * 0.01,
-                                ),
-                                Expanded(
-                                    child: ListView.builder(
-                                        itemCount: cartData.data['cart']['cartItems']
-                                            .length, //list view declaration
-                                        padding: EdgeInsets.only(
-                                            top: 10.0, bottom: 15.0),
-                                        itemBuilder: (BuildContext context, int index) {
-                                                  return Column(
-                                                    children: [
-                                                      checkRoute(index, cartData.data['cart']['cartItems'].length)?Column(
-                                                        children: [
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(left: 5, right: 5),
-                                                            child: Container(
-                                                              width: SizeConfig.screenWidth,
-                                                              decoration: BoxDecoration(color: Colors.white,
-                                                                  boxShadow: [
-                                                                    BoxShadow(
-                                                                        color: Colors.grey.withOpacity(0.5),
-                                                                        blurRadius: 5,
-                                                                        offset: Offset(0, 3))
-                                                                  ]),
-                                                              child: Padding(
-                                                                padding: EdgeInsets.only(left: 10, right: 10),
-                                                                child: Column(
-                                                                  mainAxisAlignment: MainAxisAlignment
-                                                                      .spaceBetween,
-                                                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                                                  children: [
-                                                                    Column(
-                                                                      crossAxisAlignment: CrossAxisAlignment
-                                                                          .start,
-                                                                      mainAxisAlignment: MainAxisAlignment
-                                                                          .center,
-                                                                      children: [
-                                                                        Row(
-                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                          children: [
-                                                                            Text(picked==null?cartData.data['cart']['user']['route']['day']:DateFormat('EEEE').format(picked), style: TextStyle(
-                                                                                color: Colors.black,
-                                                                                fontSize: 18,
-                                                                                fontWeight: FontWeight.w800),),
-                                                                            Row(
-                                                                              children: [
-                                                                                Text(
-                                                                                  "Delivery on: ${picked==null?DateFormat('d MMM, yy').format(DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']),):DateFormat('d MMM, yy').format(picked,)}",
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.black,
-                                                                                    fontSize: 14,
-                                                                                  ),),
-                                                                                GestureDetector(
-                                                                                    onTap: ()async{
-                                                                                      final DateTime selected = await showDatePicker(
-                                                                                        helpText: "Choose Customized Delivery Date",
-                                                                                        context: context,
-                                                                                        initialDate: picked==null?DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']):picked, // Refer step 1
-                                                                                        firstDate: DateTime.now().subtract(Duration(days: 0)),
-                                                                                        lastDate: DateTime(2025),
-                                                                                      );
-                                                                                      if (selected != null && selected != cartData.data['cart']['user']['route']['deliveryDate']) {
-                                                                                        if(DateFormat('dd').format(DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']),)!=DateFormat('dd').format(selected)) {
-                                                                                          setState(() {
-                                                                                            picked = selected;
-                                                                                          });
-                                                                                          //editDeliveryDate(picked);
-                                                                                        }
-                                                                                        else if(picked!=null)
-                                                                                        {
-                                                                                          if(DateFormat('dd').format(DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']))==DateFormat('dd').format(selected))
-                                                                                          {
-                                                                                            setState(() {
-                                                                                              picked=null;
-                                                                                            });
-                                                                                          }
-                                                                                          else{
-                                                                                            setState(() {
-                                                                                              picked = selected;
-                                                                                            });
-                                                                                            editDeliveryDate(picked);
-                                                                                          }
-                                                                                        }
-                                                                                      }
-                                                                                    },
-                                                                                    child: Padding(
-                                                                                      padding: const EdgeInsets.only(left:8.0),
-                                                                                      child: Icon(Icons.edit,size:20
-                                                                                        ,color: Colors.black,),
-                                                                                    )),
-                                                                              ],
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        SizedBox(height: 5,),
-                                                                        Container(
-                                                                          child: Text(
-                                                                            "Route: ${picked==null?cartData.data['cart']['user']['route']['location'].join(', '):cartData.data['cart']['user']['address']}",
+                                  SizedBox(
+                                    height: SizeConfig.screenHeight * 0.01,
+                                  ),
+                                  Expanded(
+                                      child: ListView.builder(
+                                          itemCount: cartData.data['cart']['cartItems']
+                                              .length, //list view declaration
+                                          padding: EdgeInsets.only(
+                                              top: 10.0, bottom: 15.0),
+                                          itemBuilder: (BuildContext context, int index) {
+                                            return Column(
+                                              children: [
+                                                checkRoute(index, cartData.data['cart']['cartItems'].length)?Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left: 5, right: 5),
+                                                      child: Container(
+                                                        width: SizeConfig.screenWidth,
+                                                        decoration: BoxDecoration(color: Colors.white,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                  color: Colors.grey.withOpacity(0.5),
+                                                                  blurRadius: 5,
+                                                                  offset: Offset(0, 3))
+                                                            ]),
+                                                        child: Padding(
+                                                          padding: EdgeInsets.only(left: 10, right: 10),
+                                                          child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment
+                                                                .spaceBetween,
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                                            children: [
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment
+                                                                    .start,
+                                                                mainAxisAlignment: MainAxisAlignment
+                                                                    .center,
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    children: [
+                                                                      cartData.data['cart']['user']['route']!=null?Text(picked==null?cartData.data['cart']['user']['route']['day']:DateFormat('EEEE').format(picked), style: TextStyle(
+                                                                          color: Colors.black,
+                                                                          fontSize: 18,
+                                                                          fontWeight: FontWeight.w800),):Container(),
+                                                                      cartData.data['cart']['user']['route']!=null?Row(
+                                                                        children: [
+                                                                          cartData.data['cart']['user']['route']!=null?Text(
+                                                                            "Delivery on: ${picked==null?DateFormat('d MMM, yy').format(DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']),):DateFormat('d MMM, yy').format(picked,)}",
                                                                             style: TextStyle(
                                                                               color: Colors.black,
                                                                               fontSize: 14,
-                                                                            ),),
-                                                                        ),
-                                                                        SizedBox(height: 5,)
-                                                                      ],
-                                                                    ),
-                                                                    Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                      children: [
-                                                                        Text(
-                                                                          "Delivery Charge: ${picked==null?cartData.data['cart']['user']['route']['deliveryCharge']==0?"FREE":"₹"+cartData.data['cart']['user']['route']['deliveryCharge'].toString():"₹"+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'].toString()}",
-                                                                          style: TextStyle(
-                                                                            color: Colors.black,
-                                                                            fontSize: 14,
-                                                                          ),),
-                                                                        GestureDetector(
-                                                                          onTap: () {
-                                                                            Navigator.push(
-                                                                              context,
-                                                                              MaterialPageRoute(
-                                                                                  builder: (context) =>
-                                                                                      location_list()),
-                                                                            );
-                                                                          },
-                                                                          child: Container(
-                                                                            height: SizeConfig.screenHeight *
-                                                                                0.045,
-                                                                            width: SizeConfig.screenWidth * 0.25,
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.white,
-                                                                              border: Border.all(
-                                                                                  color: Colors.black54),
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                  5),
-                                                                            ),
-                                                                            child: Center(
-                                                                              child: Text(
-                                                                                "Change",
-                                                                                style: TextStyle(
-                                                                                    color: Colors.lightBlue,
-                                                                                    fontSize: 15,
-                                                                                    fontWeight: FontWeight.w700),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: SizeConfig.screenHeight * 0.01,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: SizeConfig
-                                                                .screenHeight *
-                                                                0.015,
-                                                          ),
-                                                        ],
-                                                      ):Container(),
-
-                                                      Dismissible(
-                                                        key: Key(cartData.data['cart']['cartItems'].toString()),
-                                                        direction: DismissDirection.horizontal,
-                                                        child: Padding(
-                                                          padding: EdgeInsets.only(
-                                                              left: 5, right: 5),
-                                                          child: Container(
-                                                            width: SizeConfig
-                                                                .screenWidth,
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.white,
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  color: Colors.grey
-                                                                      .withOpacity(
-                                                                      0.5),
-                                                                  blurRadius: 5.0,
-                                                                  offset: Offset(
-                                                                      0, 3),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                  top: 10,
-                                                                  bottom: 10,
-                                                                  left: 15,
-                                                                  right: 20),
-                                                              child: Column(
-                                                                children: [
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                    children: [
-                                                                      Column(
-                                                                        crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                        children: [
-                                                                          Container(
-                                                                            width: SizeConfig
-                                                                                .screenWidth *
-                                                                                0.7,
-                                                                            child: Text(
-                                                                              cartData.data['cart']['cartItems'][index]['product']['name'],
-                                                                              style: TextStyle(
-                                                                                  color: Colors
-                                                                                      .black,
-                                                                                  fontSize: 16,
-                                                                                  fontWeight: FontWeight
-                                                                                      .w600),
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                            SizeConfig
-                                                                                .screenHeight *
-                                                                                0.025,
-                                                                          ),
-
-                                                                          quantityChange(cartData.data,index,updateSum)
-
+                                                                            ),):Container(),
+                                                                          GestureDetector(
+                                                                              onTap: ()async{
+                                                                                final DateTime selected = await showDatePicker(
+                                                                                  helpText: "Choose Customized Delivery Date",
+                                                                                  context: context,
+                                                                                  initialDate: picked==null?DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']):picked, // Refer step 1
+                                                                                  firstDate: DateTime.now().subtract(Duration(days: 0)),
+                                                                                  lastDate: DateTime(2025),
+                                                                                );
+                                                                                if (selected != null && selected != cartData.data['cart']['user']['route']['deliveryDate']) {
+                                                                                  if(DateFormat('dd').format(DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']),)!=DateFormat('dd').format(selected)) {
+                                                                                    setState(() {
+                                                                                      picked = selected;
+                                                                                    });
+                                                                                    await editDeliveryDate(picked);
+                                                                                  }
+                                                                                  else if(picked!=null)
+                                                                                  {
+                                                                                    if(DateFormat('dd').format(DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']))==DateFormat('dd').format(selected))
+                                                                                    {
+                                                                                      setState(() {
+                                                                                        picked=null;
+                                                                                      });
+                                                                                    }
+                                                                                    else{
+                                                                                      setState(() {
+                                                                                        picked = selected;
+                                                                                      });
+                                                                                      await editDeliveryDate(picked);
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              },
+                                                                              child: Padding(
+                                                                                padding: const EdgeInsets.only(left:8.0),
+                                                                                child: Icon(Icons.edit,size:20
+                                                                                  ,color: Colors.black,),
+                                                                              )),
                                                                         ],
-                                                                      ),
-                                                                      Container(
-                                                                          width: SizeConfig
-                                                                              .screenWidth *
-                                                                              0.15,
-                                                                          child: ClipRRect(
-                                                                            borderRadius: BorderRadius
-                                                                                .circular(
-                                                                                5),
-                                                                            child: Image
-                                                                                .network(
-                                                                              cartData.data['cart']['cartItems'][index]['product']['productPicture'],
-                                                                              fit: BoxFit.fill,),
-                                                                          )),
+                                                                      ):Container(),
                                                                     ],
                                                                   ),
-                                                                  Padding(
-                                                                    padding: EdgeInsets
-                                                                        .only(
-                                                                        top: 20),
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                      children: [
-                                                                        RichText(
-                                                                            text: TextSpan(
-                                                                              text:
-                                                                              'Delivery by ${picked==null?DateFormat('d MMM, yy').format(DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']),):DateFormat('d MMM, yy').format(picked)}',
-                                                                              style: TextStyle(
-                                                                                  color: Colors
-                                                                                      .black,
-                                                                                  fontSize: 14),
-                                                                            )
-                                                                        ),
-                                                                        GestureDetector(
-                                                                          onTap: () async{
-                                                                            print("STATIC DATA:${carStaticData["cart"]}");
-                                                                            removeItemCart(carStaticData['cart']['cartItems'][index]['product']['_id']);
-                                                                            carStaticData['cart']['cartItems'].removeAt(index);
-                                                                            updateCart(true);
-                                                                          },
-                                                                          child: Container(
-                                                                            height: SizeConfig.screenHeight * 0.045,
-                                                                            width: SizeConfig.screenWidth * 0.25,
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.white,
-                                                                              border:
-                                                                              Border.all(
-                                                                                  color: Colors.grey),
-                                                                              borderRadius: BorderRadius.circular(4),
-                                                                            ),
-                                                                            child: Row(
-                                                                              mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceEvenly,
-                                                                              children: [
-                                                                                Icon(
-                                                                                  Icons.delete,
-                                                                                  color: Colors.black54,
-                                                                                  size: 14  ,
-                                                                                ),
-                                                                                Text(
-                                                                                  "Remove",
-                                                                                  style: TextStyle(
-                                                                                      color: Colors
-                                                                                          .black54,
-                                                                                      fontSize: 14,
-                                                                                      fontWeight: FontWeight
-                                                                                          .w800),
-                                                                                ),
-                                                                              ],
-                                                                            ),
+                                                                  SizedBox(height: 5,),
+                                                                  Container(
+                                                                    child: Text(
+                                                                      cartData.data['cart']['user']['route']!=null?"Route: ${picked==null?cartData.data['cart']['user']['route']['location'].join(', '):cartData.data['cart']['user']['address']}":"Route: Route not selected",
+                                                                      style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontSize: 14,
+                                                                      ),),
+                                                                  ),
+                                                                  SizedBox(height: 5,)
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+                                                                  cartData.data['cart']['user']['route']!=null?Text(
+                                                                    "Delivery Charge: ${picked==null?cartData.data['cart']['user']['route']['deliveryCharge']==0?"FREE":"₹"+cartData.data['cart']['user']['route']['deliveryCharge'].toString():"₹"+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'].toString()}",
+                                                                    style: TextStyle(
+                                                                      color: Colors.black,
+                                                                      fontSize: 14,
+                                                                    ),):Container(),
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      Navigator.push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                location_list()),
+                                                                      );
+                                                                    },
+                                                                    child: Container(
+                                                                      height: SizeConfig.screenHeight *
+                                                                          0.045,
+                                                                      decoration: BoxDecoration(
+                                                                        color: Colors.white,
+                                                                        border: Border.all(
+                                                                            color: Colors.black54),
+                                                                        borderRadius: BorderRadius.circular(
+                                                                            5),
+                                                                      ),
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(left:5.0,right: 5.0),
+                                                                        child: Center(
+                                                                          child: Text(
+                                                                            cartData.data['cart']['user']['route']!=null?"Change":"Select Route",
+                                                                            style: TextStyle(
+                                                                                color: Colors.lightBlue,
+                                                                                fontSize: 15,
+                                                                                fontWeight: FontWeight.w700),
                                                                           ),
-                                                                        )
-                                                                      ],
+                                                                        ),
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ],
                                                               ),
-                                                            ),
+                                                              SizedBox(
+                                                                height: SizeConfig.screenHeight * 0.01,
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
-                                                        onDismissed: (direction) async{
-                                                          await removeItemCart(carStaticData['cart']['cartItems'][index]['product']['_id']);
-                                                          carStaticData['cart']['cartItems'].removeAt(index);
-                                                          updateCart(true);
-                                                        },
                                                       ),
-                                                      SizedBox(
-                                                        height: SizeConfig
-                                                            .screenHeight *
-                                                            0.015,
-                                                      ),
-                                                      check(index, cartData.data['cart']['cartItems'].length)
-                                                          ?Column(
-                                                        children: [
-                                                          Divider(
-                                                            color: Colors.grey,
-                                                            thickness: 0.5,),
-                                                          Padding(
-                                                            padding: const EdgeInsets
-                                                                .only(
-                                                                left: 10,
-                                                                right: 5),
-                                                            child: Row(
-                                                              children: [
-                                                                Text(
-                                                                  "Price Details",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black
-                                                                          .withOpacity(
-                                                                          0.7),
-                                                                      fontSize: 16,
-                                                                      fontWeight: FontWeight
-                                                                          .w800),),
-                                                              ],
-                                                            ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: SizeConfig
+                                                          .screenHeight *
+                                                          0.015,
+                                                    ),
+                                                  ],
+                                                ):Container(),
+
+                                                Dismissible(
+                                                  key: Key(cartData.data['cart']['cartItems'].toString()),
+                                                  direction: DismissDirection.horizontal,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 5, right: 5),
+                                                    child: Container(
+                                                      width: SizeConfig
+                                                          .screenWidth,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                0.5),
+                                                            blurRadius: 5.0,
+                                                            offset: Offset(
+                                                                0, 3),
                                                           ),
-                                                          Divider(
-                                                            color: Colors.grey,
-                                                            thickness: 0.5,),
-                                                          Padding(
-                                                            padding: const EdgeInsets
-                                                                .only(
-                                                                right: 5,
-                                                                left: 10),
-                                                            child: Column(
+                                                        ],
+                                                      ),
+                                                      child: Padding(
+                                                        padding: EdgeInsets
+                                                            .only(
+                                                            top: 10,
+                                                            bottom: 10,
+                                                            left: 15,
+                                                            right: 20),
+                                                        child: Column(
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                               children: [
-                                                                Row(
-                                                                  mainAxisAlignment: MainAxisAlignment
-                                                                      .spaceBetween,
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
                                                                   children: [
-                                                                    Text(
-                                                                      "Price(${cartData.data['cart']['cartItems'].length} item)",
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .black),),
-                                                                    Text(
-                                                                        "₹${cartSum.data}",
+                                                                    Container(
+                                                                      width: SizeConfig
+                                                                          .screenWidth *
+                                                                          0.7,
+                                                                      child: Text(
+                                                                        cartData.data['cart']['cartItems'][index]['product']['name'],
                                                                         style: TextStyle(
                                                                             color: Colors
-                                                                                .black)),
+                                                                                .black,
+                                                                            fontSize: 16,
+                                                                            fontWeight: FontWeight
+                                                                                .w600),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                      SizeConfig
+                                                                          .screenHeight *
+                                                                          0.025,
+                                                                    ),
+
+                                                                    quantityChange(cartData.data,index,updateSum)
+
                                                                   ],
                                                                 ),
-                                                                /*Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .spaceBetween,
-                        children: [
-                          Text(
-                            "Discount", style: TextStyle(
-                              color: Colors.black),),
-                          Text("-₹1000", style: TextStyle(
-                              color: Colors
-                                  .lightGreenAccent
-                                  .shade700)),
-                        ],
-                      ),*/
+                                                                Container(
+                                                                    width: SizeConfig
+                                                                        .screenWidth *
+                                                                        0.15,
+                                                                    child: ClipRRect(
+                                                                      borderRadius: BorderRadius
+                                                                          .circular(
+                                                                          5),
+                                                                      child: Image
+                                                                          .network(
+                                                                        cartData.data['cart']['cartItems'][index]['product']['productPicture'],
+                                                                        fit: BoxFit.fill,),
+                                                                    )),
                                                               ],
                                                             ),
-                                                          ),
-                                                          Divider(
-                                                            color: Colors.grey
-                                                                .withOpacity(
-                                                                0.6),
-                                                            thickness: 0.5,),
-                                                          Padding(
-                                                            padding: const EdgeInsets
-                                                                .only(
-                                                                left: 10,
-                                                                right: 5),
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment
-                                                                  .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                  "Delivery charge: ",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black),),
-                                                                Text("${picked==null?cartData.data['cart']['user']['route']['deliveryCharge']==0?"FREE":"₹"+cartData.data['cart']['user']['route']['deliveryCharge'].toString():"₹"+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'].toString()}",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black)),
-                                                              ],
+                                                            SizedBox(height:5),
+                                                            checkAvailability(cartData.data['cart']['cartItems'][index]['quantity'], cartData.data['cart']['cartItems'][index]['product']['availableStock'])?Container():Align(alignment:Alignment.centerLeft,child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontWeight: FontWeight.w800,fontSize: 12),)),
+                                                            Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                  top: 5),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                                children: [
+                                                                  cartData.data['cart']['user']['route']!=null?RichText(
+                                                                      text: TextSpan(
+                                                                        text:
+                                                                        'Delivery by ${picked==null?DateFormat('d MMM, yy').format(DateTime.parse(cartData.data['cart']['user']['route']['deliveryDate']),):DateFormat('d MMM, yy').format(picked)}',
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontSize: 14),
+                                                                      )
+                                                                  ):Container(),
+                                                                  GestureDetector(
+                                                                    onTap: () async{
+                                                                      removeItemCart(carStaticData['cart']['cartItems'][index]['product']['_id']);
+                                                                      carStaticData['cart']['cartItems'].removeAt(index);
+                                                                      updateCart(true);
+                                                                    },
+                                                                    child: Container(
+                                                                      height: SizeConfig.screenHeight * 0.045,
+                                                                      width: SizeConfig.screenWidth * 0.25,
+                                                                      decoration: BoxDecoration(
+                                                                        color: Colors.white,
+                                                                        border:
+                                                                        Border.all(
+                                                                            color: Colors.grey),
+                                                                        borderRadius: BorderRadius.circular(4),
+                                                                      ),
+                                                                      child: Row(
+                                                                        mainAxisAlignment:
+                                                                        MainAxisAlignment.spaceEvenly,
+                                                                        children: [
+                                                                          Icon(
+                                                                            Icons.delete,
+                                                                            color: Colors.black54,
+                                                                            size: 14  ,
+                                                                          ),
+                                                                          Text(
+                                                                            "Remove",
+                                                                            style: TextStyle(
+                                                                                color: Colors
+                                                                                    .black54,
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight
+                                                                                    .w800),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                          Divider(
-                                                            color: Colors.grey
-                                                                .withOpacity(
-                                                                0.6),
-                                                            thickness: 0.5,),
-                                                          Padding(
-                                                            padding: const EdgeInsets
-                                                                .only(
-                                                                left: 10,
-                                                                right: 5),
-                                                            child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment
-                                                                  .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                  "Total amount",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black),),
-                                                                Text("₹${picked==null?cartSum.data:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black)),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Divider(
-                                                            color: Colors.grey,
-                                                            thickness: 0.5,),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onDismissed: (direction) async{
+                                                    await removeItemCart(carStaticData['cart']['cartItems'][index]['product']['_id']);
+                                                    carStaticData['cart']['cartItems'].removeAt(index);
+                                                    updateCart(true);
+                                                  },
+                                                ),
+                                                SizedBox(
+                                                  height: SizeConfig
+                                                      .screenHeight *
+                                                      0.015,
+                                                ),
+                                                check(index, cartData.data['cart']['cartItems'].length)
+                                                    ?Column(
+                                                  children: [
+                                                    Divider(
+                                                      color: Colors.grey,
+                                                      thickness: 0.5,),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .only(
+                                                          left: 10,
+                                                          right: 5),
+                                                      child: Row(
+                                                        children: [
+                                                          Text(
+                                                            "Price Details",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                    0.7),
+                                                                fontSize: 16,
+                                                                fontWeight: FontWeight
+                                                                    .w800),),
                                                         ],
-                                                      )
-                                                          : Container()
-                                                    ],
-                                                  );
-                                        })),
-                                Container(
-                                  decoration: BoxDecoration(color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.grey.withOpacity(0.4),
-                                            blurRadius: 5,
-                                            offset: Offset(0, -3))
-                                      ]),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 10, right: 10, bottom: 15, top: 10),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .center,
-                                      children: [
-                                        Text(
-                                          "₹${picked==null?cartSum.data:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        FlatButton(
-                                          onPressed: () async{
-                                            if(cartData.data['cart']['user']['route']!=null){
-                                              if(cartData.data['cart']['user']['address']!=null&&cartData.data['cart']['user']['certificate']!=null) {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (ctx) =>
-                                                      AlertDialog(
-                                                        title: Text(
-                                                          "Confirm your order",
-                                                          style: TextStyle(
-                                                              fontWeight: FontWeight
-                                                                  .w800),),
-                                                        content: Text(
-                                                            "Are you sure you want to place order?"),
-                                                        actions: <Widget>[
-                                                          FlatButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text("No",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .red,
-                                                                  fontWeight: FontWeight
-                                                                      .w800,
-                                                                  fontSize: 16),),
-                                                          ),
-                                                          FlatButton(
-                                                            onPressed: () async {
-                                                              Navigator.pop(context);
-                                                              final orderConfirmation = await placeOrderItem(cartData.data, picked==null?cartSum.data.toInt():cartSum.data.toInt()+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'],picked==null?cartData.data['cart']['user']['route']['deliveryDate']:picked.toString(),picked==null?cartData.data['cart']['user']['route']['deliveryCharge']:cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']);
-                                                              if (orderConfirmation !=
-                                                                  null) {
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (
-                                                                          context) =>
-                                                                          orderPlaced()),
-                                                                );
-                                                              }
-                                                            },
-                                                            child: Text("Yes",
+                                                      ),
+                                                    ),
+                                                    Divider(
+                                                      color: Colors.grey,
+                                                      thickness: 0.5,),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .only(
+                                                          right: 5,
+                                                          left: 10),
+                                                      child: Column(
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment
+                                                                .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                "Price(${cartData.data['cart']['cartItems'].length} item)",
                                                                 style: TextStyle(
-                                                                    fontSize: 16,
-                                                                    fontWeight: FontWeight
-                                                                        .w800)),
+                                                                    color: Colors
+                                                                        .black),),
+                                                              Text(
+                                                                  "₹${cartSum.data}",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black)),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                );
-                                              }
-                                              else
-                                                Toast.show("Please fill additional details", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
-                                            }
-                                            else
-                                              Toast.show("Please select route before placing order", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
-                                          },
-                                          child: Container(
-                                            height: SizeConfig.screenHeight *
-                                                0.05,
-                                            width: SizeConfig.screenWidth * 0.25,
-                                            decoration: BoxDecoration(
-                                              color: Colors.deepOrangeAccent,
-                                              borderRadius: BorderRadius.circular(
-                                                  3),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "Place order",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w900),
-                                              ),
+                                                    ),
+                                                    cartData.data['cart']['user']['route']!=null?Divider(
+                                                      color: Colors.grey
+                                                          .withOpacity(
+                                                          0.6),
+                                                      thickness: 0.5,):Container(),
+                                                    cartData.data['cart']['user']['route']!=null?Padding(
+                                                      padding: const EdgeInsets
+                                                          .only(
+                                                          left: 10,
+                                                          right: 5),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment
+                                                            .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "Delivery charge: ",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),),
+                                                          Text("${picked==null?cartData.data['cart']['user']['route']['deliveryCharge']==0?"FREE":"₹"+cartData.data['cart']['user']['route']['deliveryCharge'].toString():"₹"+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'].toString()}",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black)),
+                                                        ],
+                                                      ),
+                                                    ):Container(),
+                                                    Divider(
+                                                      color: Colors.grey
+                                                          .withOpacity(
+                                                          0.6),
+                                                      thickness: 0.5,),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .only(
+                                                          left: 10,
+                                                          right: 5),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment
+                                                            .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "Total amount",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),),
+                                                          Text("₹${picked==null?cartSum.data:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black)),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Divider(
+                                                      color: Colors.grey,
+                                                      thickness: 0.5,),
+                                                  ],
+                                                )
+                                                    : Container()
+                                              ],
+                                            );
+                                          })),
+                                  Container(
+                                    decoration: BoxDecoration(color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.grey.withOpacity(0.4),
+                                              blurRadius: 5,
+                                              offset: Offset(0, -3))
+                                        ]),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 10, bottom: 10, top: 10),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .center,
+                                        children: [
+                                          Text(
+                                            "₹${picked==null?cartSum.data:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                        )
-                                      ],
+                                          stockFlag?FlatButton(
+                                            onPressed: () async{
+                                              if(cartData.data['cart']['user']['route']!=null){
+                                                if(cartData.data['cart']['user']['address']!=null&&cartData.data['cart']['user']['certificate']!=null) {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (ctx) =>
+                                                        AlertDialog(
+                                                          title: Text(
+                                                            "Confirm your order",
+                                                            style: TextStyle(
+                                                                fontWeight: FontWeight
+                                                                    .w800),),
+                                                          content: Text(
+                                                              "Are you sure you want to place order?"),
+                                                          actions: <Widget>[
+                                                            FlatButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text("No",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .red,
+                                                                    fontWeight: FontWeight
+                                                                        .w800,
+                                                                    fontSize: 16),),
+                                                            ),
+                                                            FlatButton(
+                                                              onPressed: () async {
+                                                                Navigator.pop(context);
+                                                                final orderConfirmation = await placeOrderItem(cartData.data, picked==null?cartSum.data.toInt():cartSum.data.toInt()+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'],picked==null?cartData.data['cart']['user']['route']['deliveryDate']:picked.toString(),picked==null?cartData.data['cart']['user']['route']['deliveryCharge']:cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']);
+                                                                if (orderConfirmation !=
+                                                                    null) {
+                                                                  Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (
+                                                                            context) =>
+                                                                            orderPlaced()),
+                                                                  );
+                                                                }
+                                                              },
+                                                              child: Text("Yes",
+                                                                  style: TextStyle(
+                                                                      fontSize: 16,
+                                                                      fontWeight: FontWeight
+                                                                          .w800)),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                  );
+                                                }
+                                                else
+                                                  Toast.show("Please fill additional details", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                              }
+                                              else
+                                                Toast.show("Please select route before placing order", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                            },
+                                            child: Container(
+                                              height: SizeConfig.screenHeight *
+                                                  0.05,
+                                              width: SizeConfig.screenWidth * 0.25,
+                                              decoration: BoxDecoration(
+                                                color: Colors.deepOrangeAccent,
+                                                borderRadius: BorderRadius.circular(
+                                                    5),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "Place order",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w900),
+                                                ),
+                                              ),
+                                            ),
+                                          ):Container()
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                )
-                              ],
-                            );
+                                  )
+                                ],
+                              );
+                            }
+                            return Center(child: Container(child: CircularProgressIndicator()));
                           }
-                          return Center(child: Container(child: CircularProgressIndicator()));
-                      }
-              ):cartEmptyBody();
-            }
-            return Center(child: Container(child: CircularProgressIndicator()));
-          }
-        ),
-      ),
+                      ):cartEmptyBody();
+                    }
+                    return Center(child: Container(child: CircularProgressIndicator()));
+                  }
+              ),
+            );
+          },
+          child: Container()
+      );
+    },
+    )
     );
   }
 }
@@ -817,6 +828,14 @@ class _quantityChangeState extends State<quantityChange> {
         errors.add(error);
       });
   }
+  bool checkAvailability(var quantity,var stock) {
+    if(quantity>stock) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
   void removeError({String error}) {
     if (errors.contains(error))
       setState(() {
@@ -843,7 +862,7 @@ class _quantityChangeState extends State<quantityChange> {
         SizedBox(
           width: 10,
         ),
-        GestureDetector(
+        !checkAvailability(widget.cartData['cart']['cartItems'][widget.index]['quantity'], widget.cartData['cart']['cartItems'][widget.index]['product']['availableStock'])?Container():GestureDetector(
           onTap: (){
             showDialog(
                 context: context,

@@ -110,7 +110,7 @@ class _SignUpFormState extends State<SignUpForm> {
         recognizer: new TapGestureRecognizer()..onTap = () =>  Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Scaffold(
-              body: Body())),
+              body: SafeArea(child: Body()))),
         )),
       ],
       ),

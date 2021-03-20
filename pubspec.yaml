@@ -49,6 +49,9 @@ dependencies:
   flutter_native_image: ^0.0.5
   image_picker: ^0.6.7+17
   #permission_handler: any
+dependency_overrides:
+  flutter_offline: 0.2.4+1
+  connectivity: ^0.4.3+6
 
 dev_dependencies:
   flutter_test:

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
 import 'components/body.dart';
 import 'package:tradegood/API/searchByProduct.dart';
-
+import 'package:tradegood/components/internet_handler.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 
 class searchField extends StatefulWidget {
 
@@ -47,7 +48,19 @@ class _searchFieldState extends State<searchField> {
         ),
         backgroundColor: Colors.white,
       ),
-      body: Body(data),
+        body: Builder(
+          builder: (BuildContext context) {
+            return OfflineBuilder(
+                connectivityBuilder: (BuildContext context,
+                    ConnectivityResult connectivity, Widget child) {
+                  final bool connected =
+                      connectivity != ConnectivityResult.none;
+                  return !connected?noInternet():Body(data);
+                },
+                child: Container()
+            );
+          },
+        )
     );
   }
 }

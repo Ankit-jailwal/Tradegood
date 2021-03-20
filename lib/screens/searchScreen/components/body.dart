@@ -341,7 +341,7 @@ class _BodyState extends State<Body> {
                                             mainAxisAlignment:
                                             MainAxisAlignment
                                                 .spaceBetween,
-                                            crossAxisAlignment: widget.data['product'][index]['availableStock']==0?CrossAxisAlignment
+                                            crossAxisAlignment: (widget.data['product'][index]['availableStock']<widget.data['product'][index]['minQuantity'])?CrossAxisAlignment
                                                 .center:CrossAxisAlignment
                                                 .end,
                                             children: [
@@ -354,7 +354,7 @@ class _BodyState extends State<Body> {
                                                   CrossAxisAlignment
                                                       .center,
                                                   children: [
-                                                    Row(
+                                                    (widget.data['product'][index]['availableStock']<widget.data['product'][index]['minQuantity'])?Container():Row(
                                                       children: [
                                                         Icon(
                                                           Icons.circle,
@@ -515,9 +515,9 @@ class _BodyState extends State<Body> {
                                                   ],
                                                 ),
                                               ),
-                                              widget.data['product'][index]['availableStock']==0?Padding(
-                                                padding: const EdgeInsets.all(16.0),
-                                                child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontSize: 18,fontWeight: FontWeight.bold),),
+                                              (widget.data['product'][index]['availableStock']<widget.data['product'][index]['minQuantity'])?Padding(
+                                                padding: const EdgeInsets.only(right:40.0),
+                                                child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontSize: 16,fontWeight: FontWeight.w900),),
                                               ):productButton(widget.data, index)
                                             ],
                                           ),

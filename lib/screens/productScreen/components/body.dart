@@ -389,7 +389,7 @@ class _BodyState extends State<Body> {
                                                         mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
-                                                        crossAxisAlignment: snapshot.data['products'][index]['availableStock']==0?CrossAxisAlignment.center:CrossAxisAlignment.end,
+                                                        crossAxisAlignment: (snapshot.data['products'][index]['availableStock']<snapshot.data['products'][index]['minQuantity'])?CrossAxisAlignment.center:CrossAxisAlignment.end,
                                                         children: [
                                                           Padding(
                                                             padding: EdgeInsets
@@ -401,7 +401,7 @@ class _BodyState extends State<Body> {
                                                               CrossAxisAlignment
                                                                   .center,
                                                               children: [
-                                                                Row(
+                                                                (snapshot.data['products'][index]['availableStock']<snapshot.data['products'][index]['minQuantity'])?Container():Row(
                                                                   children: [
                                                                     Icon(
                                                                       Icons
@@ -417,7 +417,7 @@ class _BodyState extends State<Body> {
                                                                           0.008,
                                                                     ),
                                                                     Text(
-                                                                      "Available Stock",
+                                                                      (snapshot.data['products'][index]['availableStock']<snapshot.data['products'][index]['minQuantity'])?"":"Available Stock",
                                                                       style: TextStyle(
                                                                         color:
                                                                         Colors
@@ -435,16 +435,10 @@ class _BodyState extends State<Body> {
                                                                             .screenWidth *
                                                                             0.02),
                                                                     Text(
-                                                                      snapshot
-                                                                          .data[
-                                                                      'products']
-                                                                      [index][
-                                                                      'availableStock']
-                                                                          .toString(),
+                                                                      snapshot.data['products'][index]['availableStock'].toString(),
                                                                       style: TextStyle(
                                                                         color:
-                                                                        Colors
-                                                                            .black,
+                                                                        Colors.black,
                                                                         fontSize: 12,
                                                                         fontWeight:
                                                                         FontWeight
@@ -570,12 +564,11 @@ class _BodyState extends State<Body> {
                                                               ],
                                                             ),
                                                           ),
-                                                          snapshot.data['products'][index]['availableStock']==0?Padding(
-                                                            padding: const EdgeInsets.all(16.0),
-                                                            child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontSize: 18,fontWeight: FontWeight.bold),),
+                                                          (snapshot.data['products'][index]['availableStock']<snapshot.data['products'][index]['minQuantity'])?Padding(
+                                                            padding: const EdgeInsets.only(right:40),
+                                                            child: Text("OUT OF STOCK",style: TextStyle(color: Colors.red,fontSize: 16,fontWeight: FontWeight.w900),),
                                                           ):productButton(
-                                                              snapshot.data,
-                                                              index)
+                                                              snapshot.data, index)
                                                         ],
                                                       ),
                                                     )

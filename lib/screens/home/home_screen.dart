@@ -15,6 +15,8 @@ import 'package:tradegood/API/signout.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:tradegood/API/applicationRating.dart';
 import 'package:toast/toast.dart';
+import 'package:tradegood/components/internet_handler.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:tradegood/screens/privacyPolicy/privacyPolicy.dart';
 import 'package:tradegood/screens/additionalInfo/additionalInfo.dart';
 
@@ -42,13 +44,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return  RefreshIndicator(
-      onRefresh: updatePage,
+      onRefresh:(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen("Categories","/category/getCategory",false)));},
       child: FutureBuilder(
         future: getUserInfo(),
         builder: (context, snapshot) {
           if(snapshot.hasData) {
             return Scaffold(
-              body: Body(snapshot.data),
+              body: Builder(
+                builder: (BuildContext context) {
+                  return OfflineBuilder(
+                      connectivityBuilder: (BuildContext context,
+                          ConnectivityResult connectivity, Widget child) {
+                        final bool connected =
+                            connectivity != ConnectivityResult.none;
+                        return !connected?noInternet():Body(snapshot.data);
+                      },
+                      child: Container()
+                  );
+                },
+              ),
               drawer: Container(
                 width: SizeConfig.screenWidth * 0.7,
                 child: SafeArea(

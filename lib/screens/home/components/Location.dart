@@ -18,7 +18,7 @@ class locationField extends StatelessWidget {
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
           padding: EdgeInsets.only(bottom: 3),
-          child: userData['user']['route']['deliveryDate'] != null
+          child: userData['user']['route'] != null
               ? Text(
                   ' ${DateFormat('dd MMMM, yyyy').format(
                     DateTime.parse(userData['user']['route']['deliveryDate']),

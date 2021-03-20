@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tradegood/screens/contact_us/components/Body.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/screens/My_cart/CartFilled/my_cart.dart';
+import 'package:tradegood/components/internet_handler.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 
 class contactUs extends StatelessWidget {
   @override
@@ -45,7 +47,19 @@ class contactUs extends StatelessWidget {
         ],
         backgroundColor: Colors.blue,
       ),
-      body: Body(),
+        body: Builder(
+          builder: (BuildContext context) {
+            return OfflineBuilder(
+                connectivityBuilder: (BuildContext context,
+                    ConnectivityResult connectivity, Widget child) {
+                  final bool connected =
+                      connectivity != ConnectivityResult.none;
+                  return !connected?noInternet():Body();
+                },
+                child: Container()
+            );
+          },
+        )
     );
   }
 }

@@ -4,6 +4,7 @@ import '../../../size_config.dart';
 import 'discount_banner.dart';
 import 'special_offers.dart';
 import 'search_field.dart';
+import 'package:tradegood/screens/home/home_screen.dart';
 import 'package:tradegood/API/getCategory.dart';
 import 'package:tradegood/screens/productScreen/productScreen.dart';
 import 'package:tradegood/API/signout.dart';

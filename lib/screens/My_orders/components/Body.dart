@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
 import 'package:tradegood/API/getOrder.dart';
 import 'package:toast/toast.dart';
+import 'package:intl/intl.dart';
 import 'package:tradegood/screens/My_orders/components/noOrders.dart';
 class Body extends StatefulWidget {
   @override
@@ -148,7 +149,7 @@ int reCount=0;
                       Container(
                         width: SizeConfig.screenWidth * 0.85,
                         child: Text(
-                          "Order ID: ${widget.data['orders'][0]['orderNumber']}",
+                          "Order ID: ${widget.data['orders'][widget.index]['orderNumber']}",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 14,
@@ -176,16 +177,15 @@ int reCount=0;
                       ),
                       RichText(
                         text: TextSpan(
-                            text: 'Delivery by 26 SEP, Monday |',
+                            text: 'Delivery by ${DateFormat('d MMM, EEEE |').format(DateTime.parse(widget.data['orders'][widget.index]['orderDeliveryDate']),)}',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14),
                             children: <TextSpan>[
                               TextSpan(
-                                text: ' FREE',
+                                text: widget.data['orders'][widget.index]['orderDeliveryCharge']==0?' FREE':' ₹${widget.data['orders'][widget.index]['orderDeliveryCharge']}',
                                 style: TextStyle(
-                                    color: Colors
-                                        .lightGreenAccent,
+                                    color: widget.data['orders'][widget.index]['orderDeliveryCharge']==0?Colors.lightGreenAccent:Colors.black,
                                     fontSize: 14,
                                     fontWeight: FontWeight
                                         .w700
@@ -216,6 +216,13 @@ int reCount=0;
                               ),);
                             }),
                       ),
+                      Text("Total price: ₹${widget.data["orders"][widget.index]["totalAmount"]}",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight
+                                .w700
+                        ),),
                     ],
                   ),
                 ],

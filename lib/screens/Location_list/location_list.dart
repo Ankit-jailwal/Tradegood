@@ -3,6 +3,8 @@ import 'package:tradegood/size_config.dart';
 import 'package:tradegood/screens/Location_list/components/Body.dart';
 import 'package:tradegood/screens/My_cart/CartFilled/my_cart.dart';
 import 'package:tradegood/screens/Wishlist/wishlist_fill/wishlist_fill.dart';
+import 'package:tradegood/components/internet_handler.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 
 class location_list extends StatelessWidget {
   @override
@@ -55,7 +57,19 @@ class location_list extends StatelessWidget {
         ],
         backgroundColor: Colors.blue,
       ),
-      body: Body(),
+        body: Builder(
+          builder: (BuildContext context) {
+            return OfflineBuilder(
+                connectivityBuilder: (BuildContext context,
+                    ConnectivityResult connectivity, Widget child) {
+                  final bool connected =
+                      connectivity != ConnectivityResult.none;
+                  return !connected?noInternet():Body();
+                },
+                child: Container()
+            );
+          },
+        )
     );
   }
 }

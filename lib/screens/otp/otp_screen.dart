@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
-
+import 'package:tradegood/components/internet_handler.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'components/body.dart';
 
 class OtpScreen extends StatelessWidget {
@@ -17,7 +18,19 @@ class OtpScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("OTP Verification"),
       ),
-      body: Body(name,phone,email,password),
+        body: Builder(
+          builder: (BuildContext context) {
+            return OfflineBuilder(
+                connectivityBuilder: (BuildContext context,
+                    ConnectivityResult connectivity, Widget child) {
+                  final bool connected =
+                      connectivity != ConnectivityResult.none;
+                  return !connected?noInternet():Body(name,phone,email,password);
+                },
+                child: Container()
+            );
+          },
+        )
     );
   }
 }

@@ -167,6 +167,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.5+3"
+  flutter_offline:
+    dependency: "direct overridden"
+    description:
+      name: flutter_offline
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.4+1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
