@@ -8,6 +8,7 @@ import 'package:tradegood/screens/home/home_screen.dart';
 import 'package:tradegood/API/getCategory.dart';
 import 'package:tradegood/screens/productScreen/productScreen.dart';
 import 'package:tradegood/API/signout.dart';
+import 'package:move_to_background/move_to_background.dart';
 
 class Body extends StatefulWidget {
   var userData;
@@ -23,33 +24,13 @@ class _BodyState extends State<Body> {
   bool flag=false;
   String productUrl='/category/';
   bool reloadFlag=true;
+
   @override
   Widget build(context) {
     return WillPopScope(
       onWillPop: () async{
-        return showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('Are you sure you want to signout?'),
-                actions: <Widget>[
-                  FlatButton(
-                    child: new Text('No',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500,color: Colors.red),),
-                    onPressed: (){
-                      Navigator.pop(context);
-                    },
-                  ),
-                  new FlatButton(
-                    child: new Text('Yes',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
-                    onPressed: () async{
-                      await signout();
-                      Navigator.of(context).popUntil(ModalRoute.withName("/sign_in"));
-                    },
-                  ),
-
-                ],
-              );
-            });
+        MoveToBackground.moveTaskToBack();
+        return false;
       },
       child: SafeArea(
         child: Column(

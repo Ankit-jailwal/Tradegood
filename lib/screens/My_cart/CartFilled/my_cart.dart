@@ -14,6 +14,7 @@ import 'package:tradegood/API/calculateCartSum.dart';
 import 'package:toast/toast.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import 'package:tradegood/screens/additionalInfo/additionalInfo.dart';
 import 'package:tradegood/screens/My_orders/my_order.dart';
 import 'package:tradegood/components/internet_handler.dart';
 import 'package:flutter_offline/flutter_offline.dart';
@@ -752,8 +753,13 @@ class _cart_screenState extends State<cart_screen> {
                                                         ),
                                                   );
                                                 }
-                                                else
-                                                  Toast.show("Please fill additional details", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                                else {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(builder: (context) => additionalInfo()),
+                                                  );
+                                                  //Toast.show("Please fill additional details", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                                }
                                               }
                                               else
                                                 Toast.show("Please select route before placing order", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);

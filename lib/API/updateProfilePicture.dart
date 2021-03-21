@@ -7,14 +7,13 @@ import 'package:tradegood/API/authentication.dart';
 
 
 Dio dio = new Dio();
-Future updateProfilePicture(File file) async {
+Future updateProfilePicture(File file,var userName) async {
     String uploadURL= server+"/api/updateUserInfo";
     File compressedFile = await FlutterNativeImage.compressImage(file.path, quality: 80,
         targetWidth: 300, targetHeight: 300);
     String res= await storage.read(key: 'jwt');
     bool hasExpired = JwtDecoder.isExpired(res);
-    if(hasExpired==true)
-    {
+    if(hasExpired==true) {
       String email= await storage.read(key: 'email');
       String password= await storage.read(key: 'password');
       final token = await AuthenticationService().login(email, password);
@@ -23,11 +22,11 @@ Future updateProfilePicture(File file) async {
       res=tokenBody["token"];
     }
     String token= "Bearer "+res;
-    print("FILE: ${MultipartFile.fromFile(compressedFile.path, filename: "fileName")}");
+    print("FILE: ${MultipartFile.fromFile(compressedFile.path, filename: "$userName.jpg")}");
     FormData data = FormData.fromMap({
       "profilePicture": await MultipartFile.fromFile(
         compressedFile.path,
-        filename: "fileName"
+        filename: "$userName.jpg"
       ),
     });
     var jsonResponse;

@@ -14,9 +14,9 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final picker = ImagePicker();
-
+  var pickedFile=null;
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
         print(pickedFile.path);
@@ -35,7 +35,18 @@ int _value = 1;
     return Form(
       child: Column(
         children: [
-          SizedBox(height: SizeConfig.screenHeight*0.2,),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: pickedFile == null
+                  ? Image.asset(
+                'assets/images/pick.jpg',
+              )
+                  : Image.file(widget._image),
+            ),
+          ),
+          SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.only(left: 15,right: 15),
             child: buildAddressFormField(),
@@ -58,6 +69,7 @@ int _value = 1;
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+
                         DropdownButton(
                             value: _value,
                             iconSize: 0,

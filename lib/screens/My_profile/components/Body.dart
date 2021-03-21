@@ -163,7 +163,7 @@ class _BodyState extends State<Body> {
                       final editedName=nameController.text;
                       final editiedEmail=emailController.text;
                       FocusScope.of(context).requestFocus(FocusNode());
-                      updateProfilePicture(widget._image);
+                      updateProfilePicture(widget._image,snapshot.data['user']['name']);
                       editUserInfo(editedName,editiedEmail);
                       Toast.show("User information successfully saved", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                     },

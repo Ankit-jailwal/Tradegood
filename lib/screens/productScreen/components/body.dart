@@ -357,31 +357,37 @@ class _BodyState extends State<Body> {
                                                     ),
                                                     snapshot
                                                         .data['products'][index]['offer'] !=
-                                                        null ? RichText(
+                                                        null ? Padding(
+                                                          padding: const EdgeInsets.only(left:20.0),
+                                                          child: Align(
+                                                      alignment:Alignment.centerLeft,
+                                                            child: RichText(
                                                       text: TextSpan(
-                                                        children: <TextSpan>[
-                                                          TextSpan(
-                                                              text: '% ',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                  FontWeight
-                                                                      .w900,
-                                                                  color: Colors
-                                                                      .black)),
-                                                          TextSpan(
-                                                              text:
-                                                              snapshot
-                                                                  .data['products'][index]['offer'],
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .red)),
-                                                        ],
-                                                        style:
-                                                        DefaultTextStyle
-                                                            .of(context)
-                                                            .style,
+                                                            children: <TextSpan>[
+                                                              TextSpan(
+                                                                  text: '% ',
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
+                                                                      color: Colors
+                                                                          .black)),
+                                                              TextSpan(
+                                                                  text:
+                                                                  snapshot
+                                                                      .data['products'][index]['offer'],
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .red)),
+                                                            ],
+                                                            style:
+                                                            DefaultTextStyle
+                                                                .of(context)
+                                                                .style,
                                                       ),
-                                                    ) : Container(),
+                                                    ),
+                                                          ),
+                                                        ) : Container(),
                                                     Padding(
                                                       padding: EdgeInsets.only(
                                                           top: 10, bottom: 10),

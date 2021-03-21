@@ -12,7 +12,6 @@ import 'package:tradegood/screens/My_cart/CartFilled/my_cart.dart';
 import 'package:tradegood/screens/Location_list/location_list.dart';
 import 'package:tradegood/screens/termsAndConditions/termsAndConditions.dart';
 import 'package:tradegood/API/signout.dart';
-import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:tradegood/API/applicationRating.dart';
 import 'package:toast/toast.dart';
 import 'package:tradegood/components/internet_handler.dart';
@@ -419,10 +418,32 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           onTap: () async {
-                            Navigator.pop(context);
-                            await signout();
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => SignInScreen()));
+                            return showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text('Are you sure you want to signout?'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: new Text('No',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500,color: Colors.red),),
+                                        onPressed: (){
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      new FlatButton(
+                                        child: new Text('Yes',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
+                                        onPressed: () async{
+                                          await signout();
+                                          Navigator.of(context).popUntil(ModalRoute.withName("/sign_in"));
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
+                            //Navigator.pop(context);
+                            //await signout();
+                            //Navigator.push(context, MaterialPageRoute(
+                            //    builder: (context) => SignInScreen()));
                           },
                         ),
                       ],

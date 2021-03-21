@@ -309,31 +309,35 @@ class _BodyState extends State<Body> {
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        widget
-                                            .data['product'][index]['offer'] !=
-                                            null ? RichText(
+                                        widget.data['product'][index]['offer'] != null ? Padding(
+                                              padding: const EdgeInsets.only(left:20.0),
+                                              child: Align(
+                                          alignment:Alignment.centerLeft,
+                                                child: RichText(
                                           text: TextSpan(
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: '% ',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                      FontWeight.w900,
-                                                      color: Colors.black)),
-                                              TextSpan(
-                                                  text:
-                                                  widget.data[
-                                                  'product']
-                                                  [index]['offer'],
-                                                  style: TextStyle(
-                                                      color: Colors.red)),
-                                            ],
-                                            style:
-                                            DefaultTextStyle
-                                                .of(context)
-                                                .style,
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text: '% ',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight.w900,
+                                                          color: Colors.black)),
+                                                  TextSpan(
+                                                      text:
+                                                      widget.data[
+                                                      'product']
+                                                      [index]['offer'],
+                                                      style: TextStyle(
+                                                          color: Colors.red)),
+                                                ],
+                                                style:
+                                                DefaultTextStyle
+                                                    .of(context)
+                                                    .style,
                                           ),
-                                        ) : Container(),
+                                        ),
+                                              ),
+                                            ) : Container(),
                                         Padding(
                                           padding: EdgeInsets.only(
                                               top: 10, bottom: 10),
