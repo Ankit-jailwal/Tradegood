@@ -10,7 +10,7 @@ Dio dio = new Dio();
 Future updateProfilePicture(File file,var userName) async {
     String uploadURL= server+"/api/updateUserInfo";
     File compressedFile = await FlutterNativeImage.compressImage(file.path, quality: 80,
-        targetWidth: 300, targetHeight: 300);
+        );
     String res= await storage.read(key: 'jwt');
     bool hasExpired = JwtDecoder.isExpired(res);
     if(hasExpired==true) {

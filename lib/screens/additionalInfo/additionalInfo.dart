@@ -7,6 +7,8 @@ import 'package:tradegood/components/internet_handler.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 
 class additionalInfo extends StatelessWidget {
+  var userName;
+  additionalInfo(this.userName);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +64,7 @@ class additionalInfo extends StatelessWidget {
                     ConnectivityResult connectivity, Widget child) {
                   final bool connected =
                       connectivity != ConnectivityResult.none;
-                  return !connected?noInternet():SingleChildScrollView(child: Body());
+                  return !connected?noInternet():SingleChildScrollView(child: Body(userName));
                 },
                 child: Container()
             );

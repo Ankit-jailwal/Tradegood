@@ -7,7 +7,9 @@ import 'package:tradegood/API/getAdditionalDetails.dart';
 import 'package:toast/toast.dart';
 
 class Body extends StatefulWidget {
+  var userName;
   File _image;
+  Body(this.userName);
   @override
   _BodyState createState() => _BodyState();
 }
@@ -199,9 +201,8 @@ int _value = 1;
           SizedBox(height: getProportionateScreenHeight(25  )),
           FlatButton(
             onPressed: () async {
-              if(addresscontroller.text!=null&&widget._image!=null)
-                {
-                  final response=await updateAdditionalDetails(addresscontroller.text,widget._image);
+              if(addresscontroller.text!=null&&widget._image!=null) {
+                  final response=await updateAdditionalDetails(addresscontroller.text,widget._image,widget.userName);
                   if(response['message']!=null)
                   {
                     Toast.show(response['message'], context, duration: Toast.LENGTH_LONG, gravity:  Toast.TOP);

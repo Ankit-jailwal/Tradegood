@@ -756,7 +756,7 @@ class _cart_screenState extends State<cart_screen> {
                                                 else {
                                                   Navigator.push(
                                                     context,
-                                                    MaterialPageRoute(builder: (context) => additionalInfo()),
+                                                    MaterialPageRoute(builder: (context) => additionalInfo(cartData.data['cart']['user']['name'])),
                                                   );
                                                   //Toast.show("Please fill additional details", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
                                                 }

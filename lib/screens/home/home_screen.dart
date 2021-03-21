@@ -262,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             Navigator.pop(context);
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => additionalInfo()));
+                                builder: (context) => additionalInfo(snapshot.data['user']['name'])));
                           },
                         ),
                         ListTile(
