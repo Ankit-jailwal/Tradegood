@@ -44,417 +44,419 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return  RefreshIndicator(
       onRefresh:(){Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen("Categories","/category/getCategory",false)));},
-      child: FutureBuilder(
-        future: getUserInfo(),
-        builder: (context, snapshot) {
-          if(snapshot.hasData) {
-            return Scaffold(
-              body: Builder(
-                builder: (BuildContext context) {
-                  return OfflineBuilder(
-                      connectivityBuilder: (BuildContext context,
-                          ConnectivityResult connectivity, Widget child) {
-                        final bool connected =
-                            connectivity != ConnectivityResult.none;
-                        return !connected?noInternet():Body(snapshot.data);
-                      },
-                      child: Container()
-                  );
-                },
-              ),
-              drawer: Container(
-                width: SizeConfig.screenWidth * 0.7,
-                child: SafeArea(
-                  child: Drawer(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      children: <Widget>[
-                        SizedBox(
-                          height: SizeConfig.screenHeight * 0.015,
-                        ),
-                        ListTile(
-                          title: Row(
-                            children: [
-                              snapshot.data['user']['profilePicture']==null?CircleAvatar(
-                                backgroundColor: Colors.black12,
-                                radius: 26,
-                                child: Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: Image.asset(
-                                        "assets/images2/fab7aa80f5a873babf8ce033863e11ae0ddb8547.png")
-                                ),
-                              ):Container(
-                                height: 52,
-                                width: 52,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(45),
-                                    child: Image.network(snapshot.data['user']['profilePicture'],fit: BoxFit.fill,)),),
-                              Padding(
-                                padding: EdgeInsets.only(left: 12),
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width:SizeConfig.screenWidth * 0.45,
-                                        child: Text(
-                                          'Hello, ${snapshot.data['user']['name']}',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 18,
+      child: Scaffold(
+        body: FutureBuilder(
+          future: getUserInfo(),
+          builder: (context, snapshot) {
+            if(snapshot.hasData) {
+              return Scaffold(
+                body: Builder(
+                  builder: (BuildContext context) {
+                    return OfflineBuilder(
+                        connectivityBuilder: (BuildContext context,
+                            ConnectivityResult connectivity, Widget child) {
+                          final bool connected =
+                              connectivity != ConnectivityResult.none;
+                          return !connected?noInternet():Body(snapshot.data);
+                        },
+                        child: Container()
+                    );
+                  },
+                ),
+                drawer: Container(
+                  width: SizeConfig.screenWidth * 0.7,
+                  child: SafeArea(
+                    child: Drawer(
+                      child: ListView(
+                        padding: EdgeInsets.zero,
+                        children: <Widget>[
+                          SizedBox(
+                            height: SizeConfig.screenHeight * 0.015,
+                          ),
+                          ListTile(
+                            title: Row(
+                              children: [
+                                snapshot.data['user']['profilePicture']==null?CircleAvatar(
+                                  backgroundColor: Colors.black12,
+                                  radius: 26,
+                                  child: Padding(
+                                      padding: EdgeInsets.all(8),
+                                      child: Image.asset(
+                                          "assets/images2/fab7aa80f5a873babf8ce033863e11ae0ddb8547.png")
+                                  ),
+                                ):Container(
+                                  height: 52,
+                                  width: 52,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(45),
+                                      child: Image.network(snapshot.data['user']['profilePicture'],fit: BoxFit.fill,)),),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 12),
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width:SizeConfig.screenWidth * 0.45,
+                                          child: Text(
+                                            'Hello, ${snapshot.data['user']['name']}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 18,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      RichText(
-                                        textAlign: TextAlign.center,
-                                        text: TextSpan(children: <TextSpan>[
-                                          TextSpan(
-                                            text: "Welcome to ",
-                                            style: TextStyle(
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          TextSpan(
-                                              text: "Trade",
+                                        RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(children: <TextSpan>[
+                                            TextSpan(
+                                              text: "Welcome to ",
                                               style: TextStyle(
-                                                  color: Colors.blue,
-                                                  fontWeight: FontWeight.bold)),
-                                          TextSpan(
-                                              text: "Good",
-                                              style: TextStyle(
-                                                  color: Colors.yellow,
-                                                  fontWeight: FontWeight.bold)),
-                                        ]),
-                                      )
-                                    ]),
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            TextSpan(
+                                                text: "Trade",
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontWeight: FontWeight.bold)),
+                                            TextSpan(
+                                                text: "Good",
+                                                style: TextStyle(
+                                                    color: Colors.yellow,
+                                                    fontWeight: FontWeight.bold)),
+                                          ]),
+                                        )
+                                      ]),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          Divider(
+                            thickness: 3,
+                          ),
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/3cc61b6529c0b380ec7b41b0ed5db8a3e9d8cf75.png",
                               ),
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        Divider(
-                          thickness: 3,
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/3cc61b6529c0b380ec7b41b0ed5db8a3e9d8cf75.png",
                             ),
-                          ),
-                          title: Text(
-                            'My Account',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
+                            title: Text(
+                              'My Account',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => my_profile()),
+                                );
+                              }
+                            },
                           ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            {
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/10563236aa4a0a4c4eba8ad5f74088af9fa3e9a3.png",
+                              ),
+                            ),
+                            title: Text(
+                              'My Orders',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => my_profile()),
+                                MaterialPageRoute(builder: (context) => my_order()),
                               );
-                            }
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/10563236aa4a0a4c4eba8ad5f74088af9fa3e9a3.png",
-                            ),
+                            },
                           ),
-                          title: Text(
-                            'My Orders',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/f99614dc8ffdca073f67f7261c6a80fbbe774e29.png",
+                              ),
                             ),
+                            title: Text(
+                              'Wishlist',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => wishListScreen()));
+                            },
                           ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => my_order()),
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/f99614dc8ffdca073f67f7261c6a80fbbe774e29.png",
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/6af49a59395098f834a89028533f5d579661be03.png",
+                              ),
                             ),
+                            title: Text(
+                              'My cart',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => cart_screen()));
+                            },
                           ),
-                          title: Text(
-                            'Wishlist',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/c573bd62485e4fbaee31e4af48f7332fbe745b55.png",
+                              ),
                             ),
+                            title: Text(
+                              'Current Routes',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => location_list()));
+                            },
                           ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => wishListScreen()));
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/6af49a59395098f834a89028533f5d579661be03.png",
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/file.png",
+                              ),
                             ),
+                            title: Text(
+                              'Additional Details',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => additionalInfo(snapshot.data['user']['name'])));
+                            },
                           ),
-                          title: Text(
-                            'My cart',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/5652c9d833f07619f7c4f8c1ff9bfc340d425572.png",
+                              ),
                             ),
+                            title: Text(
+                              'Contact Us',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => contactUs()));
+                            },
                           ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => cart_screen()));
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/c573bd62485e4fbaee31e4af48f7332fbe745b55.png",
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/a324eda9b18e9189b0453af325faa78a10b38732.png",
+                              ),
                             ),
+                            title: Text(
+                              'About Us',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => aboutUs()));
+                            },
                           ),
-                          title: Text(
-                            'Current Routes',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/26acb0290f1027f5ec8621691e1fd782ca90324d.png",
+                              ),
                             ),
+                            title: Text(
+                              'Feedback',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return QuickFeedback(
+                                    title: 'Leave a feedback',
+                                    // Title of dialog
+                                    showTextBox: true,
+                                    // default false
+                                    textBoxHint:
+                                    'Share your feedback',
+                                    // Feedback text field hint text default: Tell us more
+                                    submitText: 'SUBMIT',
+                                    // submit button text default: SUBMIT
+                                    onSubmitCallback: (feedback) {
+                                      print('$feedback');
+                                      applicationRating(feedback['rating'],feedback['feedback']);
+                                      // map { rating: 2, feedback: 'some feedback' }
+                                      Navigator.pop(context);
+                                      Toast.show("Thanks for your feedback", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                                    },
+                                    askLaterText: 'ASK LATER',
+                                    onAskLaterCallback: () {
+                                      print('Do something on ask later click');
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => location_list()));
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/file.png",
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/1ee94de249fcfd41cde38e7fe7daea4b0f472cfd.png",
+                              ),
                             ),
+                            title: Text(
+                              'Terms and Conditions',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => termsAndConditions()));
+                            },
                           ),
-                          title: Text(
-                            'Additional Details',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
+                          ListTile(
+                            leading: Container(
+                              width: SizeConfig.screenWidth * 0.095,
+                              child: Image.asset(
+                                "assets/images2/1ee94de249fcfd41cde38e7fe7daea4b0f472cfd.png",
+                              ),
                             ),
+                            title: Text(
+                              'Privacy Policy',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => privacyPolicy()));
+                            },
                           ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => additionalInfo(snapshot.data['user']['name'])));
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/5652c9d833f07619f7c4f8c1ff9bfc340d425572.png",
-                            ),
-                          ),
-                          title: Text(
-                            'Contact Us',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => contactUs()));
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/a324eda9b18e9189b0453af325faa78a10b38732.png",
-                            ),
-                          ),
-                          title: Text(
-                            'About Us',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => aboutUs()));
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/26acb0290f1027f5ec8621691e1fd782ca90324d.png",
-                            ),
-                          ),
-                          title: Text(
-                            'Feedback',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return QuickFeedback(
-                                  title: 'Leave a feedback',
-                                  // Title of dialog
-                                  showTextBox: true,
-                                  // default false
-                                  textBoxHint:
-                                  'Share your feedback',
-                                  // Feedback text field hint text default: Tell us more
-                                  submitText: 'SUBMIT',
-                                  // submit button text default: SUBMIT
-                                  onSubmitCallback: (feedback) {
-                                    print('$feedback');
-                                    applicationRating(feedback['rating'],feedback['feedback']);
-                                    // map { rating: 2, feedback: 'some feedback' }
-                                    Navigator.pop(context);
-                                    Toast.show("Thanks for your feedback", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                                  },
-                                  askLaterText: 'ASK LATER',
-                                  onAskLaterCallback: () {
-                                    print('Do something on ask later click');
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/1ee94de249fcfd41cde38e7fe7daea4b0f472cfd.png",
-                            ),
-                          ),
-                          title: Text(
-                            'Terms and Conditions',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => termsAndConditions()));
-                          },
-                        ),
-                        ListTile(
-                          leading: Container(
-                            width: SizeConfig.screenWidth * 0.095,
-                            child: Image.asset(
-                              "assets/images2/1ee94de249fcfd41cde38e7fe7daea4b0f472cfd.png",
-                            ),
-                          ),
-                          title: Text(
-                            'Privacy Policy',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => privacyPolicy()));
-                          },
-                        ),
-                        ListTile(
-                          title: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      blurRadius: 5,
-                                      offset: Offset(0, 3))
-                                ]
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.only(bottom: 5),
-                                child: Text(
-                                  'Sign Out',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
+                          ListTile(
+                            title: Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 5,
+                                        offset: Offset(0, 3))
+                                  ]
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(bottom: 5),
+                                  child: Text(
+                                    'Sign Out',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
+                            onTap: () async {
+                              return showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('Are you sure you want to signout?'),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: new Text('No',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500,color: Colors.red),),
+                                          onPressed: (){
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        new FlatButton(
+                                          child: new Text('Yes',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
+                                          onPressed: () async{
+                                            await signout();
+                                            Navigator.of(context).popUntil(ModalRoute.withName("/sign_in"));
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
+                              //Navigator.pop(context);
+                              //await signout();
+                              //Navigator.push(context, MaterialPageRoute(
+                              //    builder: (context) => SignInScreen()));
+                            },
                           ),
-                          onTap: () async {
-                            return showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text('Are you sure you want to signout?'),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        child: new Text('No',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500,color: Colors.red),),
-                                        onPressed: (){
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                      new FlatButton(
-                                        child: new Text('Yes',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
-                                        onPressed: () async{
-                                          await signout();
-                                          Navigator.of(context).popUntil(ModalRoute.withName("/sign_in"));
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
-                            //Navigator.pop(context);
-                            //await signout();
-                            //Navigator.push(context, MaterialPageRoute(
-                            //    builder: (context) => SignInScreen()));
-                          },
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
+              );
+            }
+            return Center(child: Container(child: CircularProgressIndicator()));
           }
-          return Center(child: Container(child: CircularProgressIndicator()));
-        }
+        ),
       ),
     );
   }

@@ -151,11 +151,11 @@ final TextEditingController quantityController = TextEditingController();
                                             child: FlatButton(
                                               onPressed: () {
                                                 int quantity= int.parse(quantityController.text);
-                                                if(quantity>widget.data['products'][widget.index]['quantity']) {
+                                                if(quantity>=widget.data['products'][widget.index]['minQuantity']) {
                                                   if (quantity <= widget
                                                       .data['products'][widget
                                                       .index]['availableStock']) {
-                                                    _counter = quantity-widget.data['products'][widget.index]['quantity']+1;
+                                                    _counter = quantity-widget.data['products'][widget.index]['minQuantity']+1;
                                                     setState(() {
                                                       _countFlag = true;
                                                     });
@@ -172,7 +172,7 @@ final TextEditingController quantityController = TextEditingController();
                                                 }
                                                 else
                                                   Toast.show(
-                                                      "Quantity should be greater then ${widget.data['products'][widget.index]['quantity']}",
+                                                      "Quantity should be greater then ${widget.data['products'][widget.index]['minQuantity']}",
                                                       context, duration: Toast
                                                       .LENGTH_SHORT,
                                                       gravity: Toast.TOP);
