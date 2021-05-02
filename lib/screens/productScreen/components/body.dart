@@ -509,23 +509,26 @@ class _BodyState extends State<Body> {
                                                                               feedback) {
                                                                             print(
                                                                                 '${feedback['rating']}');
-                                                                            productRating(
-                                                                                feedback['rating'],
-                                                                                feedback['feedback'],
-                                                                                snapshot
-                                                                                    .data['products'][index]['_id']);
-                                                                            Navigator
-                                                                                .of(
-                                                                                context)
-                                                                                .pop();
-                                                                            Toast
-                                                                                .show(
-                                                                                "Thanks for your feedback",
-                                                                                context,
-                                                                                duration: Toast
-                                                                                    .LENGTH_SHORT,
-                                                                                gravity: Toast
-                                                                                    .BOTTOM);
+                                                                            if(feedback['rating']==0||feedback['feedback']==""){
+                                                                              Toast.show(
+                                                                                  "Please fill required fields", context,
+                                                                                  duration: Toast.LENGTH_SHORT,
+                                                                                  gravity: Toast.BOTTOM);
+                                                                            }
+                                                                            else {
+                                                                              productRating(
+                                                                                  feedback['rating'],
+                                                                                  feedback['feedback'], snapshot.data['products'][index]['_id']);
+                                                                              Navigator.of(
+                                                                                  context).pop();
+                                                                              Toast.show(
+                                                                                  "Thanks for your feedback",
+                                                                                  context,
+                                                                                  duration: Toast
+                                                                                      .LENGTH_SHORT,
+                                                                                  gravity: Toast
+                                                                                      .BOTTOM);
+                                                                            }
                                                                           },
                                                                           askLaterText: 'ASK LATER',
                                                                           onAskLaterCallback: () {

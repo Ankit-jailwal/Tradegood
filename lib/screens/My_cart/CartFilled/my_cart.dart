@@ -333,7 +333,7 @@ class _cart_screenState extends State<cart_screen> {
                                                                   SizedBox(height: 5,),
                                                                   Container(
                                                                     child: Text(
-                                                                      cartData.data['cart']['user']['route']!=null?"Route: ${picked==null?cartData.data['cart']['user']['route']['location'].join(', '):cartData.data['cart']['user']['address']}":"Route: Route not selected",
+                                                                      cartData.data['cart']['user']['route']!=null?"Route: ${picked==null?cartData.data['cart']['user']['route']['location'].join(', '):cartData.data['cart']['user']['address']==null?"No address found":cartData.data['cart']['user']['address']}":"Route: Route not selected",
                                                                       style: TextStyle(
                                                                         color: Colors.black,
                                                                         fontSize: 14,
@@ -659,7 +659,7 @@ class _cart_screenState extends State<cart_screen> {
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black),),
-                                                          Text("₹${picked==null?cartSum.data:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
+                                                          Text("₹${picked==null?cartSum.data+cartData.data['cart']['user']['route']['deliveryCharge']:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .black)),
@@ -693,7 +693,7 @@ class _cart_screenState extends State<cart_screen> {
                                             .center,
                                         children: [
                                           Text(
-                                            "₹${picked==null?cartSum.data:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
+                                            "₹${picked==null?cartSum.data+cartData.data['cart']['user']['route']['deliveryCharge']:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600,
@@ -731,7 +731,7 @@ class _cart_screenState extends State<cart_screen> {
                                                             FlatButton(
                                                               onPressed: () async {
                                                                 Navigator.pop(context);
-                                                                final orderConfirmation = await placeOrderItem(cartData.data, picked==null?cartSum.data.toInt():cartSum.data.toInt()+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'],picked==null?cartData.data['cart']['user']['route']['deliveryDate']:picked.toString(),picked==null?cartData.data['cart']['user']['route']['deliveryCharge']:cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']);
+                                                                final orderConfirmation = await placeOrderItem(cartData.data, picked==null?cartSum.data.toInt()+cartData.data['cart']['user']['route']['deliveryCharge']:cartSum.data.toInt()+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'],picked==null?cartData.data['cart']['user']['route']['deliveryDate']:picked.toString(),picked==null?cartData.data['cart']['user']['route']['deliveryCharge']:cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']);
                                                                 if (orderConfirmation !=
                                                                     null) {
                                                                   Navigator.push(

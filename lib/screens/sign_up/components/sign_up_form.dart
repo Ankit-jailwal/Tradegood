@@ -8,6 +8,7 @@ import '../../../size_config.dart';
 import 'package:tradegood/screens/otp/otp_screen.dart';
 import 'package:tradegood/screens/sign_in/sign_in_screen.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter/services.dart';
 import 'package:tradegood/screens/termsAndConditions/components/Body.dart';
 
 void displayDialog(context, title, text) => showDialog(
@@ -388,6 +389,9 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPhoneFormField() {
     return TextFormField(
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(10),
+      ],
       keyboardType: TextInputType.phone,
       controller: phnocontroller,
       onChanged: (value) {

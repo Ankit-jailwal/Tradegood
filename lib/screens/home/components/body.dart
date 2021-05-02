@@ -164,8 +164,8 @@ class _BodyState extends State<Body> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) => order_screen(
-                                                        flag?"$productUrl${snapshot.data['brandList'][index]['name']}"
-                                                            : "$productUrl${snapshot.data['categoryList'][index]['name']}",
+                                                        flag?"$productUrl${snapshot.data['brandList'][index]['slug']}"
+                                                            : "$productUrl${snapshot.data['categoryList'][index]['slug']}",
                                                         snapshot.data,flag,index)),
                                               );
                                             },

@@ -24,6 +24,7 @@ Future getOrder() async{
     headers: {"Content-Type": "application/json","Authorization":"$token"},
   );
   final body=response.body;
+  print(response.body);
   final category=jsonDecode(body);
   return category;
 }

@@ -5,6 +5,7 @@ import 'package:tradegood/API/authentication.dart';
 import 'package:tradegood/screens/home/home_screen.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import 'package:flutter/services.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -152,6 +153,9 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(10),
+      ],
       keyboardType: TextInputType.number,
       controller: phonecontroller,
       decoration: InputDecoration(

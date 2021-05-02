@@ -427,8 +427,7 @@ class _BodyState extends State<Body> {
                                                         SmoothStarRating(
                                                             allowHalfRating: false,
                                                             starCount: 5,
-                                                            rating: widget
-                                                                .data['product'][index]['rating']
+                                                            rating: widget.data['product'][index]['rating']
                                                                 .toDouble(),
                                                             isReadOnly: true,
                                                             filledIconData: Icons
@@ -460,22 +459,27 @@ class _BodyState extends State<Body> {
                                                               // submit button text default: SUBMIT
                                                               onSubmitCallback: (
                                                                   feedback) {
-                                                                productRating(
-                                                                    feedback['rating'],
-                                                                    feedback['feedback'],
-                                                                    widget
-                                                                        .data['product'][index]['_id']);
-                                                                // map { rating: 2, feedback: 'some feedback' }
-                                                                Navigator.of(
-                                                                    context)
-                                                                    .pop();
-                                                                Toast.show(
-                                                                    "Thanks for your feedback",
-                                                                    context,
-                                                                    duration: Toast
-                                                                        .LENGTH_SHORT,
-                                                                    gravity: Toast
-                                                                        .BOTTOM);
+                                                                if(feedback['rating']==0||feedback['feedback']==""){
+                                                                  Toast.show(
+                                                                      "Please fill required fields", context,
+                                                                      duration: Toast.LENGTH_SHORT,
+                                                                      gravity: Toast.BOTTOM);
+                                                                }
+                                                                else {
+                                                                  productRating(
+                                                                      feedback['rating'],
+                                                                      feedback['feedback'], widget.data['product'][index]['_id']);
+                                                                  Navigator.of(
+                                                                      context).pop();
+                                                                  Toast.show(
+                                                                      "Thanks for your feedback",
+                                                                      context,
+                                                                      duration: Toast
+                                                                          .LENGTH_SHORT,
+                                                                      gravity: Toast
+                                                                          .BOTTOM);
+                                                                }
+
                                                               },
                                                               askLaterText: 'ASK LATER',
                                                               onAskLaterCallback: () {

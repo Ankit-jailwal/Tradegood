@@ -11,20 +11,22 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  var orderData;
   bool passFlag=false;
   int checkCount(var data,bool flag)
   {int count=0;
   if(data["orders"].length!=0)
   {
+    print(data["orders"].length);
       if (flag == true) {
         for (int i = 0; i < data["orders"].length; i++) {
-          if (data["orders"][i]["orderStatus"][4]['isCompleted'] != true) {
+          if (data["orders"][i]["orderStatus"][4]['isCompleted'] != true || data["orders"][i]["orderStatus"][5]['isCompleted'] != true) {
             count++;
           }
         }
       } else {
         for (int i = 0; i < data["orders"].length; i++) {
-          if (data["orders"][i]["orderStatus"][4]['isCompleted'] == true) {
+          if (data["orders"][i]["orderStatus"][4]['isCompleted'] == true && data["orders"][i]["orderStatus"][5]['isCompleted'] == true) {
             count++;
           }
         }
@@ -43,6 +45,8 @@ class _BodyState extends State<Body> {
         future: getOrder(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            Iterable inReverse = snapshot.data['orders'].reversed;
+            var orderInReverse = inReverse.toList();
             return Column(
               children: [
                 orderNavigation(update),
@@ -51,10 +55,10 @@ class _BodyState extends State<Body> {
                 ),
                 checkCount(snapshot.data,passFlag)==0?Expanded(
                     child: ListView.builder(
-                        itemCount: snapshot.data['orders'].length,
+                        itemCount: orderInReverse.length,
                         padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
                         itemBuilder: (BuildContext context, int index) {
-                          return orderItem(snapshot.data, index, this.passFlag);
+                          return orderItem(orderInReverse, index, this.passFlag);
                         })):noOrderBody()
               ],
             );
@@ -83,11 +87,10 @@ int reCount=0;
 
   checkStatus(var data)
   {
-    print(data);
     if(widget.passFlag==true){
-      if (data[4]['isCompleted'] == true) {
+      if (data[4]['isCompleted'] == true || data[5]['isCompleted'] == true) {
         flag = true;
-        type = data[4]['type'];
+        type = data[4]['isCompleted'] == true?data[4]['type']:data[5]['type'];
       }
       else
         flag = false;
@@ -95,9 +98,9 @@ int reCount=0;
     }
     else  //Previous orders
       {
-      if (data[4]['isCompleted'] == true) {
+      if (data[4]['isCompleted'] == true || data[5]['isCompleted'] == true) {
         flag = false;
-        type = data[4]['type'];
+        type = data[4]['isCompleted'] == true?data[4]['type']:data[5]['type'];
       }
       else {
         for (int i = 0; i < data.length - 1; i++) {
@@ -109,13 +112,12 @@ int reCount=0;
         }
       }
       }
-    print("PRev $prevCount");
   }
 
 
   @override
   Widget build(BuildContext context) {
-    checkStatus(widget.data["orders"][widget.index]["orderStatus"]);
+    checkStatus(widget.data[widget.index]["orderStatus"]);
     return flag?Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -149,7 +151,7 @@ int reCount=0;
                       Container(
                         width: SizeConfig.screenWidth * 0.85,
                         child: Text(
-                          "Order ID: ${widget.data['orders'][widget.index]['orderNumber']}",
+                          "Order ID: ${widget.data[widget.index]['orderNumber']}",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 14,
@@ -167,7 +169,7 @@ int reCount=0;
                                 text: type,
                                 style: TextStyle(
                                     color: Colors
-                                        .lightGreenAccent,
+                                        .green,
                                     fontSize: 14,
                                     fontWeight: FontWeight
                                         .w700
@@ -177,15 +179,15 @@ int reCount=0;
                       ),
                       RichText(
                         text: TextSpan(
-                            text: 'Delivery by ${DateFormat('d MMM, EEEE |').format(DateTime.parse(widget.data['orders'][widget.index]['orderDeliveryDate']),)}',
+                            text: 'Delivery by ${DateFormat('d MMM, EEEE |').format(DateTime.parse(widget.data[widget.index]['orderDeliveryDate']),)}',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14),
                             children: <TextSpan>[
                               TextSpan(
-                                text: widget.data['orders'][widget.index]['orderDeliveryCharge']==0?' FREE':' ₹${widget.data['orders'][widget.index]['orderDeliveryCharge']}',
+                                text: widget.data[widget.index]['orderDeliveryCharge']==0?' FREE':' ₹${widget.data[widget.index]['orderDeliveryCharge']}',
                                 style: TextStyle(
-                                    color: widget.data['orders'][widget.index]['orderDeliveryCharge']==0?Colors.lightGreenAccent:Colors.black,
+                                    color: widget.data[widget.index]['orderDeliveryCharge']==0?Colors.green:Colors.black,
                                     fontSize: 14,
                                     fontWeight: FontWeight
                                         .w700
@@ -198,14 +200,14 @@ int reCount=0;
                         child: ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: widget.data["orders"][widget.index]["orderItems"].length,
+                            itemCount: widget.data[widget.index]["orderItems"].length,
                             padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
                             itemBuilder: (BuildContext context, int index) {
                               return Container(child: Row(
                                 children: [
                                   Icon(Icons.circle,size: 8,),
                                   SizedBox(width: 5,),
-                                  Text("${widget.data["orders"][widget.index]["orderItems"][index]['product']['name']} | Quantity: ${widget.data["orders"][widget.index]["orderItems"][index]['purchasedQuantity']} | Price: ₹${widget.data["orders"][widget.index]["orderItems"][index]['payablePrice'].toString()}",
+                                  Text("${widget.data[widget.index]["orderItems"][index]['product']['name']} | Quantity: ${widget.data[widget.index]["orderItems"][index]['purchasedQuantity']} | Price: ₹${widget.data[widget.index]["orderItems"][index]['payablePrice'].toString()}",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 14,
@@ -216,7 +218,7 @@ int reCount=0;
                               ),);
                             }),
                       ),
-                      Text("Total price: ₹${widget.data["orders"][widget.index]["totalAmount"]}",
+                      Text("Total price: ₹${widget.data[widget.index]["totalAmount"]}",
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,

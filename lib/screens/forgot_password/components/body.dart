@@ -5,6 +5,7 @@ import 'package:tradegood/svg.dart';
 import 'package:tradegood/API/resetPasswordOTP.dart';
 import 'package:tradegood/API/resetPassword.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter/services.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -133,6 +134,9 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
       child: Column(
         children: [
           resetFlag?Container():TextFormField(
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(10),
+            ],
             keyboardType: TextInputType.number,
             onSaved: (newValue) => email = newValue,
             controller: phoneController,

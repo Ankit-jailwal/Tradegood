@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tradegood/size_config.dart';
+import 'package:tradegood/screens/home/home_screen.dart';
 
 
 class cartEmptyBody extends StatefulWidget {
@@ -48,7 +49,10 @@ class _cartEmptyBodyState extends State<cartEmptyBody> {
           SizedBox(height: SizeConfig.screenHeight*0.04,),
           FlatButton(
             onPressed: (){
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen("Categories","/category/getCategory",false)),
+              );
             },
             child: Container(
               height: SizeConfig.screenHeight*0.06,

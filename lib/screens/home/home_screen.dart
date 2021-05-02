@@ -334,13 +334,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                     'Share your feedback',
                                     // Feedback text field hint text default: Tell us more
                                     submitText: 'SUBMIT',
-                                    // submit button text default: SUBMIT
                                     onSubmitCallback: (feedback) {
-                                      print('$feedback');
-                                      applicationRating(feedback['rating'],feedback['feedback']);
-                                      // map { rating: 2, feedback: 'some feedback' }
-                                      Navigator.pop(context);
-                                      Toast.show("Thanks for your feedback", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                                        if(feedback['rating']==0||feedback['feedback']==""){
+                                          Toast.show(
+                                              "Please fill required fields", context,
+                                              duration: Toast.LENGTH_SHORT,
+                                              gravity: Toast.BOTTOM);
+                                        }
+                                        else {
+                                          applicationRating(feedback['rating'],
+                                              feedback['feedback']);
+                                          Navigator.pop(context);
+                                          Toast.show(
+                                              "Thanks for your feedback", context,
+                                              duration: Toast.LENGTH_SHORT,
+                                              gravity: Toast.BOTTOM);
+                                        }
                                     },
                                     askLaterText: 'ASK LATER',
                                     onAskLaterCallback: () {
