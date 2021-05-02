@@ -20,10 +20,10 @@ Future productRating(int ratingStars,String review,String productId) async{
   }
   Map data={
     "product":productId,
-    "rating":[{
+    "rating":{
       "star": ratingStars,
       "review":review
-  }]
+  }
   };
   print(data);
   String token= "Bearer "+res;

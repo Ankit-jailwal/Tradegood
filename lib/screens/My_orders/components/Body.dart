@@ -20,17 +20,32 @@ class _BodyState extends State<Body> {
     print(data["orders"].length);
       if (flag == true) {
         for (int i = 0; i < data["orders"].length; i++) {
-          if (data["orders"][i]["orderStatus"][4]['isCompleted'] != true || data["orders"][i]["orderStatus"][5]['isCompleted'] != true) {
-            count++;
-          }
-        }
-      } else {
-        for (int i = 0; i < data["orders"].length; i++) {
           if (data["orders"][i]["orderStatus"][4]['isCompleted'] == true && data["orders"][i]["orderStatus"][5]['isCompleted'] == true) {
             count++;
           }
+          else if (data["orders"][i]["orderStatus"][4]['isCompleted'] == true) {
+            count++;
+          }
+          else if(data["orders"][i]["orderStatus"][5]['isCompleted'] == true){
+            count++;
+          }
         }
+        print("Count: $count");
+      } else {
+        for (int i = 0; i < data["orders"].length; i++) {
+          if (data["orders"][i]["orderStatus"][4]['isCompleted'] == false && data["orders"][i]["orderStatus"][5]['isCompleted']==false) {
+            count++;
+          }
+          else if (data["orders"][i]["orderStatus"][4]['isCompleted'] == false) {
+            count++;
+          }
+          else if(data["orders"][i]["orderStatus"][5]['isCompleted']==false){
+            count++;
+          }
+        }
+        print("Count: $count");
       }
+      return count;
     }
   else
     count=1;
@@ -53,7 +68,7 @@ class _BodyState extends State<Body> {
                 SizedBox(
                   height: SizeConfig.screenHeight * 0.01,
                 ),
-                checkCount(snapshot.data,passFlag)==0?Expanded(
+                checkCount(snapshot.data,passFlag)!=0?Expanded(
                     child: ListView.builder(
                         itemCount: orderInReverse.length,
                         padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
@@ -90,20 +105,19 @@ int reCount=0;
     if(widget.passFlag==true){
       if (data[4]['isCompleted'] == true || data[5]['isCompleted'] == true) {
         flag = true;
-        type = data[4]['isCompleted'] == true?data[4]['type']:data[5]['type'];
+        type = data[5]['isCompleted']==true?data[5]['type']:data[4]['type'];
       }
       else
         flag = false;
-
     }
     else  //Previous orders
       {
-      if (data[4]['isCompleted'] == true || data[5]['isCompleted'] == true) {
+      if (data[4]['isCompleted'] == true) {
         flag = false;
-        type = data[4]['isCompleted'] == true?data[4]['type']:data[5]['type'];
+        type = data[4]['type'];
       }
       else {
-        for (int i = 0; i < data.length - 1; i++) {
+        for (int i = 0; i < data.length - 2; i++) {
           if (data[i]['isCompleted'] == true) {
             flag = true;
             print(data.length);
@@ -204,16 +218,25 @@ int reCount=0;
                             padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
                             itemBuilder: (BuildContext context, int index) {
                               return Container(child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(Icons.circle,size: 8,),
-                                  SizedBox(width: 5,),
-                                  Text("${widget.data[widget.index]["orderItems"][index]['product']['name']} | Quantity: ${widget.data[widget.index]["orderItems"][index]['purchasedQuantity']} | Price: ₹${widget.data[widget.index]["orderItems"][index]['payablePrice'].toString()}",
+                                  Text("● ",
                                     style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight
-                                          .w700
-                                  ),),
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight
+                                            .w700
+                                    ),),
+                                  Container(
+                                    width: SizeConfig.screenWidth*0.8,
+                                    child: Text("${widget.data[widget.index]["orderItems"][index]['product']['name']} | Quantity: ${widget.data[widget.index]["orderItems"][index]['purchasedQuantity']} | Price: ₹${widget.data[widget.index]["orderItems"][index]['payablePrice'].toString()}",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight
+                                            .w700
+                                    ),),
+                                  ),
                                 ],
                               ),);
                             }),

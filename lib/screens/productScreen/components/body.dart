@@ -517,8 +517,7 @@ class _BodyState extends State<Body> {
                                                                             }
                                                                             else {
                                                                               productRating(
-                                                                                  feedback['rating'],
-                                                                                  feedback['feedback'], snapshot.data['products'][index]['_id']);
+                                                                                  feedback['rating'], feedback['feedback'], snapshot.data['products'][index]['_id']);
                                                                               Navigator.of(
                                                                                   context).pop();
                                                                               Toast.show(

@@ -34,7 +34,10 @@ class Body extends StatelessWidget {
           SizedBox(height: SizeConfig.screenHeight*0.04,),
           FlatButton(
             onPressed: (){
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen("Categories","/category/getCategory",false)),
+              );
             },
             child: Container(
               height: SizeConfig.screenHeight*0.06,
