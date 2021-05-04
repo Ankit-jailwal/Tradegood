@@ -112,9 +112,9 @@ int reCount=0;
     }
     else  //Previous orders
       {
-      if (data[4]['isCompleted'] == true) {
+      if (data[4]['isCompleted'] == true || data[5]['isCompleted'] == true) {
         flag = false;
-        type = data[4]['type'];
+        type = data[5]['isCompleted']==true?data[5]['type']:data[4]['type'];
       }
       else {
         for (int i = 0; i < data.length - 2; i++) {
