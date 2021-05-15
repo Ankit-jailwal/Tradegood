@@ -19,15 +19,9 @@ Future getCart() async{
     res=tokenBody["token"];
   }
   String token= "Bearer "+res;
-  print("token $token");
-  int cartSum=0;
-  var productData;
   final response = await Http.get(url,
     headers: {"Content-Type": "application/json","Authorization":"$token"},
   );
-  print(response.body);
   final body=response.body;
-  final category=jsonDecode(body);
-
-  return category;
+  return jsonDecode(body);
 }

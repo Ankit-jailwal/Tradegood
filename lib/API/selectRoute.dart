@@ -25,6 +25,5 @@ Future selectRoute(String id) async{
       body:jsonEncode(data)
   );
   final body=response.body;
-  final category=jsonDecode(body);
-  return category;
+  return jsonDecode(body);
 }

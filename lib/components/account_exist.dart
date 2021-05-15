@@ -21,7 +21,7 @@ class haveAccountText extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
             //Navigator.pushNamed(context, SignInScreen.routeName);
-            },
+          },
           child: Text(
             "Sign In",
             style: TextStyle(

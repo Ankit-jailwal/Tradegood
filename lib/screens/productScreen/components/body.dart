@@ -507,8 +507,6 @@ class _BodyState extends State<Body> {
                                                                           submitText: 'SUBMIT',
                                                                           onSubmitCallback: (
                                                                               feedback) {
-                                                                            print(
-                                                                                '${feedback['rating']}');
                                                                             if(feedback['rating']==0||feedback['feedback']==""){
                                                                               Toast.show(
                                                                                   "Please fill required fields", context,
@@ -530,10 +528,6 @@ class _BodyState extends State<Body> {
                                                                             }
                                                                           },
                                                                           askLaterText: 'ASK LATER',
-                                                                          onAskLaterCallback: () {
-                                                                            print(
-                                                                                'Do something on ask later click');
-                                                                          },
                                                                         );
                                                                       },
                                                                     );

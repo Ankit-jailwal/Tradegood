@@ -19,11 +19,9 @@ Future getStaticOffer() async{
     res=tokenBody["token"];
   }
   String token= "Bearer "+res;
-  print("token $token");
   final response = await Http.get(url,
     headers: {"Content-Type": "application/json","Authorization":"$token"},
   );
   final body=response.body;
-  final category=jsonDecode(body);
-  return category;
+  return jsonDecode(body);
 }

@@ -22,17 +22,15 @@ class _BodyState extends State<Body> {
     pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
-        print(pickedFile.path);
         widget._image = File(pickedFile.path);
       } else {
-        print('No image selected.');
       }
     });
   }
 String choice="GST No.*";
   var addresscontroller = TextEditingController();
   final TextEditingController GSTcontroller = TextEditingController(text: '');
-  var  Certificatecontroller = TextEditingController(text: '');
+  var  Certificatecontroller = TextEditingController();
   String address1;
   String certificate1;
   Future<void> getController(String address,String certificate) {
@@ -66,40 +64,6 @@ int _value = 1;
                   ),
                 ),
                 SizedBox(height: 10,),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
-                  child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: addresscontroller,
-                    decoration: InputDecoration(
-                      labelText: "Full Address*",
-                      hintText: "Enter your Address",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Icon(Icons.my_location, size: 30,),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 15,),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
-                  child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: Certificatecontroller,
-                    decoration: InputDecoration(
-                      labelText: "Certificate Number*",
-                      hintText: "Enter your Certificate Number",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Icon(Icons.insert_drive_file_rounded, size: 30,),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: getProportionateScreenHeight(25)),
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15),
                   child: Row(
@@ -257,7 +221,41 @@ int _value = 1;
                     ],
                   ),
                 ),
-
+                SizedBox(height: 15,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: addresscontroller,
+                    decoration: InputDecoration(
+                      labelText: "Full Address*",
+                      hintText: "Enter your Address",
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Icon(Icons.my_location, size: 30,),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: Certificatecontroller,
+                    decoration: InputDecoration(
+                      labelText: "Certificate Number*",
+                      hintText: "Enter your Certificate Number",
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Icon(Icons.insert_drive_file_rounded, size: 30,),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: getProportionateScreenHeight(25)),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 FlatButton(
                   onPressed: () async {

@@ -238,8 +238,6 @@ final TextEditingController quantityController = TextEditingController();
                                 if(_counter < widget.data['products'][widget.index]['availableStock']) {
                                   setState(() {
                                     _counter++;
-                                    print(
-                                        _counter);
                                     _countFlag =
                                     true;
                                   });

@@ -104,12 +104,10 @@ class _cart_screenState extends State<cart_screen> {
   var cartData;
   void updateSum(double sumUpdate) {
     setState(() {
-      print(sumUpdate);
     updateCartSum=sumUpdate;
         sumFlag=true;
     }
     );
-    print("Updated CartSum $updateCartSum");
   }
   bool pseudoFlag;
   Future updatePage() async{

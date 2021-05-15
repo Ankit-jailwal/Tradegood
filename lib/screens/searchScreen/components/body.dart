@@ -482,10 +482,6 @@ class _BodyState extends State<Body> {
 
                                                               },
                                                               askLaterText: 'ASK LATER',
-                                                              onAskLaterCallback: () {
-                                                                print(
-                                                                    'Do something on ask later click');
-                                                              },
                                                             );
                                                           },
                                                         );

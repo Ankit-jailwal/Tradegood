@@ -17,7 +17,6 @@ class _BodyState extends State<Body> {
   {int count=0;
   if(data["orders"].length!=0)
   {
-    print(data["orders"].length);
       if (flag == true) {
         for (int i = 0; i < data["orders"].length; i++) {
           if (data["orders"][i]["orderStatus"][4]['isCompleted'] == true && data["orders"][i]["orderStatus"][5]['isCompleted'] == true) {
@@ -30,7 +29,6 @@ class _BodyState extends State<Body> {
             count++;
           }
         }
-        print("Count: $count");
       } else {
         for (int i = 0; i < data["orders"].length; i++) {
           if (data["orders"][i]["orderStatus"][4]['isCompleted'] == false && data["orders"][i]["orderStatus"][5]['isCompleted']==false) {
@@ -43,7 +41,6 @@ class _BodyState extends State<Body> {
             count++;
           }
         }
-        print("Count: $count");
       }
       return count;
     }

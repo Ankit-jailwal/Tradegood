@@ -77,8 +77,6 @@ class _SignFormState extends State<SignForm> {
                   else
                     addError(error: token_body["message"]);
                 }
-                print(_token);
-
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),

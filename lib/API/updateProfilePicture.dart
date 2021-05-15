@@ -22,7 +22,6 @@ Future updateProfilePicture(File file,var userName) async {
       res=tokenBody["token"];
     }
     String token= "Bearer "+res;
-    print("FILE: ${MultipartFile.fromFile(compressedFile.path, filename: "$userName.jpg")}");
     FormData data = FormData.fromMap({
       "profilePicture": await MultipartFile.fromFile(
         compressedFile.path,
@@ -37,5 +36,4 @@ Future updateProfilePicture(File file,var userName) async {
     ),).then((response) {
        jsonResponse = jsonDecode(response.toString());
     }).catchError((error) => print(error));
-    print(jsonResponse);
   }

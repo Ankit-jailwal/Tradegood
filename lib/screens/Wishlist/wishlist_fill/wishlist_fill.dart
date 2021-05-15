@@ -342,7 +342,6 @@ class _addToCartButtonState extends State<addToCartButton> {
         setState(() {
             Toast.show("Item added in cart", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
             addToCart(widget.data['wishlist']['wishlistItems'][widget.index]['product']['_id'],widget.data['wishlist']['wishlistItems'][widget.index]['product']['quantity'],);
-            print("SUCCESS");
         });
       },
       child: Container(

@@ -21,7 +21,6 @@ Future placeOrderItem(var cartData,int cartTotal,var time,var deliveryCharge) as
     res=tokenBody["token"];
   }
   var orderList=[];
-  print("CART DATA: $cartData");
 for(int i=0; i<cartData['cart']['cartItems'].length ;i++)
   {orderList.add({
       "product": cartData['cart']['cartItems'][i]['product']['_id'],
@@ -33,7 +32,6 @@ for(int i=0; i<cartData['cart']['cartItems'].length ;i++)
 
   DateFormat('EEEE').format(parsedDate);
   DateFormat('yyyy-MM-dd').format(parsedDate);
-print(orderList);
   Map data={
     "totalAmount": cartTotal,
     "orderItems":orderList,
@@ -49,12 +47,10 @@ print(orderList);
     ]
   };
   String token= "Bearer "+res;
-  print("token $token");
   final response = await Http.post(url,
       headers: {"Content-Type": "application/json","Authorization":"$token"},
       body: jsonEncode(data)
   );
   final body=response.body;
-  final category=jsonDecode(body);
-  return category;
+  return jsonDecode(body);
 }

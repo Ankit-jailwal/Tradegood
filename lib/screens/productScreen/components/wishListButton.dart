@@ -18,8 +18,6 @@ class _wishListButtonState extends State<wishListButton> {
   bool defaultCheck=true;
   bool changeWishCheck()
   {
-
-    print(widget.wishData);
     if(widget.wishData.length!=0)
     {
       for (int i = 0;

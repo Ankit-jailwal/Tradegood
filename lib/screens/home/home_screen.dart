@@ -327,12 +327,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 builder: (context) {
                                   return QuickFeedback(
                                     title: 'Leave a feedback',
-                                    // Title of dialog
                                     showTextBox: true,
-                                    // default false
                                     textBoxHint:
                                     'Share your feedback',
-                                    // Feedback text field hint text default: Tell us more
                                     submitText: 'SUBMIT',
                                     onSubmitCallback: (feedback) {
                                         if(feedback['rating']==0||feedback['feedback']==""){
@@ -353,7 +350,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     },
                                     askLaterText: 'ASK LATER',
                                     onAskLaterCallback: () {
-                                      print('Do something on ask later click');
                                     },
                                   );
                                 },

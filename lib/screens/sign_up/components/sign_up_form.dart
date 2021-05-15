@@ -134,10 +134,8 @@ class _SignUpFormState extends State<SignUpForm> {
            if(remember==true)
            {
              body=await attemptSignUp(fullname, phno, email, password);
-             print(body);
              final decodeBody = jsonDecode(body);
              if (decodeBody["message"] == "Verification token has been sent to your mobile") {
-               //Toast.show(decodeBody['errors'], context, duration: Toast.LENGTH_SHORT, gravity: Toast.TOP);
                  Navigator.push(
                    context,
                    MaterialPageRoute(builder: (context) => OtpScreen(fullname,phno,email,password)),

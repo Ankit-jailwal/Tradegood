@@ -6,7 +6,6 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 Future getProduct(String productUrl) async{
   final String url = server + "/api/product$productUrl";
-  print(productUrl);
   String res= await storage.read(key: 'jwt');
   bool hasExpired = JwtDecoder.isExpired(res);
   if(hasExpired==true)
@@ -19,12 +18,9 @@ Future getProduct(String productUrl) async{
       res=tokenBody["token"];
     }
   String token= "Bearer "+res;
-  print("token $token");
   final response = await Http.get(url,
     headers: {"Content-Type": "application/json","Authorization":"$token"},
   );
-  print(response.body);
   final body=response.body;
-  final category=jsonDecode(body);
-  return category;
+  return jsonDecode(body);
 }

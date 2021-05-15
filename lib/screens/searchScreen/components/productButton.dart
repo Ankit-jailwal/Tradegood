@@ -219,7 +219,6 @@ class _productButtonState extends State<productButton> {
                                 if (_counter < widget.data['product'][widget.index]['availableStock']) {
                                   setState(() {
                                     _counter++;
-                                    print(_counter);
                                     _countFlag = true;
                                   });
                                 } else

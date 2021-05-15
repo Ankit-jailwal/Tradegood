@@ -61,7 +61,6 @@ class _OtpFormState extends State<OtpForm> {
             enableActiveFill: true,
             controller: OTPcontroller,
             onCompleted: (v) {
-              print("Completed");
             },
             onChanged: (value) {
               setState(() {

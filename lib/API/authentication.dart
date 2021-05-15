@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity/connectivity.dart';
 
 
-const Map Server = {"host": "http://3.95.65.92", "port": "8050"};
+const Map Server = {"host": "https://app.tradegood.in", "port": "443"};
 String getServerURI() => Server["host"] + ':' + Server["port"];
 
 final storage = FlutterSecureStorage();
@@ -48,13 +48,10 @@ class AuthenticationService {
     final String url = server + "/api/signin";
 
     Map<String, String> data = {"phoneNumber": phone, "password": password};
-    //print(data);
 
     final response = await http.post(url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data));
-    //print(response.body);
-    //Welcome user = Welcome.fromJson(jsonDecode(response.body));
 
     final body = jsonDecode(response.body);
 
