@@ -246,7 +246,7 @@ class _cart_screenState extends State<cart_screen> {
                                             return Column(
                                               children: [
                                                 checkRoute(index, cartData.data['cart']['cartItems'].length)?Column(
-                                                  children: [
+                                                    children: [
                                                     Padding(
                                                       padding: const EdgeInsets.only(left: 5, right: 5),
                                                       child: Container(
