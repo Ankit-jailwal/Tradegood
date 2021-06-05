@@ -117,7 +117,16 @@ class _cart_screenState extends State<cart_screen> {
     }
     );
   }
-
+bool checkOrderAvailability(var productData) {
+    for(int i=0;i<productData['cart']['cartItems'].length;i++)
+      {
+        if(productData['cart']['cartItems'][i]['product']['availableStock']<productData['cart']['cartItems'][i]['product']['minQuantity'])
+          {
+            return false;
+          }
+      }
+    return true;
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -603,7 +612,7 @@ class _cart_screenState extends State<cart_screen> {
                                                                     color: Colors
                                                                         .black),),
                                                               Text(
-                                                                  "₹${cartSum.data}",
+                                                                  "₹${(cartSum.data).round()}",
                                                                   style: TextStyle(
                                                                       color: Colors
                                                                           .black)),
@@ -657,7 +666,7 @@ class _cart_screenState extends State<cart_screen> {
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black),),
-                                                          Text("₹${picked==null?cartSum.data+cartData.data['cart']['user']['route']['deliveryCharge']:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
+                                                          Text("₹${picked==null?cartData.data['cart']['user']['route']==null?(cartSum.data).round():(cartSum.data+cartData.data['cart']['user']['route']['deliveryCharge']).round():(cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']).round()}",
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .black)),
@@ -691,7 +700,7 @@ class _cart_screenState extends State<cart_screen> {
                                             .center,
                                         children: [
                                           Text(
-                                            "₹${picked==null?cartSum.data+cartData.data['cart']['user']['route']['deliveryCharge']:cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']}",
+                                            "₹${picked==null?cartData.data['cart']['user']['route']==null?(cartSum.data).round():(cartSum.data+cartData.data['cart']['user']['route']['deliveryCharge']).round():(cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']).round()}",
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600,
@@ -699,6 +708,7 @@ class _cart_screenState extends State<cart_screen> {
                                           ),
                                           stockFlag?FlatButton(
                                             onPressed: () async{
+                                              if(checkOrderAvailability(cartData.data)){
                                               if(cartData.data['cart']['user']['route']!=null){
                                                 if(cartData.data['cart']['user']['address']!=null&&cartData.data['cart']['user']['certificate']!=null) {
                                                   showDialog(
@@ -761,7 +771,10 @@ class _cart_screenState extends State<cart_screen> {
                                               }
                                               else
                                                 Toast.show("Please select route before placing order", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
-                                            },
+                                            }
+                                              else
+                                                Toast.show("Selected product is out of stock", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.TOP);
+                                              },
                                             child: Container(
                                               height: SizeConfig.screenHeight *
                                                   0.05,

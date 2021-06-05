@@ -38,7 +38,7 @@ class _BodyState extends State<Body> {
                 Stack(
                   children: <Widget>[
                     Container(
-                      color: Color.fromARGB(255, 53, 112, 190),
+                      color: Colors.blue,
                       height: SizeConfig.screenHeight * 0.135,
                     ),
                     Column(

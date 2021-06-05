@@ -34,24 +34,21 @@ class _BodyState extends State<Body> {
     }
     );
   }
-  Color checkStock(int stock)
-  {
+  Color checkStock(int stock) {
     Color color;
-    if(stock>=400)
+    if(stock>=100)
       {
         color=Colors.lightGreen;
       }
-    else if(stock>=100&&stock<400)
+    else if(stock>=50&&stock<100)
       {
         color=Colors.yellow;
       }
     else
       color=Colors.red;
-
     return color;
   }
-  bool checkCat(var catData)
-  {
+  bool checkCat(var catData) {
     bool flag=true;
     if(catData['message']!=null)
       {
