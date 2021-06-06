@@ -310,6 +310,9 @@ bool checkOrderAvailability(var productData) {
                                                                                       picked = selected;
                                                                                     });
                                                                                     await editDeliveryDate(picked);
+                                                                                    setState(() {
+                                                                                      picked = selected;
+                                                                                    });
                                                                                   }
                                                                                   else if(picked!=null)
                                                                                   {
@@ -349,7 +352,7 @@ bool checkOrderAvailability(var productData) {
                                                                   SizedBox(height: 5,)
                                                                 ],
                                                               ),
-                                                              Row(
+                                                                Row(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
                                                                   cartData.data['cart']['user']['route']!=null?Text(
@@ -700,13 +703,13 @@ bool checkOrderAvailability(var productData) {
                                             .center,
                                         children: [
                                           Text(
-                                            "₹${picked==null?cartData.data['cart']['user']['route']==null?(cartSum.data).round():(cartSum.data+cartData.data['cart']['user']['route']['deliveryCharge']).round():(cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']).round()}",
+                                            "₹${picked==null?cartData.data['cart']['user']['route']==null?(cartSum.data).round():(cartSum.data+cartData.data['cart']['user']['route']['deliveryCharge']).round():cartData.data['cart']['user']['customDelivery']==null?cartSum.data:(cartSum.data+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']).round()}",
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                          stockFlag?FlatButton(
+                                          FlatButton(
                                             onPressed: () async{
                                               if(checkOrderAvailability(cartData.data)){
                                               if(cartData.data['cart']['user']['route']!=null){
@@ -739,7 +742,7 @@ bool checkOrderAvailability(var productData) {
                                                             FlatButton(
                                                               onPressed: () async {
                                                                 Navigator.pop(context);
-                                                                final orderConfirmation = await placeOrderItem(cartData.data, picked==null?cartSum.data.toInt()+cartData.data['cart']['user']['route']['deliveryCharge']:cartSum.data.toInt()+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge'],picked==null?cartData.data['cart']['user']['route']['deliveryDate']:picked.toString(),picked==null?cartData.data['cart']['user']['route']['deliveryCharge']:cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']);
+                                                                final orderConfirmation = await placeOrderItem(cartData.data, picked==null?(cartSum.data.toInt()+cartData.data['cart']['user']['route']['deliveryCharge']).round():(cartSum.data.toInt()+cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']).round(),picked==null?cartData.data['cart']['user']['route']['deliveryDate']:picked.toString(),picked==null?cartData.data['cart']['user']['route']['deliveryCharge']:cartData.data['cart']['user']['customDelivery']['deliveryCharge']['deliveryCharge']);
                                                                 if (orderConfirmation !=
                                                                     null) {
                                                                   Navigator.push(
@@ -794,7 +797,7 @@ bool checkOrderAvailability(var productData) {
                                                 ),
                                               ),
                                             ),
-                                          ):Container()
+                                          )
                                         ],
                                       ),
                                     ),
@@ -867,7 +870,7 @@ class _quantityChangeState extends State<quantityChange> {
     return Row(
       children: [
         Text(
-          "₹${(updateFlag?widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*widget.cartData['cart']['cartItems'][widget.index]['quantity']:widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*realQuantity)
+          "₹${(updateFlag?(widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*widget.cartData['cart']['cartItems'][widget.index]['quantity']).round():(widget.cartData['cart']['cartItems'][widget.index]['product']['ptr']*realQuantity).round())
               .toString()}",
           style: TextStyle(
               color: Colors

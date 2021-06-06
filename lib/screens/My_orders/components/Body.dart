@@ -45,8 +45,7 @@ class _BodyState extends State<Body> {
       return count;
     }
   else
-    count=1;
-    return count;
+    return 0;
   }
   void update(bool flagUpdate) {
     setState(() => passFlag=flagUpdate);
@@ -226,7 +225,7 @@ int reCount=0;
                                     ),),
                                   Container(
                                     width: SizeConfig.screenWidth*0.8,
-                                    child: Text("${widget.data[widget.index]["orderItems"][index]['product']['name']} | Quantity: ${widget.data[widget.index]["orderItems"][index]['purchasedQuantity']} | Price: ₹${widget.data[widget.index]["orderItems"][index]['payablePrice'].toString()}",
+                                    child: Text("${widget.data[widget.index]["orderItems"][index]['product']['name']} | Quantity: ${widget.data[widget.index]["orderItems"][index]['purchasedQuantity']} | Price: ₹${(widget.data[widget.index]["orderItems"][index]['payablePrice']).round().toString()}",
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 14,

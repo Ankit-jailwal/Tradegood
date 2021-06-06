@@ -9,10 +9,10 @@ class noOrderBody extends StatelessWidget {
         children: [
           Image.asset("assets/images2/b28fd6cc341eb8dbf1d82dd8e6e03e20d6a5bf92.png",height: SizeConfig.screenHeight*0.5,width:SizeConfig.screenWidth*0.5,),
           SizedBox(height: 20,),
-          Text("You have no past orders",
+          Text("You have no orders",
             style: TextStyle(
               color: Colors.black,
-              fontSize: 18,
+              fontSize: 20,
               fontFamily: "Roberto",
               fontWeight: FontWeight.w600,
             ),

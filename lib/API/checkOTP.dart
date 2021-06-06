@@ -9,7 +9,6 @@ Future checkOTP(String OTP) async{
   Map data={
     "token":OTP
   };
-  print("token $token");
   final response = await Http.post(url,
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(data)
