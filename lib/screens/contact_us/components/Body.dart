@@ -27,9 +27,9 @@ class Body extends StatelessWidget {
           SizedBox(height: SizeConfig.screenHeight*0.01,),
           GestureDetector(
             onTap: (){
-              launch('tel://9403295506');
+              launch('tel://8668876169');
             },
-            child: Text("Phone No: +91 9403295506",
+            child: Text("Phone No: +91 8668876169",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,

@@ -45,8 +45,8 @@ android {
         applicationId "com.tradegood.tradegood"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 8
-        versionName "1.2"
+        versionCode 9
+        versionName "1.3"
     }
     signingConfigs {
         release {

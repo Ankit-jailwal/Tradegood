@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 drawer: Container(
-                  width: SizeConfig.screenWidth * 0.7,
+                    width: SizeConfig.screenWidth * 0.7,
                   child: SafeArea(
                     child: Drawer(
                       child: ListView(
