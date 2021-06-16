@@ -18,7 +18,7 @@ Future addToCart(String product,int quantity) async{
   }
   Map data = {"cartItems":{"product": product, "quantity": quantity}};
   String token= "Bearer "+res;
-  final response = await Http.post(url,
+  final response = await Http.post(Uri.parse(url),
     headers: {"Content-Type": "application/json","Authorization":"$token"},
     body: jsonEncode(data)
   );

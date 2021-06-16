@@ -48,7 +48,7 @@ class AuthenticationService {
 
     Map<String, String> data = {"phoneNumber": phone, "password": password};
 
-    final response = await http.post(url,
+    final response = await http.post(Uri.parse(url),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data));
 
@@ -137,7 +137,7 @@ Future attemptSignUp(String fullname, String phno, String email, String password
 
   Map<String, String> data = {"name": fullname, "phoneNumber": phno, "email": email, "password": password};
 
-  final response = await http.post(url,
+  final response = await http.post(Uri.parse(url),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(data));
 

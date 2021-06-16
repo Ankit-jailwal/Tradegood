@@ -17,7 +17,7 @@ Future getRoutes() async{
     res=tokenBody["token"];
   }
   String token= "Bearer "+res;
-  final response = await Http.get(url,
+  final response = await Http.get(Uri.parse(url),
     headers: {"Content-Type": "application/json","Authorization":"$token"},
   );
   final body=response.body;

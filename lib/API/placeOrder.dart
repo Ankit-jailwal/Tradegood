@@ -47,7 +47,7 @@ for(int i=0; i<cartData['cart']['cartItems'].length ;i++)
     ]
   };
   String token= "Bearer "+res;
-  final response = await Http.post(url,
+  final response = await Http.post(Uri.parse(url),
       headers: {"Content-Type": "application/json","Authorization":"$token"},
       body: jsonEncode(data)
   );

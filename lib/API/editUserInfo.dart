@@ -20,7 +20,7 @@ Future editUserInfo(String name,String email) async{
   }
 Map data={"name":name,"email":email};
   String token= "Bearer "+res;
-  final response = await Http.post(url,
+  final response = await Http.post(Uri.parse(url),
     headers: {"Content-Type": "application/json","Authorization":"$token"},
     body:jsonEncode(data)
   );

@@ -11,7 +11,7 @@ Future resetPassword(String password,String OTP) async{
     "password":password,
     "token":OTP
   };
-  final response = await Http.post(url,
+  final response = await Http.post(Uri.parse(url),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(data)
   );

@@ -9,7 +9,7 @@ Future OTPverification(String phone) async{
   Map data={
     "phoneNumber":phone
   };
-  final response = await Http.post(url,
+  final response = await Http.post(Uri.parse(url),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(data)
   );
